@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace PPChat.Models
@@ -12,11 +13,10 @@ namespace PPChat.Models
         [BsonElement]
         public string Pseudo { get; set; }
 
-        //public decimal password { get; set; }
+        public string Password { get; set; }
 
-        //public string Birthdate { get; set; }
-
-        //public string Friends { get; set; }
+        //Id from others users
+        public int[] Friends { get; set; }
     }
 
 }

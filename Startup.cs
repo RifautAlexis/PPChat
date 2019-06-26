@@ -40,6 +40,17 @@ namespace PPChat
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddCors(o => o.AddPolicy("CorsPolicy", options =>
+            {
+                options
+                    // .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithOrigins("http://localhost:5000")
+                    .AllowCredentials();
+            }));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,9 +67,11 @@ namespace PPChat
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseCors("CorsPolicy");
 
             app.UseMvc(routes =>
             {
