@@ -23,6 +23,9 @@ namespace PPChat.Services
         public User Get(string id) =>
             _users.Find<User>(user => user.Id == id).FirstOrDefault();
 
+        public User Login(string username, string password) =>
+            _users.Find<User>(user => user.Username == username && user.Password == password).FirstOrDefault();
+
         public User Create(User user)
         {
             _users.InsertOne(user);

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PPChat.Models;
 using PPChat.Services;
 
 namespace PPChat.Controllers {
+
     [Route ("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase {
@@ -14,75 +15,51 @@ namespace PPChat.Controllers {
             _userService = userService;
         }
 
-        [HttpPost]
-        public ActionResult<List<User>> Register ([FromBody] User user) {
+        [HttpPost ("register")]
+        public ActionResult<List<User>> Register (User user) {
+
+            _userService.Create (user);
+
+            return CreatedAtRoute (
+                routeName: "GetUser",
+                routeValues : new { id = user.Id },
+                value : user);
+        }
+
+        [HttpPost ("login")]
+        public ActionResult<User> Login ([FromBody]User content) {
+            var userToLogin = _userService.Login (content.Username, content.Password);
             
-            _userService.Create(user);
+            if (userToLogin == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
 
-            return CreatedAtRoute(
-                routeName: "GetUser", 
-                routeValues: new { id = user.Id },
-                value: user);
+            return Ok(userToLogin);
         }
 
-        [HttpGet]
-        public void print () {
-            System.Console.WriteLine ("AZERTY");
-        }
+        [HttpGet ("{id}", Name = "GetUser")]
+        public ActionResult<User> Get (string id) {
 
-        // [HttpGet]
-        // public ActionResult<List<User>> Get() =>
-        //     _userService.Get();
+            var user = _userService.Get (id);
 
-        [HttpGet(Name = "GetUser")]
-        public ActionResult<User> Get(string id)
-        {
-            var user = _userService.Get(id);
-
-            if (user == null)
-            {
-                return NotFound();
+            if (user == null) {
+                return NotFound ();
             }
 
             return user;
         }
 
-        // [HttpPost]
-        // public ActionResult<User> Create(User user)
-        // {
-        //     _userService.Create(user);
+        [HttpDelete]
+        public IActionResult Delete (string id) {
+            var user = _userService.Get (id);
 
-        //     return CreatedAtRoute("GetUser", new { id = user.Id.ToString() }, user);
-        // }
+            if (user == null) {
+                return NotFound ();
+            }
 
-        // [HttpPut("{id:length(24)}")]
-        // public IActionResult Update(string id, User userIn)
-        // {
-        //     var user = _userService.Get(id);
+            _userService.Remove (user.Id);
 
-        //     if (user == null)
-        //     {
-        //         return NotFound();
-        //     }
+            return NoContent ();
+        }
 
-        //     _userService.Update(id, userIn);
-
-        //     return NoContent();
-        // }
-
-        // [HttpDelete("{id:length(24)}")]
-        // public IActionResult Delete(string id)
-        // {
-        //     var user = _userService.Get(id);
-
-        //     if (user == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     _userService.Remove(user.Id);
-
-        //     return NoContent();
-        // }
     }
 }

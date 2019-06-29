@@ -1,0 +1,27 @@
+<section class="sample-app-content">
+
+  <h1>Login</h1>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+    <p>
+      <label>Pseudo :</label>
+      <input type="text" formControlName="username">
+    </p>
+
+    <p>
+      <label>Password:</label>
+      <input type="password" formControlName="password">
+    </p>
+
+    <p>
+      <button type="submit" [disabled]="!loginForm.valid">Submit</button>
+    </p>
+
+  </form>
+
+  <p>
+    Form Status: {{ loginForm.status }}
+  </p>
+
+</section>

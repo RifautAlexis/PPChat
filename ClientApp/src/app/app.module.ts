@@ -1,22 +1,27 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { routing as Routing } from './app.routing';
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
-import { RegisterComponent } from './register/register.component';
+import { NavMenuComponent } from './Componnents/nav-menu/nav-menu.component';
+import { HomeComponent } from './Componnents/home/home.component';
+import { RegisterComponent } from './Componnents/register/register.component';
+import { LoginComponent } from './Componnents/login/login.component';
+import { AlertComponent } from './Componnents/alert/alert.component';
+
+import { ErrorInterceptor } from './helpers/error.interceptor';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
 
 @NgModule({
    declarations: [
       AppComponent,
       NavMenuComponent,
       HomeComponent,
-      RegisterComponent
+      RegisterComponent,
+      LoginComponent,
+      AlertComponent
    ],
    imports: [
       BrowserModule,
@@ -24,7 +29,10 @@ import { RegisterComponent } from './register/register.component';
       ReactiveFormsModule,
       Routing
   ],
-  providers: [],
+  providers: [
+   // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+   // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

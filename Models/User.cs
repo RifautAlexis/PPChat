@@ -11,9 +11,11 @@ namespace PPChat.Models
         public string Id { get; set; }
 
         [BsonElement]
-        public string Pseudo { get; set; }
+        public string Username { get; set; }
 
         public string Password { get; set; }
+
+        public string Token { get; set; }
 
         //Id from others users
         public int[] Friends { get; set; }
