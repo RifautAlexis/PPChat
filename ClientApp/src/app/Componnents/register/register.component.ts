@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { AuthService } from './../../services/auth.service';
 import { AlertService } from './../../services/alert.service';
-import { UserService } from './../../services/User.service';
 
 @Component({
   selector: 'app-register',
@@ -16,24 +15,17 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private authService: AuthService,
-    private userService: UserService,
-    private alertService: AlertService
-    ) {
-      // Redirect to home if already logged in
-      if (this.authService.currentUserValue) {
-        this.router.navigate(['/']);
-      }
-     }
+  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService, private alertService: AlertService) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required],
+      username: ['', Validators.required],
+      password: ['', Validators.required],
     });
+
+    if (this.authService.isLogged()) {
+      this.router.navigate(['/']);
+    }
   }
 
   onSubmit() {
@@ -43,18 +35,10 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.invalid) {
       return;
     }
-    
-    this.userService.register(this.registerForm.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.alertService.success('Registration successful', true);
-          this.router.navigate(['/']);
-        },
-        error => {
-          this.alertService.error(error);
-        }
-      );
+
+    this.authService.register(this.registerForm.value);
+
+    this.router.navigate(['/']);
 
   }
 

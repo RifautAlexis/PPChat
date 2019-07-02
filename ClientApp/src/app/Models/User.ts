@@ -1,9 +1,9 @@
 export interface IUser {
     id?: string;
     username: string;
-    password: string;
-    token?: string;
+    // password: string;
+    // token?: string;
 
     // Id from others users
-    Friends?: number[];
+    friends?: number[];
 }

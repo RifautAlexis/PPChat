@@ -1,7 +1,7 @@
 import { AuthService } from './../../services/auth.service';
 import { IUser as User } from './../../Models/User';
-import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-nav-menu',
@@ -15,8 +15,11 @@ export class NavMenuComponent {
 
   constructor(private authService: AuthService, private router: Router) {
 
-    this.authService.currentUser$.subscribe(x => this.currentUser = x);
-    
+    console.log(this.currentUser);
+  }
+
+  ngOnInit() {
+    this.authService.getUserLoggedIn().subscribe(x => this.currentUser = x);
   }
 
   logout() {

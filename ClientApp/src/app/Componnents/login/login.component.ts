@@ -17,22 +17,18 @@ export class LoginComponent {
   loginForm: FormGroup;
   returnUrl: string;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute, private alertService: AlertService) { 
-    
-    if (this.authService.currentUserValue) { 
-      this.router.navigate(['/']);
-    }
-    
-  }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute, private alertService: AlertService) { }
 
   ngOnInit() {
+
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    
+    if (this.authService.isLogged()) { 
+      this.router.navigate(['/']);
+    }
 
   }
 
@@ -42,18 +38,9 @@ export class LoginComponent {
       return;
     }
 
-    this.authService.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          console.log("OK");
-          this.router.navigate([this.returnUrl]);
-        },
-        error => {
-          console.log("PAS BON");
-          console.log(error);
-          this.alertService.error(error);
-        });
+    this.authService.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
+    
+    this.router.navigate(['/']);
   }
 
 }

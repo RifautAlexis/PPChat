@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { IUser } from './../Models/User';
+import { IUser as User } from './../Models/User';
 
 @Injectable({
   providedIn: "root"
@@ -9,14 +9,10 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getAll() {
-    return this.http.get<IUser[]>(`api/user`);
-  }
-
-  register(user: IUser) {
-    return this.http.post(`api/user/register`, user);
+    return this.http.get<User[]>(`api/users`);
   }
 
   delete(id: number) {
-    return this.http.delete(`api/user/${id}`);
+    return this.http.delete(`api/users/${id}`);
   }
 }

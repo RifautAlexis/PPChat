@@ -6,7 +6,7 @@
 
       <a class="nav-link text-dark" *ngIf="!currentUser" [routerLink]='["/login"]'>Connexion</a>
       <a class="nav-link text-dark" *ngIf="!currentUser" [routerLink]='["/register"]'>Inscription</a>
-      <p *ngIf="currentUser"> {{currentUser.Username}} </p>
+      <p *ngIf="currentUser"> {{currentUser.username}} </p>
       <a class="nav-link text-dark" *ngIf="currentUser" (click)="logout()">Logout</a>
 
 
