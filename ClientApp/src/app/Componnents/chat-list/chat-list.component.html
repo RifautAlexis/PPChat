@@ -1,0 +1,25 @@
+<section class="sample-app-content">
+
+
+    <form [formGroup]="chatForm" (ngSubmit)="onSubmit()">
+
+      <div>
+        <label>Message</label>
+        <input type="text" formControlName="messageForm">
+      </div>
+
+      <button type="submit" [disabled]="!chatForm.valid">Send</button>
+
+    </form>
+
+  <div class="container" *ngIf="messages.length > 0">
+
+    <div *ngFor="let message of messages">
+
+      <span>{{message}}</span>
+
+    </div>
+
+  </div>
+
+</section>

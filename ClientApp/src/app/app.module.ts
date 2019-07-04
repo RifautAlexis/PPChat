@@ -1,3 +1,4 @@
+import { ChatListComponent } from './Componnents/chat-list/chat-list.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -21,7 +22,8 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
       HomeComponent,
       RegisterComponent,
       LoginComponent,
-      AlertComponent
+      AlertComponent,
+      ChatListComponent
    ],
    imports: [
       BrowserModule,

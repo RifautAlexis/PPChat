@@ -1,9 +1,7 @@
-import { TokenService } from './token.service';
 import { Injectable } from '@angular/core';
 import { IUser as User } from '../Models/User';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import * as jwt_decode from 'jwt-decode';
 
 @Injectable({

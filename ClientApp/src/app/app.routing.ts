@@ -1,3 +1,4 @@
+import { ChatListComponent } from './Componnents/chat-list/chat-list.component';
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './Componnents/register/register.component';
@@ -16,6 +17,10 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'chats',
+    component: ChatListComponent
   }
 ];
 

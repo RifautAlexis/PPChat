@@ -6,9 +6,9 @@
 
       <a class="nav-link text-dark" *ngIf="!currentUser" [routerLink]='["/login"]'>Connexion</a>
       <a class="nav-link text-dark" *ngIf="!currentUser" [routerLink]='["/register"]'>Inscription</a>
+      <a class="nav-link text-dark" *ngIf="currentUser" [routerLink]='["/chats"]'>Chats</a>
       <p *ngIf="currentUser"> {{currentUser.username}} </p>
       <a class="nav-link text-dark" *ngIf="currentUser" (click)="logout()">Logout</a>
-
 
     </div>
   </nav>

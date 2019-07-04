@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { first } from 'rxjs/operators';
 import { AuthService } from './../../services/auth.service';
 import { AlertService } from './../../services/alert.service';
 
@@ -18,9 +17,10 @@ export class RegisterComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService, private alertService: AlertService) { }
 
   ngOnInit() {
+    
     this.registerForm = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required],
+      password: ['', Validators.required]
     });
 
     if (this.authService.isLogged()) {

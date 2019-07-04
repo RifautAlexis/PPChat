@@ -13,6 +13,7 @@ using PPChat.Helpers;
 using PPChat.Models;
 using PPChat.Services;
 using AutoMapper;
+using PPChat.Hubs;
 
 namespace PPChat {
     public class Startup {
@@ -87,6 +88,8 @@ namespace PPChat {
                         ValidateAudience = false
                     };
                 });
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,6 +102,8 @@ namespace PPChat {
                 app.UseHsts ();
             }
 
+            app.UseDefaultFiles();
+
             // app.UseHttpsRedirection();
             app.UseStaticFiles ();
             app.UseSpaStaticFiles ();
@@ -110,6 +115,11 @@ namespace PPChat {
                 .AllowAnyHeader ());
 
             app.UseAuthentication ();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/hub/chatHub");
+            });
 
             app.UseMvc (routes => {
                 routes.MapRoute (
