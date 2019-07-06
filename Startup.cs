@@ -1,5 +1,6 @@
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,10 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PPChat.Helpers;
+using PPChat.Hubs;
 using PPChat.Models;
 using PPChat.Services;
-using AutoMapper;
-using PPChat.Hubs;
 
 namespace PPChat {
     public class Startup {
@@ -32,12 +32,13 @@ namespace PPChat {
                 sp.GetRequiredService<IOptions<PPChatDatabaseSettings>> ().Value);
 
             services.AddSingleton<UserService> ();
+            services.AddSingleton<AuthenticationService> ();
 
             services.AddMvc ()
                 .AddJsonOptions (options => options.UseMemberCasing ())
                 .SetCompatibilityVersion (CompatibilityVersion.Version_2_2);
 
-            services.AddAutoMapper();
+            services.AddAutoMapper ();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles (configuration => {
@@ -53,43 +54,29 @@ namespace PPChat {
                     .AllowCredentials ();
             }));
 
+            services.Configure<TokenManagement> (Configuration.GetSection ("tokenManagement"));
+            var token = Configuration.GetSection ("tokenManagement").Get<TokenManagement> ();
+            var secret = Encoding.ASCII.GetBytes (token.Secret);
+
+            services.AddAuthentication (x => {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer (x => {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey (secret),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection ("AppSettings");
             services.Configure<AppSettings> (appSettingsSection);
 
-            // configure jwt authentication
-            var appSettings = appSettingsSection.Get<AppSettings> ();
-            var key = Encoding.ASCII.GetBytes (appSettings.Secret);
-            services.AddAuthentication (x => {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer (x => {
-                    x.Events = new JwtBearerEvents {
-                        OnTokenValidated = context => {
-                            var userService = context.HttpContext.RequestServices.GetRequiredService<UserService> ();
-                            var userId = context.Principal.Identity.Name;
-                            var user = userService.GetById (userId);
-
-                            if (user == null) {
-                                // return unauthorized if user no longer exists
-                                context.Fail ("Unauthorized");
-                            }
-                            return Task.CompletedTask;
-                        }
-                    };
-
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey (key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
-
-            services.AddSignalR();
+            services.AddSignalR ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,9 +89,8 @@ namespace PPChat {
                 app.UseHsts ();
             }
 
-            app.UseDefaultFiles();
+            app.UseDefaultFiles ();
 
-            // app.UseHttpsRedirection();
             app.UseStaticFiles ();
             app.UseSpaStaticFiles ();
 
@@ -116,9 +102,10 @@ namespace PPChat {
 
             app.UseAuthentication ();
 
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<ChatHub>("/hub/chatHub");
+            app.UseHttpsRedirection ();
+
+            app.UseSignalR (routes => {
+                routes.MapHub<ChatHub> ("/hub/chatHub");
             });
 
             app.UseMvc (routes => {

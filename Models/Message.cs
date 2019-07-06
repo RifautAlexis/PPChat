@@ -27,5 +27,17 @@ namespace PPChat.Models
 
         [JsonProperty("seeAt")]
         public DateTime SeeAt { get; set; }
+
+        public Message(string id, string sender, string recipient, string content, DateTime createdAt, DateTime seeAt) {
+
+            this.Id = id;
+            this.Sender = sender;
+            this.Recipient = recipient;
+            this.content = content;
+            this.CreatedAt = createdAt;
+            this.SeeAt = seeAt;
+
+        }
+        
     }
 }

@@ -1,7 +1,8 @@
 import { AuthService } from './../../services/auth.service';
 import { IUser as User } from './../../Models/User';
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { IToken as Token } from './../../Models/Token';
 
 @Component({
   selector: 'app-nav-menu',
@@ -9,17 +10,18 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav-menu.component.css']
 })
 
-export class NavMenuComponent {
+export class NavMenuComponent implements OnInit {
 
-  currentUser: User;
+  currentUser: Token;
 
-  constructor(private authService: AuthService, private router: Router) {
-
-    console.log(this.currentUser);
-  }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
-    this.authService.getUserLoggedIn().subscribe(x => this.currentUser = x);
+    this.authService.getUserLoggedIn().subscribe(
+      x =>
+      {
+        (x != null) ? this.currentUser = x : this.currentUser = null;
+      });
   }
 
   logout() {

@@ -6,10 +6,13 @@ using PPChat.Models;
 using PPChat.Helpers;
 
 namespace PPChat.Services {
+
     public class UserService {
+
         private readonly IMongoCollection<User> _users;
 
         public UserService (IPPChatDatabaseSettings settings) {
+            
             var client = new MongoClient (settings.ConnectionString);
             var database = client.GetDatabase (settings.DatabaseName);
 
@@ -22,7 +25,10 @@ namespace PPChat.Services {
         public User GetById (string id) =>
             _users.Find<User> (user => user.Id == id).FirstOrDefault ();
 
-        public User Login (string username, string password) {
+        public User GetByUsername (string username) =>
+            _users.Find<User> (user => user.Username == username).FirstOrDefault ();
+
+        public User IsValidUser (string username, string password) {
 
             if (string.IsNullOrEmpty (username) || string.IsNullOrEmpty (password))
                 return null;

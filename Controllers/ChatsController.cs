@@ -25,13 +25,17 @@ namespace PPChat.Controllers {
     public class ChatsController : ControllerBase {
 
         private IHubContext<ChatHub> context;
+        private MessageService _messageService;
 
-        public ChatsController (IHubContext<ChatHub> context) {
+        public ChatsController (IHubContext<ChatHub> context, MessageService messageService) {
             this.context = context;
+            this._messageService = messageService;
         }
 
         [HttpPost ("sendMessage")]
         public async Task SendMessage ([FromBody] Message message) {
+
+            _messageService.Create(message);
 
             await context.Clients.All.SendAsync("ReceiveMessage", message);
         }

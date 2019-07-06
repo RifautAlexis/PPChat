@@ -1,3 +1,4 @@
+import { IToken as Token } from './../Models/Token';
 import { Injectable } from '@angular/core';
 import { IUser as User } from '../Models/User';
 import { HttpClient } from '@angular/common/http';
@@ -10,15 +11,15 @@ import * as jwt_decode from 'jwt-decode';
 export class AuthService {
 
   private loggedIn: BehaviorSubject<boolean>;
-  private userLoggedIn: BehaviorSubject<User>;
+  private userLoggedIn: BehaviorSubject<Token>;
 
   constructor(private http: HttpClient) {
 
     this.loggedIn = new BehaviorSubject<boolean>(this.hasToken());
-    this.userLoggedIn = new BehaviorSubject<User>(this.getUserFromToken());
+    this.userLoggedIn = new BehaviorSubject<Token>(this.getUserFromToken());
   }
 
-  getUserLoggedIn(): Observable<User> {
+  getUserLoggedIn(): Observable<Token> {
     return this.userLoggedIn.asObservable();
   }
 
@@ -34,7 +35,7 @@ export class AuthService {
 
   login(username: string, password: string) {
 
-    const loginUrl = 'api/users/login';
+    const loginUrl = 'api/authentication/login';
 
     var data = { 'username': username, 'password': password };
 
@@ -57,7 +58,7 @@ export class AuthService {
 
   register(userToRegistrer: User) {
 
-    this.http.post(`api/users/register`, userToRegistrer).subscribe(
+    this.http.post(`api/authentication/register`, userToRegistrer).subscribe(
       (token: string) => {
 
         localStorage.setItem('Token', token);
@@ -68,12 +69,13 @@ export class AuthService {
       });
   }
 
-  private getUserFromToken() {
+  private getUserFromToken(): Token {
 
     if (this.hasToken()) {
+
       let token: string = localStorage.getItem('Token');
 
-      let user = this.decodeToken(token);
+      let user: Token = this.decodeToken(token);
 
       return user;
     }
@@ -81,8 +83,8 @@ export class AuthService {
     return null;
   }
 
-  private decodeToken(token: string) {
-    var decoded: User = jwt_decode(token);
+  private decodeToken(token: string): Token {
+    var decoded: Token = jwt_decode(token);
     return decoded;
   }
 

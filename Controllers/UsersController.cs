@@ -29,35 +29,21 @@ namespace PPChat.Controllers {
             _mapper = mapper;
         }
 
-        [AllowAnonymous]
-        [HttpPost ("register")]
-        public string Register ([FromBody] UserDto userDto) {
+        // [AllowAnonymous]
+        // [HttpPost ("register")]
+        // public string Register ([FromBody] UserDto userDto) {
 
-            User user = _mapper.Map<User> (userDto);
+        //     User user = _mapper.Map<User> (userDto);
 
-            _userService.Create (user, userDto.Password);
+        //     _userService.Create (user, userDto.Password);
 
-            string token = CreateToken (user);
+        //     string token = CreateToken (user);
 
-            return token;
-        }
-
-        [AllowAnonymous]
-        [HttpPost ("login")]
-        public string Login ([FromBody] UserDto userDto) {
-            
-            User user = _userService.Login (userDto.Username, userDto.Password);
-
-            if (user == null)
-                return "";
-
-            string token = CreateToken (user);
-
-            return token;
-        }
+        //     return token;
+        // }
 
         [HttpGet ("{id}", Name = "GetUser")]
-        public ActionResult<User> GetById (string id) {
+        public ActionResult<UserDto> GetById (string id) {
 
             User user = _userService.GetById (id);
 
@@ -98,27 +84,27 @@ namespace PPChat.Controllers {
             }
         }
 
-        private string CreateToken (User user) {
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler ();
-            byte[] key = Encoding.ASCII.GetBytes (_appSettings.Secret);
+        // private string CreateToken (User user) {
+        //     JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler ();
+        //     byte[] key = Encoding.ASCII.GetBytes (_appSettings.Secret);
 
-            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor {
-                Subject = new ClaimsIdentity (new Claim[] {
-                new Claim ("id", user.Id.ToString ()),
-                new Claim ("username", user.Username.ToString ()),
-                new Claim ("friends", user.Friends.ToString ())
-                }),
-                Expires = DateTime.UtcNow.AddDays (7),
-                SigningCredentials = new SigningCredentials (new SymmetricSecurityKey (key), SecurityAlgorithms.HmacSha256Signature)
-            };
+        //     SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor {
+        //         Subject = new ClaimsIdentity (new Claim[] {
+        //         new Claim ("id", user.Id.ToString ()),
+        //         new Claim ("username", user.Username.ToString ()),
+        //         new Claim ("friends", user.Friends.ToString ())
+        //         }),
+        //         Expires = DateTime.UtcNow.AddDays (7),
+        //         SigningCredentials = new SigningCredentials (new SymmetricSecurityKey (key), SecurityAlgorithms.HmacSha256Signature)
+        //     };
 
-            SecurityToken token = tokenHandler.CreateToken (tokenDescriptor);
-            string tokenString = tokenHandler.WriteToken (token);
+        //     SecurityToken token = tokenHandler.CreateToken (tokenDescriptor);
+        //     string tokenString = tokenHandler.WriteToken (token);
 
-            System.Console.WriteLine (tokenString);
+        //     System.Console.WriteLine (tokenString);
 
-            return JsonConvert.SerializeObject(tokenString);
-        }
+        //     return JsonConvert.SerializeObject(tokenString);
+        // }
 
     }
 }
