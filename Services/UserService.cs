@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Driver;
-using PPChat.Models;
 using PPChat.Helpers;
+using PPChat.Models;
 
 namespace PPChat.Services {
 
@@ -12,7 +12,7 @@ namespace PPChat.Services {
         private readonly IMongoCollection<User> _users;
 
         public UserService (IPPChatDatabaseSettings settings) {
-            
+
             var client = new MongoClient (settings.ConnectionString);
             var database = client.GetDatabase (settings.DatabaseName);
 
@@ -44,19 +44,18 @@ namespace PPChat.Services {
             return user;
         }
 
-        public User Create (User user, string password) {
+        public User Create (string username, string password) {
 
             if (string.IsNullOrWhiteSpace (password))
                 throw new AppException ("Password is required");
 
-            if (_users.Find (x => x.Username == user.Username).FirstOrDefault () != null)
-                throw new AppException ("Username \"" + user.Username + "\" is already taken");
+            if (_users.Find (x => x.Username == username).FirstOrDefault () != null)
+                throw new AppException ("Username \"" + username + "\" is already taken");
 
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash (password, out passwordHash, out passwordSalt);
 
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            User user = new User(null, username, null, null, passwordHash, passwordSalt);
 
             _users.InsertOne (user);
 
@@ -129,7 +128,7 @@ namespace PPChat.Services {
             using (var hmac = new System.Security.Cryptography.HMACSHA512 (storedSalt)) {
 
                 Byte[] computedHash = hmac.ComputeHash (System.Text.Encoding.UTF8.GetBytes (password));
-                
+
                 for (int i = 0; i < computedHash.Length; i++) {
 
                     if (computedHash[i] != storedHash[i])

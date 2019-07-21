@@ -13,13 +13,24 @@ namespace PPChat.Models {
         [JsonProperty ("username")]
         public string Username { get; set; }
 
-        // public string Password { get; set; }
-
         // Id from others users
         [JsonProperty ("friends")]
-        public int[] Friends { get; set; }
+        public string[] Friends { get; set; }
+
+        [JsonProperty ("threads")]
+        public string[] Threads { get; set; }
+
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+
+        public User(string id, string username, string[] friends, string[] threads, byte[] passwordHash, byte[] passwordSalt) {
+            this.Id = id;
+            this.Username = username;
+            this.Friends = friends;
+            this.Threads = threads;
+            this.PasswordHash = passwordHash;
+            this.PasswordSalt = passwordSalt;
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PPChat.Dtos;
 using PPChat.Helpers;
 using PPChat.Hubs;
@@ -33,9 +35,21 @@ namespace PPChat.Controllers {
 
         [AllowAnonymous]
         [HttpPost ("login")]
-        public string Login ([FromBody] UserDto userDto) {
-            
-            User user = _userService.IsValidUser (userDto.Username, userDto.Password);
+        public string Login () {
+
+            JObject bodyParsed;
+
+            using (var reader = new StreamReader (Request.Body)) {
+
+                var body = reader.ReadToEnd ().ToString ();
+                bodyParsed = JObject.Parse (body);
+
+            };
+
+            var username = bodyParsed["Username"].ToString ();
+            var password = bodyParsed["Password"].ToString ();
+
+            User user = _userService.IsValidUser (username, password);
 
             if (user == null)
                 return "";
@@ -47,11 +61,23 @@ namespace PPChat.Controllers {
 
         [AllowAnonymous]
         [HttpPost ("register")]
-        public string Register ([FromBody] UserDto userDto) {
-            
-            User user = _userService.GetByUsername (userDto.Username);
+        public string Register () {
 
-            if (user != null)
+            JObject bodyParsed;
+
+            using (var reader = new StreamReader (Request.Body)) {
+
+                var body = reader.ReadToEnd ().ToString ();
+                bodyParsed = JObject.Parse (body);
+
+            };
+
+            var username = bodyParsed["Username"].ToString ();
+            var password = bodyParsed["Password"].ToString ();
+
+            User user = _userService.Create(username, password);
+
+            if (user == null)
                 return "";
 
             string token = _authService.CreateToken (user);

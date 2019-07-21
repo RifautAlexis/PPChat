@@ -16,7 +16,7 @@ namespace PPChat.Services {
             var client = new MongoClient (settings.ConnectionString);
             var database = client.GetDatabase (settings.DatabaseName);
 
-            _messages = database.GetCollection<Message> (settings.UsersCollectionName);
+            _messages = database.GetCollection<Message> (settings.MessagesCollectionName);
         }
 
         public Message Create(Message message) {
@@ -24,6 +24,10 @@ namespace PPChat.Services {
             _messages.InsertOne(message);
 
             return message;
+        }
+
+        public Message[] GetByThread(Thread thread) {
+            return _messages.AsQueryable<Message>().Where(m => thread.Messages.Contains(m.Id)).ToArray();
         }
 
     }

@@ -2,8 +2,9 @@ import { IToken as Token } from './../Models/Token';
 import { Injectable } from '@angular/core';
 import { IUser as User } from '../Models/User';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, from } from 'rxjs';
 import * as jwt_decode from 'jwt-decode';
+import {TokenService} from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,85 +12,64 @@ import * as jwt_decode from 'jwt-decode';
 export class AuthService {
 
   private loggedIn: BehaviorSubject<boolean>;
-  private userLoggedIn: BehaviorSubject<Token>;
+  public loggedIn$: Observable<boolean>
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private tokenService: TokenService) {
 
-    this.loggedIn = new BehaviorSubject<boolean>(this.hasToken());
-    this.userLoggedIn = new BehaviorSubject<Token>(this.getUserFromToken());
-  }
-
-  getUserLoggedIn(): Observable<Token> {
-    return this.userLoggedIn.asObservable();
-  }
-
-  isLoggedIn(): Observable<boolean> {
-    return this.loggedIn.asObservable();
+    this.loggedIn = new BehaviorSubject<boolean>(this.tokenService.hasToken());
+    this.loggedIn$ = this.loggedIn.asObservable();
   }
 
   isLogged(): boolean {
-    let isLogged: boolean;
-    this.loggedIn.asObservable().subscribe(x => isLogged = x);
-    return isLogged;
+    return this.loggedIn.getValue();
+  }
+
+  isLoggedObservable(): Observable<boolean> {
+    return this.loggedIn$;
+  }
+
+  getLoggedUserId(): string {
+    if(this.tokenService.hasToken())
+      return this.tokenService.getIdFromToken();
+    
+    return null;
   }
 
   login(username: string, password: string) {
 
     const loginUrl = 'api/authentication/login';
 
-    var data = { 'username': username, 'password': password };
+    var data = { 'Username': username, 'Password': password };
 
     this.http.post<any>(loginUrl, data).subscribe(
       (token: string) => {
         
-        localStorage.setItem('Token', token);
+        localStorage.setItem('token', token);
 
         this.loggedIn.next(true);
         
-        this.userLoggedIn.next(this.getUserFromToken());
       });
   }
 
   logout() {
-    localStorage.removeItem('Token');
+    localStorage.removeItem('token');
     this.loggedIn.next(false);
-    this.userLoggedIn.next(null);
   }
 
-  register(userToRegistrer: User) {
+  register(username: string, password: string) {
 
-    this.http.post(`api/authentication/register`, userToRegistrer).subscribe(
+    const loginUrl = 'api/authentication/register';
+
+    var data = { 'Username': username, 'Password': password };
+
+    this.http.post(loginUrl, data).subscribe(
       (token: string) => {
 
-        localStorage.setItem('Token', token);
+        localStorage.setItem('token', token);
 
         this.loggedIn.next(true);
-        
-        this.userLoggedIn.next(this.getUserFromToken());
+
       });
-  }
-
-  private getUserFromToken(): Token {
-
-    if (this.hasToken()) {
-
-      let token: string = localStorage.getItem('Token');
-
-      let user: Token = this.decodeToken(token);
-
-      return user;
-    }
-
-    return null;
-  }
-
-  private decodeToken(token: string): Token {
-    var decoded: Token = jwt_decode(token);
-    return decoded;
-  }
-
-  private hasToken() {
-    return !!localStorage.getItem('Token');
   }
 
 }

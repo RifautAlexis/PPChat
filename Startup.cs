@@ -33,6 +33,8 @@ namespace PPChat {
 
             services.AddSingleton<UserService> ();
             services.AddSingleton<AuthenticationService> ();
+            services.AddSingleton<ThreadService> ();
+            services.AddSingleton<MessageService> ();
 
             services.AddMvc ()
                 .AddJsonOptions (options => options.UseMemberCasing ())
@@ -71,10 +73,6 @@ namespace PPChat {
                     ValidateAudience = false
                 };
             });
-
-            // configure strongly typed settings objects
-            var appSettingsSection = Configuration.GetSection ("AppSettings");
-            services.Configure<AppSettings> (appSettingsSection);
 
             services.AddSignalR ();
         }

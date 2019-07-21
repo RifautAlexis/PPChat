@@ -16,8 +16,8 @@ namespace PPChat.Models
         [JsonProperty("sender")]
         public string Sender { get; set; }
 
-        [JsonProperty("recipient")]
-        public string Recipient { get; set; }
+        [JsonProperty("thread")]
+        public string Thread { get; set; }
 
         [JsonProperty("content")]
         public string content { get; set; }
@@ -28,11 +28,11 @@ namespace PPChat.Models
         [JsonProperty("seeAt")]
         public DateTime SeeAt { get; set; }
 
-        public Message(string id, string sender, string recipient, string content, DateTime createdAt, DateTime seeAt) {
+        public Message(string id, string sender, string thread, string content, DateTime createdAt, DateTime seeAt) {
 
             this.Id = id;
             this.Sender = sender;
-            this.Recipient = recipient;
+            this.Thread = thread;
             this.content = content;
             this.CreatedAt = createdAt;
             this.SeeAt = seeAt;

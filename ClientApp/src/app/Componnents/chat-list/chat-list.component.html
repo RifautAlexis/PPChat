@@ -1,25 +1,17 @@
 <section class="sample-app-content">
 
+  <aside>
+    <ng-container *ngIf="threads">
+      <ng-container *ngFor="let thread of threads | async">
+        <div (click)="onClick(thread.id)">
+          {{ thread.speakers }}
+        </div>
+      </ng-container>
+    </ng-container>
+  </aside>
 
-    <form [formGroup]="chatForm" (ngSubmit)="onSubmit()">
-
-      <div>
-        <label>Message</label>
-        <input type="text" formControlName="messageForm">
-      </div>
-
-      <button type="submit" [disabled]="!chatForm.valid">Send</button>
-
-    </form>
-
-  <div class="container" *ngIf="messages.length > 0">
-
-    <div *ngFor="let message of messages">
-
-      <span>{{message}}</span>
-
-    </div>
-
-  </div>
+  <article>
+    <app-chat></app-chat>
+  </article>
 
 </section>
