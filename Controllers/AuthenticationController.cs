@@ -35,28 +35,20 @@ namespace PPChat.Controllers {
 
         [AllowAnonymous]
         [HttpPost ("login")]
-        public string Login () {
+        public IActionResult Login ([FromBody] UserLoginDto userLogin) {
 
-            JObject bodyParsed;
+            if (userLogin == null) {
+                return BadRequest("Invalid client request");
+            }
 
-            using (var reader = new StreamReader (Request.Body)) {
-
-                var body = reader.ReadToEnd ().ToString ();
-                bodyParsed = JObject.Parse (body);
-
-            };
-
-            var username = bodyParsed["Username"].ToString ();
-            var password = bodyParsed["Password"].ToString ();
-
-            User user = _userService.IsValidUser (username, password);
+            User user = _userService.IsValidUser (userLogin);
 
             if (user == null)
-                return "";
+                return BadRequest("No such user");
 
             string token = _authService.CreateToken (user);
 
-            return token;
+            return Ok(token);
         }
 
         [AllowAnonymous]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Driver;
+using PPChat.Dtos;
 using PPChat.Helpers;
 using PPChat.Models;
 
@@ -28,17 +29,17 @@ namespace PPChat.Services {
         public User GetByUsername (string username) =>
             _users.Find<User> (user => user.Username == username).FirstOrDefault ();
 
-        public User IsValidUser (string username, string password) {
+        public User IsValidUser (UserLoginDto userLogin) {
 
-            if (string.IsNullOrEmpty (username) || string.IsNullOrEmpty (password))
+            if (string.IsNullOrEmpty (userLogin.Username) || string.IsNullOrEmpty (userLogin.Password))
                 return null;
 
-            var user = _users.Find (x => x.Username == username).FirstOrDefault ();
+            var user = _users.Find (x => x.Username == userLogin.Username).FirstOrDefault ();
 
             if (user == null)
                 return null;
 
-            if (!VerifyPasswordHash (password, user.PasswordHash, user.PasswordSalt))
+            if (!VerifyPasswordHash (userLogin.Password, user.PasswordHash, user.PasswordSalt))
                 return null;
 
             return user;

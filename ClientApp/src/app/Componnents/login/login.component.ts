@@ -1,3 +1,4 @@
+import { UserLogin } from './../../Models/UserLogin';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -10,7 +11,7 @@ import { AlertService } from 'src/app/services/alert.service';
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   returnUrl: string;
@@ -36,9 +37,19 @@ export class LoginComponent implements OnInit{
       return;
     }
 
-    this.authService.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
+    let userLogin: UserLogin = {
+      username: this.loginForm.controls.username.value,
+      password: this.loginForm.controls.password.value
+    };
 
-    this.router.navigate(['/chats']);
+    this.authService.login(userLogin).then(
+      (lol: any) => {
+        if(this.authService.isLogged()) {
+          this.router.navigate(['/chats']);
+        }
+      }
+    );
+
   }
 
 }

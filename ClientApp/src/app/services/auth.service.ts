@@ -1,10 +1,12 @@
+import { UserLogin } from './../Models/UserLogin';
 import { IToken as Token } from './../Models/Token';
 import { Injectable } from '@angular/core';
 import { IUser as User } from '../Models/User';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 import * as jwt_decode from 'jwt-decode';
-import {TokenService} from './token.service';
+import { TokenService } from './token.service';
+import { Tools } from '../helpers/tools';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class AuthService {
   private loggedIn: BehaviorSubject<boolean>;
   public loggedIn$: Observable<boolean>
 
-  constructor(private http: HttpClient, private tokenService: TokenService) {
+  constructor(private http: HttpClient, private tokenService: TokenService, private tools: Tools) {
 
     this.loggedIn = new BehaviorSubject<boolean>(this.tokenService.hasToken());
     this.loggedIn$ = this.loggedIn.asObservable();
@@ -29,30 +31,29 @@ export class AuthService {
   }
 
   getLoggedUserId(): string {
-    if(this.tokenService.hasToken())
+    if (this.tokenService.hasToken())
       return this.tokenService.getIdFromToken();
 
     return null;
   }
 
-  login(username: string, password: string): Promise<boolean> {
+  async login(userLogin: UserLogin): Promise<any> {
 
     const loginUrl = 'api/authentication/login';
 
-    var data = { 'Username': username, 'Password': password };
-
-    this.http.post<any>(loginUrl, data).subscribe(
+    return this.http.post<any>(loginUrl, userLogin)
+    .toPromise()
+    .then(
       (token: string) => {
 
-        localStorage.setItem('token', token);
+        if (! this.tools.isStringEmpty(token)) {
 
-        this.loggedIn.next(true);
+          localStorage.setItem('token', token);
+
+          this.loggedIn.next(true);
+        }
 
       });
-  }
-
-  private requestLogin() {
-
   }
 
   logout() {
