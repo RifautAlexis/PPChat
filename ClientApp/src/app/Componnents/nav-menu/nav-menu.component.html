@@ -1,5 +1,32 @@
 <header>
-  <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3'>
+
+  <mat-toolbar id="menu">
+
+    <ng-container *ngIf="(currentUser | async)" class="push-right">
+
+        <span [routerLink]='["/chats"]'> PPChat </span>
+
+      <span class="push-right" [routerLink]='["/chats"]'> Chats </span>
+      <span class="push-right"> {{ (currentUser | async)?.Username }} </span>
+      <input type="text">
+      <span class="push-right" (click)="logout()"> Logout </span>
+
+    </ng-container>
+
+    <ng-container *ngIf="!(currentUser | async)" class="push-right">
+
+        <span [routerLink]='["/"]'>PPChat</span>
+
+      <span class="push-right" [routerLink]='["/login"]'> Connexion </span>
+      <span class="push-right" [routerLink]='["/register"]'> Inscription </span>
+
+    </ng-container>
+
+
+
+  </mat-toolbar>
+
+  <!-- <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3'>
     <div class="container">
 
       <a class="navbar-brand" [routerLink]='["/"]'>PPChat</a>
@@ -7,9 +34,9 @@
       <a class="nav-link text-dark" *ngIf="!currentUser" [routerLink]='["/login"]'>Connexion</a>
       <a class="nav-link text-dark" *ngIf="!currentUser" [routerLink]='["/register"]'>Inscription</a>
       <a class="nav-link text-dark" *ngIf="currentUser" [routerLink]='["/chats"]'>Chats</a>
-      <p *ngIf="currentUser"> {{currentUser.Username}} </p>
+      <p *ngIf="currentUser"> {{currentUser.username}} </p>
       <a class="nav-link text-dark" *ngIf="currentUser" (click)="logout()">Logout</a>
 
     </div>
-  </nav>
+  </nav> -->
 </header>

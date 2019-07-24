@@ -31,11 +31,11 @@ export class AuthService {
   getLoggedUserId(): string {
     if(this.tokenService.hasToken())
       return this.tokenService.getIdFromToken();
-    
+
     return null;
   }
 
-  login(username: string, password: string) {
+  login(username: string, password: string): Promise<boolean> {
 
     const loginUrl = 'api/authentication/login';
 
@@ -43,12 +43,16 @@ export class AuthService {
 
     this.http.post<any>(loginUrl, data).subscribe(
       (token: string) => {
-        
+
         localStorage.setItem('token', token);
 
         this.loggedIn.next(true);
-        
+
       });
+  }
+
+  private requestLogin() {
+
   }
 
   logout() {

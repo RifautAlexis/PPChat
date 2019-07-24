@@ -1,4 +1,34 @@
-<section class="sample-app-content">
+<mat-sidenav-container clas="test" autosize>
+
+  <mat-sidenav opened mode="side">
+    <h2> Threads </h2>
+    <ng-container *ngIf="threads">
+
+      <section>
+
+        <ng-container *ngFor="let thread of threads | async">
+
+          <div (click)="onClick(thread.id)">
+            {{ thread.id }}
+          </div>
+
+        </ng-container>
+
+      </section>
+
+    </ng-container>
+
+  </mat-sidenav>
+  <!-- Main content Main content Main content Main content Main content Main content Main content Main content Main content Main content -->
+  <mat-sidenav-content>
+
+    <app-chat></app-chat>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+<!-- <section>
 
   <aside>
     <ng-container *ngIf="threads">
@@ -14,4 +44,4 @@
     <app-chat></app-chat>
   </article>
 
-</section>
+</section> -->

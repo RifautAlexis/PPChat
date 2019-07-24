@@ -18,11 +18,11 @@ export class UserService {
     return this.http.delete(`api/users/${id}`);
   }
 
-  getConnectedUser(): Promise<object> {
+  getConnectedUser(): Observable<User> {
 
     let id: string = this.TokenService.getIdFromToken();
-    
-    return this.http.get<object>(`api/users/${id}`).toPromise();
+
+    return this.http.get<User>(`api/users/${id}`);
 
   }
 }

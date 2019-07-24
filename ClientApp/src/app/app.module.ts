@@ -3,7 +3,6 @@ import { ChatListComponent } from './Componnents/chat-list/chat-list.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 
 import { routing as Routing } from './app.routing';
 import { AppComponent } from './app.component';
@@ -16,7 +15,8 @@ import { AlertComponent } from './Componnents/alert/alert.component';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatSidenavModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
    declarations: [
@@ -36,7 +36,11 @@ import {MatButtonModule, MatCheckboxModule} from '@angular/material';
       Routing,
       BrowserAnimationsModule,
       MatButtonModule,
-      MatCheckboxModule
+      MatCheckboxModule,
+      FormsModule,
+      ReactiveFormsModule,
+      MatToolbarModule,
+      MatSidenavModule
   ],
   providers: [
    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

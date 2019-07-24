@@ -1,9 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { IUser } from '../../Models/User';
 import { AuthService } from '../../services/auth.service';
-import { first } from 'rxjs/operators';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
@@ -12,12 +10,12 @@ import { AlertService } from 'src/app/services/alert.service';
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
   loginForm: FormGroup;
   returnUrl: string;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute, private alertService: AlertService) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
 
@@ -25,8 +23,8 @@ export class LoginComponent {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-    
-    if (this.authService.isLogged()) { 
+
+    if (this.authService.isLogged()) {
       this.router.navigate(['/']);
     }
 
@@ -39,8 +37,8 @@ export class LoginComponent {
     }
 
     this.authService.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
-    
-    this.router.navigate(['/']);
+
+    this.router.navigate(['/chats']);
   }
 
 }
