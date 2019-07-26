@@ -21,6 +21,7 @@ using PPChat.Services;
 
 namespace PPChat.Controllers {
 
+    [Produces ("application/json")]
     [Route ("api/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase {
@@ -35,20 +36,21 @@ namespace PPChat.Controllers {
 
         [AllowAnonymous]
         [HttpPost ("login")]
-        public IActionResult Login ([FromBody] UserLoginDto userLogin) {
+        public JsonResult Login ([FromBody] UserLoginDto userLogin) {
 
             if (userLogin == null) {
-                return BadRequest("Invalid client request");
+                return new JsonResult( new {StatusCode = 400, Result = "Invalid client request"} );
             }
 
             User user = _userService.IsValidUser (userLogin);
 
-            if (user == null)
-                return BadRequest("No such user");
+            if (user == null) {
+                return new JsonResult( new {StatusCode = 400, Result = "No such user"} );
+            }
 
             string token = _authService.CreateToken (user);
 
-            return Ok(token);
+            return new JsonResult( new {StatusCode = 200, Result = token} );
         }
 
         [AllowAnonymous]
@@ -67,7 +69,7 @@ namespace PPChat.Controllers {
             var username = bodyParsed["Username"].ToString ();
             var password = bodyParsed["Password"].ToString ();
 
-            User user = _userService.Create(username, password);
+            User user = _userService.Create (username, password);
 
             if (user == null)
                 return "";

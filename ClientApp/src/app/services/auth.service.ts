@@ -1,10 +1,7 @@
 import { UserLogin } from './../Models/UserLogin';
-import { IToken as Token } from './../Models/Token';
 import { Injectable } from '@angular/core';
-import { IUser as User } from '../Models/User';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, from } from 'rxjs';
-import * as jwt_decode from 'jwt-decode';
 import { TokenService } from './token.service';
 import { Tools } from '../helpers/tools';
 
@@ -31,8 +28,9 @@ export class AuthService {
   }
 
   getLoggedUserId(): string {
-    if (this.tokenService.hasToken())
+    if (this.tokenService.hasToken()) {
       return this.tokenService.getIdFromToken();
+    }
 
     return null;
   }
@@ -44,11 +42,11 @@ export class AuthService {
     return this.http.post<any>(loginUrl, userLogin)
     .toPromise()
     .then(
-      (token: string) => {
+      (response: any) => {
 
-        if (! this.tools.isStringEmpty(token)) {
+        if (response.StatusCode === 200) {
 
-          localStorage.setItem('token', token);
+          localStorage.setItem('token', response.Result);
 
           this.loggedIn.next(true);
         }

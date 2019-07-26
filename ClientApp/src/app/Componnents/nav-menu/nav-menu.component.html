@@ -4,7 +4,7 @@
 
     <ng-container *ngIf="(currentUser | async)" class="push-right">
 
-        <span [routerLink]='["/chats"]'> PPChat </span>
+      <span [routerLink]='["/chats"]'> PPChat </span>
 
       <span class="push-right" [routerLink]='["/chats"]'> Chats </span>
       <span class="push-right"> {{ (currentUser | async)?.Username }} </span>
@@ -15,7 +15,7 @@
 
     <ng-container *ngIf="!(currentUser | async)" class="push-right">
 
-        <span [routerLink]='["/"]'>PPChat</span>
+      <span [routerLink]='["/"]'>PPChat</span>
 
       <span class="push-right" [routerLink]='["/login"]'> Connexion </span>
       <span class="push-right" [routerLink]='["/register"]'> Inscription </span>

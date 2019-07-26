@@ -20,7 +20,7 @@ export class JwtInterceptor implements HttpInterceptor {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-      
+
     }
 
     return next.handle(request);

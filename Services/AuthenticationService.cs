@@ -41,7 +41,7 @@ namespace PPChat.Services {
             );
 
             token = new JwtSecurityTokenHandler ().WriteToken (jwtToken);
-            return JsonConvert.SerializeObject(token);
+            return token;
 
         }
 
