@@ -4,6 +4,11 @@
 
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
+      <p>
+          <label>Email:</label>
+          <input type="text" formControlName="email">
+        </p>
+
     <p>
       <label>Pseudo:</label>
       <input type="text" formControlName="username">

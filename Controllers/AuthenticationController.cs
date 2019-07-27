@@ -1,21 +1,6 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.IO;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using PPChat.Dtos;
-using PPChat.Helpers;
-using PPChat.Hubs;
 using PPChat.Models;
 using PPChat.Services;
 
@@ -38,45 +23,45 @@ namespace PPChat.Controllers {
         [HttpPost ("login")]
         public JsonResult Login ([FromBody] UserLoginDto userLogin) {
 
-            if (userLogin == null) {
-                return new JsonResult( new {StatusCode = 400, Result = "Invalid client request"} );
+            if (userLogin == null || string.IsNullOrEmpty (userLogin.Email) || string.IsNullOrEmpty (userLogin.Password)) {
+                return new JsonResult (new { StatusCode = 400, Result = "Invalid client request" });
             }
 
-            User user = _userService.IsValidUser (userLogin);
+            User user = _userService.GetByEmail (userLogin.Email);
 
             if (user == null) {
-                return new JsonResult( new {StatusCode = 400, Result = "No such user"} );
+                return new JsonResult (new { StatusCode = 400, Result = "No such user" });
+            }
+
+            if (!user.IsValidPassword(userLogin.Password)) {
+                return new JsonResult (new { StatusCode = 400, Result = "Incorrect password" });
             }
 
             string token = _authService.CreateToken (user);
 
-            return new JsonResult( new {StatusCode = 200, Result = token} );
+            return new JsonResult (new { StatusCode = 200, Result = token });
         }
 
         [AllowAnonymous]
         [HttpPost ("register")]
-        public string Register () {
+        public JsonResult Register ([FromBody] UserRegisterDto userRegister) {
 
-            JObject bodyParsed;
+            if (userRegister == null || string.IsNullOrEmpty (userRegister.Email) || string.IsNullOrEmpty (userRegister.Username) || string.IsNullOrEmpty (userRegister.Password)) {
+                return new JsonResult (new { StatusCode = 400, Result = "Invalid client request" });
+            }
 
-            using (var reader = new StreamReader (Request.Body)) {
+            User user = Models.User.Converter(userRegister);
 
-                var body = reader.ReadToEnd ().ToString ();
-                bodyParsed = JObject.Parse (body);
-
-            };
-
-            var username = bodyParsed["Username"].ToString ();
-            var password = bodyParsed["Password"].ToString ();
-
-            User user = _userService.Create (username, password);
-
-            if (user == null)
-                return "";
+            if (!user.IsValid())
+            {
+                return new JsonResult (new { StatusCode = 400, Result = "Invalid user" });
+            }
+            
+            _userService.Create (user);
 
             string token = _authService.CreateToken (user);
 
-            return token;
+            return new JsonResult (new { StatusCode = 200, Result = token });
         }
     }
 }

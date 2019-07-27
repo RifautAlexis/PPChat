@@ -3,6 +3,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
 import { AlertService } from './../../services/alert.service';
+import { IUserRegister as UserRegister } from 'src/app/Models/UserRegister';
 
 @Component({
   selector: 'app-register',
@@ -17,8 +18,9 @@ export class RegisterComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService, private alertService: AlertService) { }
 
   ngOnInit() {
-    
+
     this.registerForm = this.formBuilder.group({
+      email: ['', Validators.required],
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
@@ -36,9 +38,19 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.authService.register(this.registerForm.controls.username.value, this.registerForm.controls.password.value);
+    let userRegister: UserRegister = {
+      email: this.registerForm.controls.email.value,
+      username: this.registerForm.controls.username.value,
+      password: this.registerForm.controls.password.value
+    };
 
-    this.router.navigate(['/']);
+    this.authService.register(userRegister).then(
+      (reponse: any) => {
+        if (this.authService.isLogged()) {
+          this.router.navigate(['/chats']);
+        }
+      }
+    );
 
   }
 

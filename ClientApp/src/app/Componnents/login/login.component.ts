@@ -1,4 +1,4 @@
-import { UserLogin } from './../../Models/UserLogin';
+import { IUserLogin as UserLogin } from './../../Models/UserLogin';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -38,13 +38,13 @@ export class LoginComponent implements OnInit {
     }
 
     let userLogin: UserLogin = {
-      username: this.loginForm.controls.username.value,
+      email: this.loginForm.controls.email.value,
       password: this.loginForm.controls.password.value
     };
 
     this.authService.login(userLogin).then(
-      (lol: any) => {
-        if(this.authService.isLogged()) {
+      (reponse: any) => {
+        if (this.authService.isLogged()) {
           this.router.navigate(['/chats']);
         }
       }

@@ -1,9 +1,10 @@
-import { UserLogin } from './../Models/UserLogin';
+import { IUserLogin as UserLogin } from './../Models/UserLogin';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 import { TokenService } from './token.service';
 import { Tools } from '../helpers/tools';
+import { IUserRegister as UserRegister } from '../Models/UserRegister';
 
 @Injectable({
   providedIn: 'root'
@@ -40,18 +41,18 @@ export class AuthService {
     const loginUrl = 'api/authentication/login';
 
     return this.http.post<any>(loginUrl, userLogin)
-    .toPromise()
-    .then(
-      (response: any) => {
+      .toPromise()
+      .then(
+        (response: any) => {
 
-        if (response.StatusCode === 200) {
+          if (response.StatusCode === 200) {
 
-          localStorage.setItem('token', response.Result);
+            localStorage.setItem('token', response.Result);
 
-          this.loggedIn.next(true);
-        }
+            this.loggedIn.next(true);
+          }
 
-      });
+        });
   }
 
   logout() {
@@ -59,20 +60,23 @@ export class AuthService {
     this.loggedIn.next(false);
   }
 
-  register(username: string, password: string) {
+  register(userRegister: UserRegister): Promise<any> {
 
     const loginUrl = 'api/authentication/register';
 
-    var data = { 'Username': username, 'Password': password };
+    return this.http.post<any>(loginUrl, userRegister)
+      .toPromise()
+      .then(
+        (response: any) => {
 
-    this.http.post(loginUrl, data).subscribe(
-      (token: string) => {
+          if (response.StatusCode === 200) {
 
-        localStorage.setItem('token', token);
+            localStorage.setItem('token', response.Result);
 
-        this.loggedIn.next(true);
+            this.loggedIn.next(true);
+          }
 
-      });
+        });
   }
 
 }
