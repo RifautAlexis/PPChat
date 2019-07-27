@@ -32,18 +32,5 @@ namespace PPChat.Controllers {
             return userDto;
         }
 
-        [HttpDelete]
-        public IActionResult Delete (string id) {
-            User user = _userService.GetById (id);
-
-            if (user == null) {
-                return NotFound ();
-            }
-
-            _userService.Delete (user.Id);
-
-            return Ok ();
-        }
-
     }
 }
