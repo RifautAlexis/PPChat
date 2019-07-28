@@ -47,7 +47,7 @@ namespace PPChat.Controllers {
         [HttpGet]
         public Message[] GetByThreadId (string threadId) {
 
-            Thread thread = _threadService.GetThreadId (threadId);
+            Thread thread = _threadService.Get (threadId);
 
             return _messageService.GetByThread (thread);
         }

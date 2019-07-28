@@ -79,7 +79,7 @@ export class ChatService {
       message: message,
       threadId: threadId
     };
-    return this.http.post(`api/chats/sendMessage`, data).toPromise();
+    return this.http.post<any>(`api/chats/sendMessage`, data).toPromise();
   }
 
 }

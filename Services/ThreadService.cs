@@ -38,11 +38,11 @@ namespace PPChat.Services {
 
         }
 
-        public Thread GetThreadId(string threadId) {
+        public Thread Get (string threadId) {
             return _threads.AsQueryable<Thread> ().Where(t => t.Id == threadId).FirstOrDefault();
         }
 
-        public Thread[] GetByUserId (String userId) {
+        public Thread[] GetByUserId (string userId) {
 
             User user = _users.Find<User> (u => u.Id == userId).FirstOrDefault ();
             

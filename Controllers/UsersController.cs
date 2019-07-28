@@ -13,10 +13,12 @@ namespace PPChat.Controllers {
     public class UsersController : ControllerBase {
         private UserService _userService;
         private IMapper _mapper;
+        private ThreadService _threadService;
 
-        public UsersController (UserService userService, IMapper mapper) {
+        public UsersController (UserService userService, IMapper mapper, ThreadService threadService) {
             _userService = userService;
             _mapper = mapper;
+            _threadService = threadService;
         }
 
         [HttpGet ("{id}")]
@@ -30,6 +32,15 @@ namespace PPChat.Controllers {
 
             UserDto userDto = _mapper.Map<UserDto> (user);
             return userDto;
+        }
+
+        [AllowAnonymous]
+        [HttpPost ("names")]
+        public string GetNamesByThreadId([FromBody] string threadId) {
+
+            // Thread thread = _threadService.Get(threadId);
+
+            return threadId;
         }
 
     }

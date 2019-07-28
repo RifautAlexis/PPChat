@@ -8,9 +8,15 @@
 
         <ng-container *ngFor="let thread of threads | async">
 
-          <div (click)="onClick(thread.id)">
-            {{ thread.id }}
-          </div>
+          <mat-card (click)="onClick(thread.id)">
+            <mat-card-content>
+              {{ searchName(thread.speakers) }}
+              <!-- <ng-container *ngFor="let name of thread.speakers">
+                {{ name }} -
+              </ng-container> -->
+
+            </mat-card-content>
+          </mat-card>
 
         </ng-container>
 
@@ -19,7 +25,7 @@
     </ng-container>
 
   </mat-sidenav>
-  <!-- Main content Main content Main content Main content Main content Main content Main content Main content Main content Main content -->
+
   <mat-sidenav-content>
 
     <app-chat></app-chat>
@@ -27,21 +33,3 @@
   </mat-sidenav-content>
 
 </mat-sidenav-container>
-
-<!-- <section>
-
-  <aside>
-    <ng-container *ngIf="threads">
-      <ng-container *ngFor="let thread of threads | async">
-        <div (click)="onClick(thread.id)">
-          {{ thread.speakers }}
-        </div>
-      </ng-container>
-    </ng-container>
-  </aside>
-
-  <article>
-    <app-chat></app-chat>
-  </article>
-
-</section> -->
