@@ -15,7 +15,6 @@ import { Observable } from 'rxjs';
 })
 export class ChatComponent implements OnInit {
 
-  private _hubConnection: HubConnection;
   messages: Observable<Message[]>;
 
   chatForm: FormGroup;
@@ -32,6 +31,7 @@ export class ChatComponent implements OnInit {
       this.router.navigate(['/']);
     }
 
+    // Surveille le changement de conversation par un click
     this.chatService.getSelectedThread().subscribe(
       (threadId: string) => {
 
@@ -40,6 +40,7 @@ export class ChatComponent implements OnInit {
       }
     );
 
+    // Met à jour les messages
     this.chatService.getMessages().subscribe(
       (messages: Message[]) => {
         this.messages = this.chatService.getMessages();
@@ -57,9 +58,7 @@ export class ChatComponent implements OnInit {
     }
 
     let message: Message = {
-      id: "",
       sender: this.authService.getLoggedUserId(),
-      thread: "",
       content: this.chatForm.get("messageForm").value,
       createdAt: new Date(),
       seeAt: new Date()

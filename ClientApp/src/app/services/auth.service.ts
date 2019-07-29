@@ -12,7 +12,7 @@ import { IUserRegister as UserRegister } from '../Models/UserRegister';
 export class AuthService {
 
   private loggedIn: BehaviorSubject<boolean>;
-  public loggedIn$: Observable<boolean>
+  public loggedIn$: Observable<boolean>;
 
   constructor(private http: HttpClient, private tokenService: TokenService, private tools: Tools) {
 

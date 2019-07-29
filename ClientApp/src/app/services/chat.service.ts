@@ -15,14 +15,21 @@ export class ChatService {
 
   private hubConnection: HubConnection;
 
-  private messages: BehaviorSubject<Message[]>;
+  private threads: BehaviorSubject<Thread[]>;
 
-  // private threads: BehaviorSubject<Thread[]> = new BehaviorSubject<Thread[]>([]);
-  // private messages: BehaviorSubject<Message[]> = new BehaviorSubject<Message[]>([]);
+  private messages: BehaviorSubject<Message[]>;
 
   private selectedThread: BehaviorSubject<string>;
 
   constructor(private http: HttpClient, private authService: AuthService) {
+
+    this.threads = new BehaviorSubject<Thread[]>([]);
+    this.getThreadsByUser(this.authService.getLoggedUserId()).subscribe(
+      (threads: Thread[]) => {
+        this.threads.next(threads);
+      }
+    );
+
     this.messages = new BehaviorSubject<Message[]>([]);
     this.selectedThread = new BehaviorSubject<string>('');
   }
@@ -44,10 +51,12 @@ export class ChatService {
       newMessages.push(message);
       this.messages.next(newMessages);
 
-      console.log('ReceiveMessage : ' + message.content + ' : ' + this.messages.getValue().toString());
-
     });
 
+  }
+
+  public getThreads(): Observable<Thread[]> {
+    return this.threads.asObservable();
   }
 
   public setSelectedThread(threadId: string) {
@@ -66,8 +75,8 @@ export class ChatService {
     return this.messages.asObservable();
   }
 
-  public getThreadsByUser(userId: string): Promise<Thread[]> {
-    return this.http.get<Thread[]>(`api/threads?userId=` + userId).toPromise();
+  public getThreadsByUser(userId: string): Observable<Thread[]> {
+    return this.http.get<Thread[]>(`api/threads?userId=` + userId);
   }
 
   public getMessagesByThread(threadId: string): Observable<Message[]> {

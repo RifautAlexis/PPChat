@@ -20,7 +20,7 @@ namespace PPChat.Models
         public string Thread { get; set; }
 
         [JsonProperty("content")]
-        public string content { get; set; }
+        public string Content { get; set; }
 
         [JsonProperty("createdAt")]
         public DateTime CreatedAt { get; set; }
@@ -33,7 +33,7 @@ namespace PPChat.Models
             this.Id = id;
             this.Sender = sender;
             this.Thread = thread;
-            this.content = content;
+            this.Content = content;
             this.CreatedAt = createdAt;
             this.SeeAt = seeAt;
 

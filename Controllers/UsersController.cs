@@ -36,11 +36,11 @@ namespace PPChat.Controllers {
 
         [AllowAnonymous]
         [HttpPost ("names")]
-        public string GetNamesByThreadId([FromBody] string threadId) {
-
+        public string GetNamesByThreadId([FromBody] string[] threadId) {
+            System.Console.WriteLine(threadId[0]);
             // Thread thread = _threadService.Get(threadId);
 
-            return threadId;
+            return threadId[0];
         }
 
     }

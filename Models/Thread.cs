@@ -16,9 +16,6 @@ namespace PPChat.Models {
 
         [JsonProperty("messages")]
         public string[] Messages { get; set; }
-        
-        [JsonProperty("createdAt")]
-        public DateTime CreatedAt { get; set; }
     }
 
 }

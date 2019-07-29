@@ -26,7 +26,7 @@ export class UserService {
 
   }
 
-  public getNameSpeakers(speakers: string[]): Promise<string> {
-    return this.http.post<string>(`api/users/names`, speakers).toPromise();
-  }
+  // public getNameSpeakers(speakers: string[]): Observable<any> {
+  //   return this.http.post<any>(`api/users/names`, speakers);
+  // }
 }

@@ -10,10 +10,10 @@
 
           <mat-card (click)="onClick(thread.id)">
             <mat-card-content>
-              {{ searchName(thread.speakers) }}
-              <!-- <ng-container *ngFor="let name of thread.speakers">
-                {{ name }} -
-              </ng-container> -->
+
+              <ng-container *ngFor="let speaker of thread.speakers">
+                {{ speaker.username }} -
+              </ng-container>
 
             </mat-card-content>
           </mat-card>

@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PPChat.Dtos;
 using PPChat.Models;
 using PPChat.Services;
 
@@ -11,14 +13,31 @@ namespace PPChat.Controllers {
     public class ThreadsController : ControllerBase {
 
         private ThreadService _threadService;
+        private UserService _userService;
 
-        public ThreadsController (ThreadService threadService) {
+        public ThreadsController (ThreadService threadService, UserService userService) {
             this._threadService = threadService;
+            this._userService = userService;
         }
 
         [HttpGet]
-        public Thread[] GetByUserId (string userId) {
-            return _threadService.GetByUserId (userId);
+        public ThreadDto[] GetByUserId (string userId) {
+            Thread[] threads = _threadService.GetByUserId (userId);
+
+            List<ThreadDto> threadDto = new List<ThreadDto>();
+
+            foreach (var thread in threads)
+            {
+                List<UserDto> userDto = new List<UserDto>();
+                foreach (var id in thread.Speakers)
+                {
+                    User user = _userService.GetById(id);
+                    userDto.Add(new UserDto(user.Id, user.Email, user.Username, user.Friends));
+                }
+
+                threadDto.Add(new ThreadDto(thread.Id, userDto.ToArray()));
+            }
+            return threadDto.ToArray();
         }
 
     }

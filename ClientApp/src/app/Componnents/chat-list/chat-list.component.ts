@@ -3,6 +3,8 @@ import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { IThread as Thread } from './../../Models/Thread';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat-list',
@@ -11,31 +13,26 @@ import { IThread as Thread } from './../../Models/Thread';
 })
 export class ChatListComponent implements OnInit {
 
-  threads: Promise<Thread[]>;
+  threads: Observable<Thread[]>;
 
-  constructor(private chatService: ChatService, private authService: AuthService, private userService: UserService) { }
+  constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private userService: UserService) { }
 
   ngOnInit() {
 
-    let userId: string = this.authService.getLoggedUserId();
+    if (!this.authService.isLogged()) {
+      this.router.navigate(['/']);
+    }
 
-    this.threads = this.chatService.getThreadsByUser(userId);
+    this.chatService.getThreads().subscribe(
+      () => {
+        this.threads = this.chatService.getThreads();
+      }
+    );
 
   }
 
   onClick(threadId: string) {
     this.chatService.setSelectedThread(threadId);
-  }
-
-  searchName(speakers: string[]): string {
-
-    // this.userService.getNameSpeakers(speakers).then(
-    //   (names: string) => {
-    //     return names;
-    //   }
-    // );
-
-    return "";
   }
 
 }
