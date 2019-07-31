@@ -14,10 +14,12 @@ namespace PPChat.Controllers {
 
         private ThreadService _threadService;
         private UserService _userService;
+        private MessageService _messageService;
 
-        public ThreadsController (ThreadService threadService, UserService userService) {
+        public ThreadsController (ThreadService threadService, UserService userService, MessageService messageService) {
             this._threadService = threadService;
             this._userService = userService;
+            this._messageService = messageService;
         }
 
         [HttpGet]
@@ -35,7 +37,14 @@ namespace PPChat.Controllers {
                     userDto.Add(new UserDto(user.Id, user.Email, user.Username, user.Friends));
                 }
 
-                threadDto.Add(new ThreadDto(thread.Id, userDto.ToArray()));
+                List<MessageDto> messageDto = new List<MessageDto>();
+                Message[] messages = _messageService.GetByThread(thread);
+                foreach (var message in messages)
+                {
+                    messageDto.Add(new MessageDto(message.Id, message.Sender, message.Content, message.CreatedAt, message.SeeAt));
+                }
+
+                threadDto.Add(new ThreadDto(thread.Id, userDto.ToArray(), messageDto.ToArray()));
             }
             return threadDto.ToArray();
         }

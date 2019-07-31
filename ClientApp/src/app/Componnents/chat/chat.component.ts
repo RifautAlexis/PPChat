@@ -1,12 +1,12 @@
 import { TokenService } from './../../services/token.service';
 import { IMessage as Message } from './../../Models/Message';
-import { Component, OnInit } from '@angular/core';
-import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
+import { Component, OnInit, Input } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService } from 'src/app/services/chat.service';
-import { Observable } from 'rxjs';
+import { IThread as Thread } from './../../Models/Thread';
+import { IMessageForm as MessageForm } from '../../Models/MessageForm';
 
 @Component({
   selector: 'app-chat',
@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 })
 export class ChatComponent implements OnInit {
 
-  messages: Observable<Message[]>;
+  @Input() thread: Thread;
 
   chatForm: FormGroup;
 
@@ -31,24 +31,6 @@ export class ChatComponent implements OnInit {
       this.router.navigate(['/']);
     }
 
-    // Surveille le changement de conversation par un click
-    this.chatService.getSelectedThread().subscribe(
-      (threadId: string) => {
-
-        this.messages = this.chatService.getMessagesByThread(threadId);
-
-      }
-    );
-
-    // Met à jour les messages
-    this.chatService.getMessages().subscribe(
-      (messages: Message[]) => {
-        this.messages = this.chatService.getMessages();
-      }
-    );
-
-    this.chatService.openConnection();
-
   }
 
   onSubmit() {
@@ -57,15 +39,17 @@ export class ChatComponent implements OnInit {
       return;
     }
 
-    let message: Message = {
+    let message: MessageForm = {
       sender: this.authService.getLoggedUserId(),
+      thread: this.thread.id,
       content: this.chatForm.get("messageForm").value,
       createdAt: new Date(),
       seeAt: new Date()
     };
 
-    console.log(message);
-    this.chatService.sendMessage(message, this.chatService.getValueSelectedThread());
+    this.chatService.sendMessage(message);
+
+    this.chatForm.reset();
   }
 
 }

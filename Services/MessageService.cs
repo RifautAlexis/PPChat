@@ -29,6 +29,6 @@ namespace PPChat.Services {
         public Message[] GetByThread(Thread thread) {
             return _messages.AsQueryable<Message>().Where(m => thread.Messages.Contains(m.Id)).ToArray();
         }
-
+        
     }
 }

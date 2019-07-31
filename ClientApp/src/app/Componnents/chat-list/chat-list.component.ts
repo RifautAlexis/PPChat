@@ -1,9 +1,8 @@
-import { UserService } from './../../services/user.service';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { IThread as Thread } from './../../Models/Thread';
-import { Observable } from 'rxjs';
+import { IMessage as Message } from './../../Models/Message';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,9 +12,13 @@ import { Router } from '@angular/router';
 })
 export class ChatListComponent implements OnInit {
 
-  threads: Observable<Thread[]>;
+  threads: Thread[];
 
-  constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private userService: UserService) { }
+  selectedThread: Thread;
+
+  constructor(private chatService: ChatService, private router: Router, private authService: AuthService) {
+    this.threads = [];
+  }
 
   ngOnInit() {
 
@@ -23,16 +26,30 @@ export class ChatListComponent implements OnInit {
       this.router.navigate(['/']);
     }
 
-    this.chatService.getThreads().subscribe(
-      () => {
-        this.threads = this.chatService.getThreads();
+    this.chatService.openConnection();
+
+    this.chatService.getThreadsByUser(this.authService.getLoggedUserId()).then(
+      (threads: Thread[]) => {
+        this.threads = threads;
+
+        if (this.threads.length !== 0) {
+          this.selectedThread = this.threads[0];
+        }
+
       }
     );
 
+    this.chatService.getHubConnection().on('receiveMessage', (message: Message) => {
+
+      let thread: Thread = this.threads.find(t => t.id === message.thread);
+      thread.messages.push(message);
+
+    });
+
   }
 
-  onClick(threadId: string) {
-    this.chatService.setSelectedThread(threadId);
+  selectThread(threadId: string) {
+    this.selectedThread = this.threads.find(t => t.id === threadId);
   }
 
 }

@@ -37,11 +37,14 @@ namespace PPChat.Controllers {
         }
 
         [HttpPost ("sendMessage")]
-        public async Task SendMessage ([FromBody] NewMessageDto message) {
-            this._messageService.Create(message.Message);
-            this._threadService.UpdateNewMessage(message.ThreadId, message.Message.Id);
+        public async Task SendMessage ([FromBody] MessageFormDto message) {
+            
+            Message newMessage = Message.Convert(message);
 
-            await context.Clients.All.SendAsync("ReceiveMessage", message);
+            Message messageCreated = this._messageService.Create(newMessage);
+            this._threadService.UpdateNewMessage(messageCreated.Thread, messageCreated.Id);
+
+            await context.Clients.All.SendAsync("ReceiveMessage", messageCreated);
         }
 
         [HttpGet]

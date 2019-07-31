@@ -26,7 +26,4 @@ export class UserService {
 
   }
 
-  // public getNameSpeakers(speakers: string[]): Observable<any> {
-  //   return this.http.post<any>(`api/users/names`, speakers);
-  // }
 }

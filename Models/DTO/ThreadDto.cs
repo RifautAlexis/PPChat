@@ -11,9 +11,13 @@ namespace PPChat.Dtos {
         [JsonProperty ("speakers")]
         public UserDto[] Speakers { get; set; }
 
-        public ThreadDto(string id, UserDto[] speakers) {
+        [JsonProperty ("messages")]
+        public MessageDto[] Messages { get; set; }
+
+        public ThreadDto(string id, UserDto[] speakers, MessageDto[] messages) {
             this.Id = id;
             this.Speakers = speakers;
+            this.Messages = messages;
         }
     }
 

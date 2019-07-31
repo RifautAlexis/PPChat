@@ -6,9 +6,9 @@
 
       <section>
 
-        <ng-container *ngFor="let thread of threads | async">
+        <ng-container *ngFor="let thread of threads">
 
-          <mat-card (click)="onClick(thread.id)">
+          <mat-card (click)="selectThread(thread.id)">
             <mat-card-content>
 
               <ng-container *ngFor="let speaker of thread.speakers">
@@ -28,7 +28,7 @@
 
   <mat-sidenav-content>
 
-    <app-chat></app-chat>
+    <app-chat [thread]="selectedThread"></app-chat>
 
   </mat-sidenav-content>
 
