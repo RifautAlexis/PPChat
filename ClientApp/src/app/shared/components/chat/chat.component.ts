@@ -1,12 +1,13 @@
-import { TokenService } from './../../services/token.service';
-import { IMessage as Message } from './../../Models/Message';
 import { Component, OnInit, Input } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
-import { ChatService } from 'src/app/services/chat.service';
-import { IThread as Thread } from './../../Models/Thread';
-import { IMessageForm as MessageForm } from '../../Models/MessageForm';
+
+import { TokenService } from '@shared/services/token.service';
+import { AuthService } from '@shared/services/auth.service';
+import { ChatService } from '@shared/services/chat.service';
+
+import { IThread as Thread } from '@shared/models/Thread';
+import { IMessageForm as MessageForm } from '@shared/models/MessageForm';
 
 @Component({
   selector: 'app-chat',
@@ -19,7 +20,7 @@ export class ChatComponent implements OnInit {
 
   chatForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService, private chatService: ChatService, private tokenService: TokenService) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService, private chatService: ChatService) { }
 
   ngOnInit() {
 

@@ -1,10 +1,10 @@
-import { IUserLogin as UserLogin } from './../Models/UserLogin';
+import { IUserLogin as UserLogin } from '@shared/models/UserLogin';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, from } from 'rxjs';
-import { TokenService } from './token.service';
-import { Tools } from '../helpers/tools';
-import { IUserRegister as UserRegister } from '../Models/UserRegister';
+import { TokenService } from '@shared/services/token.service';
+import { Tools } from '../../helpers/tools';
+import { IUserRegister as UserRegister } from '@shared/models/UserRegister';
 
 @Injectable({
   providedIn: 'root'

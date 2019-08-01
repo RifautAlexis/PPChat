@@ -1,11 +1,10 @@
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from '@shared/services/auth.service';
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
-import { IMessage as Message } from './../Models/Message';
-import { IMessageForm as MessageForm } from './../Models/MessageForm';
-import { IThread as Thread } from './../Models/Thread';
+import { IMessage as Message } from '@shared/models/Message';
+import { IMessageForm as MessageForm } from '@shared/models/MessageForm';
+import { IThread as Thread } from '@shared/models/Thread';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

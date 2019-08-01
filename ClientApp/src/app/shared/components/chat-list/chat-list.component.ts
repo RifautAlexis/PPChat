@@ -1,15 +1,18 @@
-import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from 'src/app/services/chat.service';
-import { IThread as Thread } from './../../Models/Thread';
-import { IMessage as Message } from './../../Models/Message';
 import { Router } from '@angular/router';
+
+import { IThread as Thread } from '@shared/models/Thread';
+import { IMessage as Message } from '@shared/models/Message';
+
+import { AuthService } from '@shared/services/auth.service';
+import { ChatService } from '@shared/services/chat.service';
 
 @Component({
   selector: 'app-chat-list',
   templateUrl: './chat-list.component.html',
   styleUrls: ['./chat-list.component.css']
 })
+
 export class ChatListComponent implements OnInit {
 
   threads: Thread[];

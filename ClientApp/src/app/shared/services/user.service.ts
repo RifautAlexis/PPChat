@@ -1,7 +1,7 @@
-import { TokenService } from './token.service';
+import { TokenService } from '@shared/services/token.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IUser as User } from './../Models/User';
+import { IUser as User } from '@shared/models/User';
 import { Observable } from 'rxjs';
 
 @Injectable({

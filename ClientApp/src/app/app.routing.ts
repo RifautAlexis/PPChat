@@ -1,11 +1,13 @@
-import { ChatListComponent } from './Componnents/chat-list/chat-list.component';
-import { ModuleWithProviders } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { RegisterComponent } from './Componnents/register/register.component';
-import { HomeComponent } from './Componnents/home/home.component';
-import { LoginComponent } from './Componnents/login/login.component';
+import { NgModule } from '@angular/core';
 
-export const routes: Routes = [
+import { RouterModule, Routes } from '@angular/router';
+
+import { ChatListComponent } from '@shared/components/chat-list/chat-list.component';
+import { RegisterComponent } from '@shared/components/register/register.component';
+import { HomeComponent } from '@shared/components/home/home.component';
+import { LoginComponent } from '@shared/components/login/login.component';
+
+const routes: Routes = [
   {
     path: '',
     component: HomeComponent
@@ -24,4 +26,10 @@ export const routes: Routes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(routes);
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+  providers: []
+})
+
+export class RoutingModule { }

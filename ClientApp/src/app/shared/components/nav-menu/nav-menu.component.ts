@@ -1,9 +1,11 @@
-import { AuthService } from './../../services/auth.service';
-import { IUser as User } from './../../Models/User';
-import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/services/user.service';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+
+import { AuthService } from '@shared/services/auth.service';
+import { UserService } from '@shared/services/user.service';
+
+import { IUser as User } from '@shared/models/User';
 
 @Component({
   selector: 'app-nav-menu',
@@ -16,7 +18,7 @@ export class NavMenuComponent implements OnInit {
   currentUser: Observable<User>;
 
   constructor(private authService: AuthService, private userService: UserService, private router: Router) {
-    this.currentUser == new Observable<User>();
+    this.currentUser = new Observable<User>();
   }
 
   ngOnInit() {

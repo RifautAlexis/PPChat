@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from './../../services/auth.service';
-import { AlertService } from './../../services/alert.service';
-import { IUserRegister as UserRegister } from 'src/app/Models/UserRegister';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+
+import { IUserRegister as UserRegister } from '@shared/models/UserRegister';
+
+import { AuthService } from '@shared/services/auth.service';
+import { AlertService } from '@shared/services/alert.service';
 
 @Component({
   selector: 'app-register',

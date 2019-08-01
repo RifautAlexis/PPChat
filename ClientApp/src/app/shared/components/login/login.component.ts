@@ -1,9 +1,11 @@
-import { IUserLogin as UserLogin } from './../../Models/UserLogin';
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { AlertService } from 'src/app/services/alert.service';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+
+import { IUserLogin as UserLogin } from '@shared/models/UserLogin';
+
+import { AuthService } from '@shared/services/auth.service';
+import { AlertService } from '@shared/services/alert.service';
 
 @Component({
   selector: 'app-login',

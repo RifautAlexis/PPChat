@@ -7,7 +7,7 @@
       <span [routerLink]='["/chats"]'> PPChat </span>
 
       <span class="push-right" [routerLink]='["/chats"]'> Chats </span>
-      <span class="push-right"> {{ (currentUser | async)?.Username }} </span>
+      <span class="push-right"> {{ (currentUser | async)?.username }} </span>
       <input type="text">
       <span class="push-right" (click)="logout()"> Logout </span>
 
