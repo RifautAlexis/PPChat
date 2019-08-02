@@ -11,9 +11,7 @@
           <mat-card (click)="selectThread(thread.id)">
             <mat-card-content>
 
-              <ng-container *ngFor="let speaker of thread.speakers">
-                {{ speaker.username }} -
-              </ng-container>
+              {{ thread.speakers | PrintSpeakers }}
 
             </mat-card-content>
           </mat-card>

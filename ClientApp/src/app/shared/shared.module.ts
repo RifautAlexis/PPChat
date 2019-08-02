@@ -15,6 +15,8 @@ import { AlertComponent } from './components/alert/alert.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatListComponent } from './components/chat-list/chat-list.component';
 
+import { PrintSpeakersPipe } from './pipes/PrintSpeakers.pipe';
+
 @NgModule({
   declarations: [
     NavMenuComponent,
@@ -23,7 +25,8 @@ import { ChatListComponent } from './components/chat-list/chat-list.component';
     LoginComponent,
     AlertComponent,
     ChatComponent,
-    ChatListComponent
+    ChatListComponent,
+    PrintSpeakersPipe
   ],
   imports: [
     HttpClientModule,
