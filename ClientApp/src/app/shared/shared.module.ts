@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
+import { NavMenuComponent } from '@shared/components/nav-menu/nav-menu.component';
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
@@ -19,13 +19,13 @@ import { PrintSpeakersPipe } from './pipes/PrintSpeakers.pipe';
 
 @NgModule({
   declarations: [
-    NavMenuComponent,
     HomeComponent,
     RegisterComponent,
     LoginComponent,
     AlertComponent,
     ChatComponent,
     ChatListComponent,
+    NavMenuComponent,
     PrintSpeakersPipe
   ],
   imports: [
@@ -48,13 +48,7 @@ import { PrintSpeakersPipe } from './pipes/PrintSpeakers.pipe';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    NavMenuComponent,
-    HomeComponent,
-    RegisterComponent,
-    LoginComponent,
-    AlertComponent,
-    ChatComponent,
-    ChatListComponent
+    NavMenuComponent
   ]
 })
 
