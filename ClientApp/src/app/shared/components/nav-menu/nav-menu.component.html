@@ -1,6 +1,6 @@
 <header>
 
-  <mat-toolbar id="menu">
+  <!-- <mat-toolbar id="menu">
 
     <ng-container *ngIf="(currentUser | async)" class="push-right">
 
@@ -22,8 +22,26 @@
 
     </ng-container>
 
+  </mat-toolbar> -->
 
+  <div>
 
-  </mat-toolbar>
+    <div>
+      <!-- <a [routerLink]='["/chats"]' class="text-purple-100"> PPChat </a> -->
+      <h1 class="text-4xl font-bold text-center text-blue-500">PPCHAT</h1>
+    </div>
+
+    <div>
+      <a [routerLink]='["/chats"]'> Chats </a>
+      <a > {{ (currentUser | async)?.username }} </a>
+      <input type="text">
+    </div>
+
+    <div>
+      <a [routerLink]='["/login"]'> Connexion </a>
+      <a [routerLink]='["/register"]'> Inscription </a>
+    </div>
+
+  </div>
 
 </header>

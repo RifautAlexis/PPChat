@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatSidenavModule, MatCardModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -33,14 +31,8 @@ import { PrintSpeakersPipe } from './pipes/PrintSpeakers.pipe';
     RouterModule,
     CommonModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatCheckboxModule,
     FormsModule,
     ReactiveFormsModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatCardModule
   ],
   exports: [
     CommonModule,

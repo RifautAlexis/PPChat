@@ -1,4 +1,4 @@
-<mat-sidenav-container clas="test" autosize>
+<!-- <mat-sidenav-container clas="test" autosize>
 
   <mat-sidenav opened mode="side">
     <h2> Threads </h2>
@@ -30,4 +30,36 @@
 
   </mat-sidenav-content>
 
-</mat-sidenav-container>
+</mat-sidenav-container> -->
+
+<div>
+
+  <h2> Threads </h2>
+
+  <ng-container *ngIf="threads">
+
+    <section>
+
+      <ng-container *ngFor="let thread of threads">
+
+        <div (click)="selectThread(thread.id)">
+          <div>
+
+            {{ thread.speakers | PrintSpeakers }}
+
+          </div>
+        </div>
+
+      </ng-container>
+
+    </section>
+
+  </ng-container>
+
+  <div>
+
+      <app-chat [thread]="selectedThread"></app-chat>
+
+    </div>
+
+</div>

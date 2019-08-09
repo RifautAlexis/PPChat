@@ -12,7 +12,7 @@ import { IMessageForm as MessageForm } from '@shared/models/MessageForm';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css']
+  styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
 
