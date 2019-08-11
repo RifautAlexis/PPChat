@@ -19,6 +19,8 @@ export class ChatListComponent implements OnInit {
 
   selectedThread: Thread;
 
+  searchThread: string;
+
   constructor(private chatService: ChatService, private router: Router, private authService: AuthService) {
     this.threads = [];
   }

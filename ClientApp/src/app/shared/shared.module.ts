@@ -14,6 +14,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ChatListComponent } from './components/chat-list/chat-list.component';
 
 import { PrintSpeakersPipe } from './pipes/PrintSpeakers.pipe';
+import { ThreadFilterPipe } from './pipes/ThreadFilter.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { PrintSpeakersPipe } from './pipes/PrintSpeakers.pipe';
     ChatComponent,
     ChatListComponent,
     NavMenuComponent,
-    PrintSpeakersPipe
+    PrintSpeakersPipe,
+    ThreadFilterPipe
   ],
   imports: [
     HttpClientModule,

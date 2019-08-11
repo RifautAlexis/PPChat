@@ -2,13 +2,15 @@
 
   <aside class="w-1/4 border-r h-screen pt-2">
 
+    <input type="search" name="search" [(ngModel)]="searchThread" placeholder="Rechercher">
+
     <h2 class="text-color"> Threads </h2>
 
     <ng-container *ngIf="threads">
 
       <section>
 
-        <ng-container *ngFor="let thread of threads">
+        <ng-container *ngFor="let thread of threads | ThreadFilter: searchThread">
 
           <div (click)="selectThread(thread.id)">
 
