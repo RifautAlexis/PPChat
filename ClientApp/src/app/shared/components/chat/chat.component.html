@@ -1,27 +1,35 @@
-<section>
+<section class="overflow-auto ml-2">
 
   <ng-container *ngIf="thread">
 
     <ng-container *ngFor="let message of thread.messages">
 
-      <div>
+      <ng-container *ngIf="isSender(message.sender); then rightMessage; else leftMessage"></ng-container>
 
-        <span> {{ message.content }} </span>
+      <ng-template #leftMessage>
+        <div class="flex">
 
-      </div>
+          <span class="text-color"> {{ message.content }} </span>
+
+        </div>
+      </ng-template>
+
+      <ng-template #rightMessage>
+        <div class="flex justify-end mr-2">
+
+          <span class="text-color"> {{ message.content }} </span>
+
+        </div>
+      </ng-template>
 
     </ng-container>
 
   </ng-container>
 
-  <form [formGroup]="chatForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="chatForm" (ngSubmit)="onSubmit()" class="flex justify-center mt-4">
 
-    <div>
-      <label>Message</label>
-      <input type="text" formControlName="messageForm">
-    </div>
-
-    <button type="submit" [disabled]="!chatForm.valid">Send</button>
+    <input type="text" formControlName="messageForm" placeholder="Ecrire un message" class="rounded-full">
+    <button type="submit" [disabled]="!chatForm.valid" class="bg-button rounded-full ml-2 px-2"> Send </button>
 
   </form>
 

@@ -1,20 +1,20 @@
-<!-- <mat-sidenav-container clas="test" autosize>
+<div class="flex flex-row">
 
-  <mat-sidenav opened mode="side">
-    <h2> Threads </h2>
+  <aside class="w-1/4 border-r h-screen pt-2">
+
+    <h2 class="text-color"> Threads </h2>
+
     <ng-container *ngIf="threads">
 
       <section>
 
         <ng-container *ngFor="let thread of threads">
 
-          <mat-card (click)="selectThread(thread.id)">
-            <mat-card-content>
+          <div (click)="selectThread(thread.id)">
 
-              {{ thread.speakers | PrintSpeakers }}
+            <p class="text-color"> {{ thread.speakers | PrintSpeakers }} </p>
 
-            </mat-card-content>
-          </mat-card>
+          </div>
 
         </ng-container>
 
@@ -22,44 +22,12 @@
 
     </ng-container>
 
-  </mat-sidenav>
+  </aside>
 
-  <mat-sidenav-content>
+  <div class="w-3/4 bg-chat h-screen pt-2">
 
     <app-chat [thread]="selectedThread"></app-chat>
 
-  </mat-sidenav-content>
-
-</mat-sidenav-container> -->
-
-<div>
-
-  <h2> Threads </h2>
-
-  <ng-container *ngIf="threads">
-
-    <section>
-
-      <ng-container *ngFor="let thread of threads">
-
-        <div (click)="selectThread(thread.id)">
-          <div>
-
-            {{ thread.speakers | PrintSpeakers }}
-
-          </div>
-        </div>
-
-      </ng-container>
-
-    </section>
-
-  </ng-container>
-
-  <div>
-
-      <app-chat [thread]="selectedThread"></app-chat>
-
-    </div>
+  </div>
 
 </div>

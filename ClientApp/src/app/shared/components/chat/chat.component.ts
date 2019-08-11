@@ -53,4 +53,8 @@ export class ChatComponent implements OnInit {
     this.chatForm.reset();
   }
 
+  isSender(userId: string) {
+    return this.authService.getLoggedUserId() === userId;
+  }
+
 }
