@@ -16,6 +16,8 @@
 
             <p class="text-color"> {{ thread.speakers | PrintSpeakers }} </p>
 
+            <i (click)="selectThread(thread.id)" class="fas fa-trash"></i>
+
           </div>
 
         </ng-container>
