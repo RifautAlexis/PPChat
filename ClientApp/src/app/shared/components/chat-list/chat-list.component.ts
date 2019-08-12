@@ -57,4 +57,15 @@ export class ChatListComponent implements OnInit {
     this.selectedThread = this.threads.find(t => t.id === threadId);
   }
 
+  /*
+  Mise en suspend
+  removeThread(threadId: string) {
+    this.chatService.removeThread(threadId).then(
+      (isRemoved: boolean) => {
+
+      }
+    );
+  }
+  */
+
 }

@@ -12,7 +12,7 @@ export class ThreadFilterPipe implements PipeTransform {
       return threads;
     }
 
-    return threads ? threads.filter(item => item.speakers.some(user => user.username.match(filterText))) : [];
+    return threads ? threads.filter(item => item.speakers.some(user => user.username.match(filterText).length > 0)) : [];
   }
 
 }

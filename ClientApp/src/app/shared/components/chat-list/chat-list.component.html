@@ -12,11 +12,12 @@
 
         <ng-container *ngFor="let thread of threads | ThreadFilter: searchThread">
 
-          <div (click)="selectThread(thread.id)">
+          <!-- <div id="thread" (click)="selectThread(thread.id)"> -->
+          <div id="thread" (click)="selectThread(thread.id)">
 
             <p class="text-color"> {{ thread.speakers | PrintSpeakers }} </p>
 
-            <i (click)="selectThread(thread.id)" class="fas fa-trash"></i>
+            <!-- <i (click)="removeThread(thread.id)" class="fas fa-trash"></i> -->
 
           </div>
 

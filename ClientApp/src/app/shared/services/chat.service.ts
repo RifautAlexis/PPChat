@@ -42,4 +42,10 @@ export class ChatService {
     return this.http.post<Message>(`api/chats/sendMessage`, message).toPromise();
   }
 
+  /*
+  Mise en suspend
+  public removeThread(threadId: string): Promise<Boolean> {
+    return this.http.post<Boolean>(`api/threads/delete`, threadId).toPromise();
+  }
+  */
 }
