@@ -7,15 +7,18 @@
     </div>
 
     <ng-container *ngIf="(currentUser | async)">
+
       <div>
+
         <a [routerLink]='["/chats"]' class="px-2"> Chats </a>
         <a class="px-2"> {{ (currentUser | async)?.username }} </a>
-        <input type="text" class="px-2">
+
       </div>
 
       <div>
-          <a (click)="logout()"> Logout  </a>
+        <a (click)="logout()"> Logout </a>
       </div>
+
     </ng-container>
 
     <ng-container *ngIf="!(currentUser | async)">
@@ -28,3 +31,17 @@
   </nav>
 
 </header>
+
+
+
+<!-- <ng-container *ngIf="findUserForm.value">
+
+    <span *ngIf="isLoading">Loading</span>
+
+    <ng-container *ngFor="let user of filteredUsers">
+
+      {{ user.username }}
+
+    </ng-container>
+
+  </ng-container> -->

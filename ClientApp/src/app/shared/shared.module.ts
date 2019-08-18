@@ -12,6 +12,10 @@ import { LoginComponent } from './components/login/login.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatListComponent } from './components/chat-list/chat-list.component';
+import { SearchUserComponent } from './components/search-user/search-user.component';
+import { SideMenuComponent } from './components/side-menu/side-menu.component';
+import { FriendComponent } from './components/friend/friend.component';
+import { SettingComponent } from './components/setting/setting.component';
 
 import { PrintSpeakersPipe } from './pipes/PrintSpeakers.pipe';
 import { ThreadFilterPipe } from './pipes/ThreadFilter.pipe';
@@ -25,6 +29,10 @@ import { ThreadFilterPipe } from './pipes/ThreadFilter.pipe';
     ChatComponent,
     ChatListComponent,
     NavMenuComponent,
+    SearchUserComponent,
+    SideMenuComponent,
+    FriendComponent,
+    SettingComponent,
     PrintSpeakersPipe,
     ThreadFilterPipe
   ],
@@ -42,7 +50,8 @@ import { ThreadFilterPipe } from './pipes/ThreadFilter.pipe';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    NavMenuComponent
+    NavMenuComponent,
+    HomeComponent
   ]
 })
 

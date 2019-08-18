@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { TokenService } from '@shared/services/token.service';
 import { AuthService } from '@shared/services/auth.service';
 import { ChatService } from '@shared/services/chat.service';
 

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap, switchMap, finalize } from 'rxjs/operators';
+
+import { Tools } from './../../../helpers/tools';
 
 import { AuthService } from '@shared/services/auth.service';
 import { UserService } from '@shared/services/user.service';
@@ -17,7 +21,11 @@ export class NavMenuComponent implements OnInit {
 
   currentUser: Observable<User>;
 
-  constructor(private authService: AuthService, private userService: UserService, private router: Router) {
+  // findUserForm: FormGroup;
+  // isLoading: Boolean = false;
+  // filteredUsers = new Array<User>();
+
+  constructor(private authService: AuthService, private userService: UserService, private router: Router, private tools: Tools) {
     this.currentUser = new Observable<User>();
   }
 
@@ -26,15 +34,40 @@ export class NavMenuComponent implements OnInit {
     this.authService.isLoggedObservable().subscribe(
       (isLogged: boolean) => {
 
-        if(isLogged) {
+        if (isLogged) {
 
           this.currentUser = this.userService.getConnectedUser();
 
         }
-
       }
-
     );
+
+    // this.findUserForm
+    //   .get('findUser')
+    //   .valueChanges
+    //   .pipe(
+    //       debounceTime(300),
+    //       distinctUntilChanged(),
+    //     )
+    //   .subscribe(
+    //     (username: string) => {
+
+    //       this.isLoading = true;
+
+    //       if (this.tools.isStringEmpty(username)) {
+    //         this.filteredUsers = [];
+    //         this.isLoading = false;
+
+    //       } else {
+
+    //         this.userService.findUsers(username).then(
+    //           (users: User[]) => {
+    //             this.filteredUsers = users;
+    //             this.isLoading = false;
+    //           });
+    //       }
+    //     }
+    //   );
   }
 
   logout() {
@@ -42,5 +75,17 @@ export class NavMenuComponent implements OnInit {
     this.currentUser = null;
     this.router.navigate(['/']);
   }
+
+  // searchUser() {
+
+  //   if (this.findUserForm.invalid) {
+  //     return;
+  //   }
+
+  //   let search: string = this.findUserForm.controls.findUser.value;
+
+  //   return search;
+
+  // }
 
 }

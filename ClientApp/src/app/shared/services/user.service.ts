@@ -2,13 +2,14 @@ import { TokenService } from '@shared/services/token.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IUser as User } from '@shared/models/User';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { Tools } from './../../helpers/tools';
 
 @Injectable({
   providedIn: "root"
 })
 export class UserService {
-  constructor(private http: HttpClient, private tokenService: TokenService) {}
+  constructor(private http: HttpClient, private tokenService: TokenService, private tools: Tools) {}
 
   getAll() {
     return this.http.get<User[]>(`api/users`);
@@ -24,6 +25,13 @@ export class UserService {
 
     return this.http.get<User>(`api/users/${id}`);
 
+  }
+
+  findUsers(username: string): Promise<User[]> {
+    // if (this.tools.isStringEmpty(username)) {
+    //   return of([]);
+    // }
+    return this.http.get<User[]>(`api/users/findUsers/${username}`).toPromise();
   }
 
 }

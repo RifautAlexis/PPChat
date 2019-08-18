@@ -1,6 +1,6 @@
 <div class="flex flex-row">
 
-  <aside class="w-1/4 border-r h-screen pt-2">
+  <div class="w-2/12 border-r h-screen pt-2">
 
     <input type="search" name="search" [(ngModel)]="searchThread" placeholder="Rechercher">
 
@@ -12,12 +12,9 @@
 
         <ng-container *ngFor="let thread of threads | ThreadFilter: searchThread">
 
-          <!-- <div id="thread" (click)="selectThread(thread.id)"> -->
           <div id="thread" (click)="selectThread(thread.id)">
 
             <p class="text-color"> {{ thread.speakers | PrintSpeakers }} </p>
-
-            <!-- <i (click)="removeThread(thread.id)" class="fas fa-trash"></i> -->
 
           </div>
 
@@ -27,12 +24,10 @@
 
     </ng-container>
 
-  </aside>
+  </div>
 
-  <div class="w-3/4 bg-chat h-screen pt-2">
-
+  <div class="w-10/12 bg-chat h-screen pt-2">
     <app-chat [thread]="selectedThread"></app-chat>
-
   </div>
 
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { IThread as Thread } from '@shared/models/Thread';
 import { IMessage as Message } from '@shared/models/Message';
@@ -21,15 +21,18 @@ export class ChatListComponent implements OnInit {
 
   searchThread: string;
 
-  constructor(private chatService: ChatService, private router: Router, private authService: AuthService) {
+  searchedUser: string;
+
+  /*
+    Id in URL param
+  */
+  threadId: string;
+
+  constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private route: ActivatedRoute) {
     this.threads = [];
   }
 
   ngOnInit() {
-
-    if (!this.authService.isLogged()) {
-      this.router.navigate(['/']);
-    }
 
     this.chatService.openConnection();
 
@@ -48,6 +51,18 @@ export class ChatListComponent implements OnInit {
 
       let thread: Thread = this.threads.find(t => t.id === message.thread);
       thread.messages.push(message);
+
+    });
+
+    this.route.paramMap.subscribe(params => {
+
+      if (params.has('threadId')) {
+        this.threadId = params.get('threadId');
+
+      } else {
+        console.log('no param like this');
+        console.log(this.selectedThread);
+      }
 
     });
 

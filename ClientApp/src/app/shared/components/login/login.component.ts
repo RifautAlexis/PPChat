@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   returnUrl: string;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private alertService: AlertService) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
 
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(userLogin).then(
       (reponse: any) => {
         if (this.authService.isLogged()) {
-          this.router.navigate(['/chats']);
+          this.router.navigate(['/me']);
         }
       }
     );

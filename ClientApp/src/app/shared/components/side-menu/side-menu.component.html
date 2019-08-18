@@ -1,0 +1,27 @@
+<div class="flex flex-row">
+
+  <aside class="w-1/12 border-r h-screen pt-2">
+
+    <ul>
+
+      <li>
+        <a [routerLink]='["/me/settings"]'> Settings </a>
+      </li>
+      <li>
+        <a [routerLink]='["/me/chats"]'> Chats </a>
+      </li>
+      <li>
+        <a [routerLink]='["/me/friends"]'> Friends </a>
+      </li>
+
+    </ul>
+
+  </aside>
+
+  <section class="w-11/12 border-r h-screen pt-2">
+
+    <router-outlet></router-outlet>
+
+  </section>
+
+</div>

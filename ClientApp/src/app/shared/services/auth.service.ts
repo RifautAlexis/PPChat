@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 import { TokenService } from '@shared/services/token.service';
-import { Tools } from '../../helpers/tools';
 import { IUserRegister as UserRegister } from '@shared/models/UserRegister';
 
 @Injectable({
@@ -14,7 +13,7 @@ export class AuthService {
   private loggedIn: BehaviorSubject<boolean>;
   public loggedIn$: Observable<boolean>;
 
-  constructor(private http: HttpClient, private tokenService: TokenService, private tools: Tools) {
+  constructor(private http: HttpClient, private tokenService: TokenService) {
 
     this.loggedIn = new BehaviorSubject<boolean>(this.tokenService.hasToken());
     this.loggedIn$ = this.loggedIn.asObservable();
