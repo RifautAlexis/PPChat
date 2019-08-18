@@ -36,16 +36,46 @@ export class ChatListComponent implements OnInit {
 
     this.chatService.openConnection();
 
-    this.chatService.getThreadsByUser(this.authService.getLoggedUserId()).then(
-      (threads: Thread[]) => {
-        this.threads = threads;
+    this.chatService.getThreadsByUser(this.authService.getLoggedUserId())
+      .then(
+        (threads: Thread[]) => {
+          this.threads = threads;
 
-        if (this.threads.length !== 0) {
-          this.selectedThread = this.threads[0];
         }
+      )
+      .finally(
+        () => {
+          this.route.paramMap.subscribe(params => {
 
-      }
-    );
+            if (params.has('threadId')) {
+
+              let id = params.get('threadId');
+
+              if (this.threads.find(t => t.id === id) !== null) {
+
+                this.threadId = id;
+                this.selectedThread = this.threads.find(t => t.id === this.threadId);
+
+              } else {
+                if (this.threads.length > 0) {
+                  this.threadId = this.threads[0].id;
+                  this.selectedThread = this.threads.find(t => t.id === this.threadId);
+                }
+
+              }
+
+            } else {
+              console.log("no param");
+
+              if (this.threads.length > 0) {
+                this.threadId = this.threads[0].id;
+                this.selectedThread = this.threads.find(t => t.id === this.threadId);
+              }
+            }
+          });
+
+        }
+      );
 
     this.chatService.getHubConnection().on('receiveMessage', (message: Message) => {
 
@@ -54,22 +84,23 @@ export class ChatListComponent implements OnInit {
 
     });
 
-    this.route.paramMap.subscribe(params => {
+    // this.route.paramMap.subscribe(params => {
 
-      if (params.has('threadId')) {
-        this.threadId = params.get('threadId');
+    //   if (params.has('threadId')) {
+    //     this.threadId = params.get('threadId');
 
-      } else {
-        console.log('no param like this');
-        console.log(this.selectedThread);
-      }
+    //   } else {
+    //     console.log('no param like this');
+    //     this.router.navigate(['/me/' + this.threadId]);
+    //   }
 
-    });
+    // });
 
   }
 
   selectThread(threadId: string) {
-    this.selectedThread = this.threads.find(t => t.id === threadId);
+    // this.selectedThread = this.threads.find(t => t.id === threadId);
+    this.router.navigate(['/me/chats/' + threadId]);
   }
 
   /*
