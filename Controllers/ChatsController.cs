@@ -21,6 +21,7 @@ using PPChat.Services;
 
 namespace PPChat.Controllers {
 
+    [Produces ("application/json")]
     [Authorize]
     [Route ("api/[controller]")]
     [ApiController]
@@ -38,13 +39,13 @@ namespace PPChat.Controllers {
 
         [HttpPost ("sendMessage")]
         public async Task SendMessage ([FromBody] MessageFormDto message) {
-            
-            Message newMessage = Message.Convert(message);
 
-            Message messageCreated = this._messageService.Create(newMessage);
-            this._threadService.UpdateNewMessage(messageCreated.Thread, messageCreated.Id);
+            Message newMessage = Message.Convert (message);
 
-            await context.Clients.All.SendAsync("ReceiveMessage", messageCreated);
+            Message messageCreated = this._messageService.Create (newMessage);
+            this._threadService.UpdateNewMessage (messageCreated.Thread, messageCreated.Id);
+
+            await context.Clients.All.SendAsync ("ReceiveMessage", messageCreated);
         }
 
         [HttpGet]

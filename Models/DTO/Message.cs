@@ -20,16 +20,12 @@ namespace PPChat.Models
         [JsonProperty("createdAt")]
         public DateTime CreatedAt { get; set; }
 
-        [JsonProperty("seeAt")]
-        public DateTime SeeAt { get; set; }
-
-        public MessageDto(string id, string sender, string content, DateTime createdAt, DateTime seeAt) {
+        public MessageDto(string id, string sender, string content, DateTime createdAt) {
 
             this.Id = id;
             this.Sender = sender;
             this.Content = content;
             this.CreatedAt = createdAt;
-            this.SeeAt = seeAt;
 
         }
         

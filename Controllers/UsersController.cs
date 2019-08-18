@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PPChat.Dtos;
@@ -7,6 +8,7 @@ using PPChat.Services;
 
 namespace PPChat.Controllers {
 
+    [Produces ("application/json")]
     [Authorize]
     [Route ("api/[controller]")]
     [ApiController]
@@ -34,13 +36,23 @@ namespace PPChat.Controllers {
             return userDto;
         }
 
-        [AllowAnonymous]
-        [HttpPost ("names")]
-        public string GetNamesByThreadId([FromBody] string[] threadId) {
-            System.Console.WriteLine(threadId[0]);
-            // Thread thread = _threadService.Get(threadId);
+        [HttpGet ("findUsers/{username}")]
+        public UserDto[] FindUsers (string username) {
 
-            return threadId[0];
+            if (string.IsNullOrEmpty(username))
+            {
+                return new UserDto[0];    
+            }
+
+            User[] users = _userService.GetByUsername (username);
+
+            List<UserDto> usersToReturn = new List<UserDto>();
+            foreach (var user in users)
+            {
+                usersToReturn.Add(Dtos.UserDto.Converter(user));
+            }
+
+            return usersToReturn.ToArray();
         }
 
     }

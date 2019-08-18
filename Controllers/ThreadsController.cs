@@ -7,6 +7,7 @@ using PPChat.Services;
 
 namespace PPChat.Controllers {
 
+    [Produces ("application/json")]
     [Authorize]
     [Route ("api/[controller]")]
     [ApiController]
@@ -26,27 +27,25 @@ namespace PPChat.Controllers {
         public ThreadDto[] GetByUserId (string userId) {
             Thread[] threads = _threadService.GetByUserId (userId);
 
-            List<ThreadDto> threadDto = new List<ThreadDto>();
+            List<ThreadDto> threadDto = new List<ThreadDto> ();
 
-            foreach (var thread in threads)
-            {
-                List<UserDto> userDto = new List<UserDto>();
-                foreach (var id in thread.Speakers)
-                {
-                    User user = _userService.GetById(id);
-                    userDto.Add(new UserDto(user.Id, user.Email, user.Username, user.Friends));
+            foreach (var thread in threads) {
+                List<UserDto> userDto = new List<UserDto> ();
+
+                foreach (var id in thread.Speakers) {
+                    User user = _userService.GetById (id);
+                    userDto.Add (new UserDto (user.Id, user.Email, user.Username, user.Friends));
                 }
 
-                List<MessageDto> messageDto = new List<MessageDto>();
-                Message[] messages = _messageService.GetByThread(thread);
-                foreach (var message in messages)
-                {
-                    messageDto.Add(new MessageDto(message.Id, message.Sender, message.Content, message.CreatedAt, message.SeeAt));
+                List<MessageDto> messageDto = new List<MessageDto> ();
+                Message[] messages = _messageService.GetByThread (thread);
+                foreach (var message in messages) {
+                    messageDto.Add (new MessageDto (message.Id, message.Sender, message.Content, message.CreatedAt));
                 }
 
-                threadDto.Add(new ThreadDto(thread.Id, userDto.ToArray(), messageDto.ToArray()));
+                threadDto.Add (new ThreadDto (thread.Id, userDto.ToArray (), messageDto.ToArray ()));
             }
-            return threadDto.ToArray();
+            return threadDto.ToArray ();
         }
 
     }

@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using PPChat.Models;
 
 namespace PPChat.Dtos {
 
@@ -21,6 +22,10 @@ namespace PPChat.Dtos {
             this.Email = email;
             this.Username = username;
             this.Friends = friends;
+        }
+
+        public static UserDto Converter (User user) {
+            return new UserDto (user.Id, user.Email, user.Username, user.Friends);
         }
     }
 

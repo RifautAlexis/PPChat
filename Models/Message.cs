@@ -26,22 +26,18 @@ namespace PPChat.Models
         [JsonProperty("createdAt")]
         public DateTime CreatedAt { get; set; }
 
-        [JsonProperty("seeAt")]
-        public DateTime SeeAt { get; set; }
-
-        public Message(string id, string sender, string thread, string content, DateTime createdAt, DateTime seeAt) {
+        public Message(string id, string sender, string thread, string content, DateTime createdAt) {
 
             this.Id = id;
             this.Sender = sender;
             this.Thread = thread;
             this.Content = content;
             this.CreatedAt = createdAt;
-            this.SeeAt = seeAt;
 
         }
         
         public static Message Convert(MessageFormDto messageForm) {
-            return new Message(null, messageForm.Sender, messageForm.Thread, messageForm.Content, messageForm.CreeAt, messageForm.SeeAt);
+            return new Message(null, messageForm.Sender, messageForm.Thread, messageForm.Content, messageForm.CreeAt);
         }
 
         

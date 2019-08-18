@@ -17,9 +17,6 @@ namespace PPChat.Dtos {
 
         [JsonProperty ("creeAt")]
         public DateTime CreeAt { get; set; }
-
-        [JsonProperty ("seeAt")]
-        public DateTime SeeAt { get; set; }
     }
 
 }

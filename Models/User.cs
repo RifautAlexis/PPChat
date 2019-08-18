@@ -40,6 +40,23 @@ namespace PPChat.Models {
             this.PasswordSalt = passwordSalt;
         }
 
+        /*
+            Used for easier seed
+        */
+        public User (string id, string email, string username, string[] friends, string[] threads, string password) {
+            this.Id = id;
+            this.Email = email;
+            this.Username = username;
+            this.Friends = friends;
+            this.Threads = threads;
+
+            byte[] passwordHash, passwordSalt;
+            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            
+            this.PasswordHash = passwordHash;
+            this.PasswordSalt = passwordSalt;
+        }
+
         public static User Converter (UserRegisterDto userRegister) {
             byte[] passwordHash, passwordSalt;
 

@@ -16,6 +16,12 @@ namespace PPChat.Models {
 
         [JsonProperty("messages")]
         public string[] Messages { get; set; }
+
+        public Thread(string id, string[] speakers, string[] messages) {
+            this.Id = id;
+            this.Speakers = speakers;
+            this.Messages = messages;
+        }
     }
 
 }
