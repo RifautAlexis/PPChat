@@ -1,0 +1,39 @@
+<div>
+  <form [formGroup]="findUserForm" (ngSubmit)="searchUser()">
+
+    <input type="text" formControlName="findUser" class="px-2">
+    <button type="submit"> Search </button>
+
+  </form>
+
+  <ng-container *ngIf="findUserForm.value">
+
+      <span *ngIf="isLoading">Loading</span>
+
+      <ng-container *ngFor="let user of filteredUsers">
+
+        {{ user.username }}
+
+      </ng-container>
+
+    </ng-container>
+
+</div>
+
+<div>
+  <h2> Mes amis </h2>
+
+  <ng-container *ngIf="contacts">
+
+    <ul>
+
+      <ng-container *ngFor="let contact of contacts">
+
+        <li>{{ contact.username }}</li>
+
+      </ng-container>
+
+    </ul>
+
+  </ng-container>
+</div>

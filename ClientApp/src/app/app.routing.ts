@@ -6,7 +6,7 @@ import { ChatListComponent } from '@shared/components/chat-list/chat-list.compon
 import { RegisterComponent } from '@shared/components/register/register.component';
 import { HomeComponent } from '@shared/components/home/home.component';
 import { LoginComponent } from '@shared/components/login/login.component';
-import { FriendComponent } from '@shared/components//friend/friend.component';
+import { ContactComponent } from '@shared/components/contact/contact.component';
 import { SettingComponent } from '@shared/components/setting/setting.component';
 import { ChatComponent } from '@shared/components/chat/chat.component';
 import { SideMenuComponent } from '@shared/components/side-menu/side-menu.component';
@@ -32,8 +32,13 @@ const routes: Routes = [
     canActivate: [ AuthGuard ],
     children: [
       {
-        path: 'friends',
-        component: FriendComponent,
+        path: 'contacts',
+        component: ContactComponent,
+        canActivate: [ AuthGuard ]
+      },
+      {
+        path: 'contacts/:username',
+        component: ContactComponent,
         canActivate: [ AuthGuard ]
       },
       {
