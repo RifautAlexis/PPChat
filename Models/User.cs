@@ -21,8 +21,8 @@ namespace PPChat.Models {
         public string Username { get; set; }
 
         // Id from others users
-        [JsonProperty ("friends")]
-        public string[] Friends { get; set; }
+        [JsonProperty ("contacts")]
+        public string[] Contacts { get; set; }
 
         [JsonProperty ("threads")]
         public string[] Threads { get; set; }
@@ -30,11 +30,11 @@ namespace PPChat.Models {
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
 
-        public User (string id, string email, string username, string[] friends, string[] threads, byte[] passwordHash, byte[] passwordSalt) {
+        public User (string id, string email, string username, string[] contacts, string[] threads, byte[] passwordHash, byte[] passwordSalt) {
             this.Id = id;
             this.Email = email;
             this.Username = username;
-            this.Friends = friends;
+            this.Contacts = contacts;
             this.Threads = threads;
             this.PasswordHash = passwordHash;
             this.PasswordSalt = passwordSalt;
@@ -43,11 +43,11 @@ namespace PPChat.Models {
         /*
             Used for easier seed
         */
-        public User (string id, string email, string username, string[] friends, string[] threads, string password) {
+        public User (string id, string email, string username, string[] contacts, string[] threads, string password) {
             this.Id = id;
             this.Email = email;
             this.Username = username;
-            this.Friends = friends;
+            this.Contacts = contacts;
             this.Threads = threads;
 
             byte[] passwordHash, passwordSalt;

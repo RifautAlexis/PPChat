@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, switchMap, finalize } from 'rxjs/operators';
 
 import { Tools } from './../../../helpers/tools';
 
@@ -21,11 +19,7 @@ export class NavMenuComponent implements OnInit {
 
   currentUser: Observable<User>;
 
-  // findUserForm: FormGroup;
-  // isLoading: Boolean = false;
-  // filteredUsers = new Array<User>();
-
-  constructor(private authService: AuthService, private userService: UserService, private router: Router, private tools: Tools) {
+  constructor(private authService: AuthService, private userService: UserService, private router: Router) {
     this.currentUser = new Observable<User>();
   }
 

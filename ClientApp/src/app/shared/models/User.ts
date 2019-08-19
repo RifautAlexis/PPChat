@@ -4,5 +4,5 @@ export interface IUser {
     username: string;
 
     // Id from others users
-    friends?: number[];
+    contacts?: number[];
 }

@@ -41,6 +41,10 @@ namespace PPChat.Services {
             return _users.AsQueryable<User>().Where(user => user.Username.Contains(username)).ToArray();
         }
 
+        public User[] GetContacts (string userId) {
+            return _users.AsQueryable<User>().Where(user => user.Contacts.Contains(userId)).ToArray();
+        }
+
         // public void Update (User userParam, string password = null) {
 
         //     User user = _users.Find (userParam.Id).FirstOrDefault ();

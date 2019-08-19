@@ -14,18 +14,18 @@ namespace PPChat.Dtos {
         [JsonProperty ("username")]
         public string Username { get; set; }
 
-        [JsonProperty ("friends")]
-        public string[] Friends { get; set; }
+        [JsonProperty ("contacts")]
+        public string[] Contacts { get; set; }
 
-        public UserDto(string id, string email, string username, string[] friends) {
+        public UserDto(string id, string email, string username, string[] contacts) {
             this.Id = id;
             this.Email = email;
             this.Username = username;
-            this.Friends = friends;
+            this.Contacts = contacts;
         }
 
         public static UserDto Converter (User user) {
-            return new UserDto (user.Id, user.Email, user.Username, user.Friends);
+            return new UserDto (user.Id, user.Email, user.Username, user.Contacts);
         }
     }
 

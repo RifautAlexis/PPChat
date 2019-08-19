@@ -14,7 +14,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ChatListComponent } from './components/chat-list/chat-list.component';
 import { SearchUserComponent } from './components/search-user/search-user.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
-import { FriendComponent } from './components/friend/friend.component';
+import { ContactComponent } from './components/contact/contact.component';
 import { SettingComponent } from './components/setting/setting.component';
 
 import { PrintSpeakersPipe } from './pipes/PrintSpeakers.pipe';
@@ -31,7 +31,7 @@ import { ThreadFilterPipe } from './pipes/ThreadFilter.pipe';
     NavMenuComponent,
     SearchUserComponent,
     SideMenuComponent,
-    FriendComponent,
+    ContactComponent,
     SettingComponent,
     PrintSpeakersPipe,
     ThreadFilterPipe

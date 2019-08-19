@@ -34,7 +34,7 @@ namespace PPChat.Controllers {
 
                 foreach (var id in thread.Speakers) {
                     User user = _userService.GetById (id);
-                    userDto.Add (new UserDto (user.Id, user.Email, user.Username, user.Friends));
+                    userDto.Add (new UserDto (user.Id, user.Email, user.Username, user.Contacts));
                 }
 
                 List<MessageDto> messageDto = new List<MessageDto> ();

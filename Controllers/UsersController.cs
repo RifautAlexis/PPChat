@@ -55,5 +55,24 @@ namespace PPChat.Controllers {
             return usersToReturn.ToArray();
         }
 
+        [HttpGet ("getContacts/{userId}")]
+        public UserDto[] GetContacts (string userId) {
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return new UserDto[0];    
+            }
+
+            User[] users = _userService.GetContacts (userId);
+
+            List<UserDto> usersToReturn = new List<UserDto>();
+            foreach (var user in users)
+            {
+                usersToReturn.Add(Dtos.UserDto.Converter(user));
+            }
+
+            return usersToReturn.ToArray();
+        }
+
     }
 }

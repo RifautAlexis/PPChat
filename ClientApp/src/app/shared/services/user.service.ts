@@ -34,4 +34,8 @@ export class UserService {
     return this.http.get<User[]>(`api/users/findUsers/${username}`).toPromise();
   }
 
+  getContacts(userId: string): Promise<User[]> {
+    return this.http.get<User[]>(`api/users/getContacts/${userId}`).toPromise();
+  }
+
 }
