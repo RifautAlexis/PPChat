@@ -28,9 +28,6 @@ export class UserService {
   }
 
   findUsers(username: string): Promise<User[]> {
-    // if (this.tools.isStringEmpty(username)) {
-    //   return of([]);
-    // }
     return this.http.get<User[]>(`api/users/findUsers/${username}`).toPromise();
   }
 

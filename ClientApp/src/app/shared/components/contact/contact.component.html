@@ -1,7 +1,7 @@
 <div>
   <form [formGroup]="findUserForm" (ngSubmit)="searchUser()">
 
-    <input type="text" formControlName="findUser" class="px-2">
+    <input type="text" formControlName="findUser" class="px-2" value="{{search}}">
     <button type="submit"> Search </button>
 
   </form>
@@ -10,12 +10,20 @@
 
       <span *ngIf="isLoading">Loading</span>
 
-      <ng-container *ngFor="let user of filteredUsers">
+      <ng-container *ngIf="search?.length > 0 && filteredUsers?.length > 0; then showResult; else showNothing"></ng-container>
+
+      <ng-template #showResult *ngFor="let user of filteredUsers">
 
         {{ user.username }}
         <i (click)="addContact(user.id)" class="fas fa-user-plus"></i>
 
-      </ng-container>
+      </ng-template>
+
+      <ng-template #showNothing>
+
+        Aucuns résultats
+
+      </ng-template>
 
     </ng-container>
 

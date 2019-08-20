@@ -19,7 +19,7 @@ export class ContactComponent implements OnInit {
   findUserForm: FormGroup;
 
   filteredUsers: User[];
-  search: string;
+  search: string = '';
   isLoading: Boolean = false;
 
   contacts: User[];
@@ -32,45 +32,31 @@ export class ContactComponent implements OnInit {
       findUser: ['', [Validators.required, Validators.minLength(1)]]
     });
 
-    this.route.paramMap.subscribe(params => {
+    this.loadContacts().then(
+      () => {
+        this.route.paramMap.subscribe(params => {
 
-      if (params.has('username')) {
-        this.userService.findUsers(params.get('username')).then(
-          (users: User[]) => {
-            this.filteredUsers = users;
-          });
+          if (params.has('username')) {
+
+            this.search = params.get('username');
+            this.userService.findUsers(this.search).then(
+              (users: User[]) => {
+                this.filteredUsers = users.filter(
+                  item =>
+                    !this.contacts.map(u => u.id).includes(item.id) &&
+                    item.id !== this.authService.getLoggedUserId()
+                );
+              });
+          }
+
+        });
       }
+    );
 
-    });
 
     this.loadContacts();
 
-    this.findUserForm
-        .get('findUser')
-        .valueChanges
-        .pipe(
-          debounceTime(300),
-          distinctUntilChanged(),
-        )
-        .subscribe(
-          (username: string) => {
-
-            this.isLoading = true;
-
-            if (this.tools.isStringEmpty(username)) {
-              this.filteredUsers = [];
-              this.isLoading = false;
-
-            } else {
-
-              this.userService.findUsers(username).then(
-                (users: User[]) => {
-                  this.filteredUsers = users;
-                  this.isLoading = false;
-                });
-            }
-          }
-        );
+    this.loadFilteredUsers();
 
   }
 
@@ -92,6 +78,17 @@ export class ContactComponent implements OnInit {
 
         if (isRemoved) {
           this.loadContacts();
+
+          if (this.search !== null) {
+            this.userService.findUsers(this.search).then(
+              (users: User[]) => {
+                this.filteredUsers = users.filter(
+                  item =>
+                    !this.contacts.map(u => u.id).includes(item.id) &&
+                    item.id !== this.authService.getLoggedUserId()
+                );
+              });
+          }
         }
       }
     );
@@ -103,18 +100,72 @@ export class ContactComponent implements OnInit {
 
         if (isAdded) {
           this.loadContacts();
+
+          let search = this.findUserForm.get('findUser').value;
+
+          if (this.tools.isStringEmpty(search)) {
+            this.filteredUsers = [];
+
+          } else {
+            this.userService.findUsers(search).then(
+              (users: User[]) => {
+                this.filteredUsers = users.filter(
+                  item =>
+                    !this.contacts.map(u => u.id).includes(item.id) &&
+                    item.id !== this.authService.getLoggedUserId()
+                );
+              });
+          }
+
         }
+      }
+    );
+
+
+  }
+
+  private loadContacts(): Promise<void | User[]> {
+    return this.userService.getContacts(this.authService.getLoggedUserId()).then(
+      (contacts: User[]) => {
+
+        this.contacts = contacts;
       }
     );
   }
 
-  private loadContacts() {
-    this.userService.getContacts(this.authService.getLoggedUserId()).then(
-      (contacts: User[]) => {
-        console.log(contacts);
-        this.contacts = contacts;
-      }
-    );
+  private loadFilteredUsers() {
+    this.findUserForm
+      .get('findUser')
+      .valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+      )
+      .subscribe(
+        (username: string) => {
+
+          this.search = username;
+          this.isLoading = true;
+
+          if (this.tools.isStringEmpty(username)) {
+            this.filteredUsers = [];
+            this.isLoading = false;
+
+          } else {
+
+            this.userService.findUsers(username).then(
+              (users: User[]) => {
+                this.filteredUsers = users.filter(
+                  item =>
+                    !this.contacts.map(u => u.id).includes(item.id) &&
+                    item.id !== this.authService.getLoggedUserId()
+                );
+
+                this.isLoading = false;
+              });
+          }
+        }
+      );
   }
 
 }
