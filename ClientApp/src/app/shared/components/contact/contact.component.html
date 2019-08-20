@@ -13,6 +13,7 @@
       <ng-container *ngFor="let user of filteredUsers">
 
         {{ user.username }}
+        <i (click)="addContact(user.id)" class="fas fa-user-plus"></i>
 
       </ng-container>
 
@@ -21,7 +22,7 @@
 </div>
 
 <div>
-  <h2> Mes amis </h2>
+  <h2> Mes contacts </h2>
 
   <ng-container *ngIf="contacts">
 
@@ -29,7 +30,10 @@
 
       <ng-container *ngFor="let contact of contacts">
 
-        <li>{{ contact.username }}</li>
+        <li>
+          {{ contact.username }}
+          <i (click)="removeContact(contact.id)" class="fas fa-trash"></i>
+        </li>
 
       </ng-container>
 

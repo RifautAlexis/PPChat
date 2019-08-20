@@ -38,4 +38,12 @@ export class UserService {
     return this.http.get<User[]>(`api/users/getContacts/${userId}`).toPromise();
   }
 
+  removeContact(contactId: string): Promise<Boolean> {
+    return this.http.delete<Boolean>(`api/users/removeContact/${contactId}`).toPromise();
+  }
+
+  addContact(contactId: string): Promise<Boolean> {
+    return this.http.put<Boolean>(`api/users/addContact/${contactId}`, null).toPromise();
+  }
+
 }

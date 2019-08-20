@@ -23,12 +23,12 @@ namespace PPChat.Services {
         public User GetById (string id) =>
             _users.Find<User> (user => user.Id == id).FirstOrDefault ();
 
-        public User GetByEmail(string email) {
-            return _users.Find<User> (user => user.Email == email).FirstOrDefault();
+        public User GetByEmail (string email) {
+            return _users.Find<User> (user => user.Email == email).FirstOrDefault ();
         }
 
         public User Create (User user) {
-            
+
             if (_users.Find (x => x.Username == user.Username).FirstOrDefault () != null)
                 throw new AppException ("Username \"" + user.Username + "\" is already taken");
 
@@ -38,11 +38,49 @@ namespace PPChat.Services {
         }
 
         public User[] GetByUsername (string username) {
-            return _users.AsQueryable<User>().Where(user => user.Username.Contains(username)).ToArray();
+            return _users.AsQueryable<User> ().Where (user => user.Username.Contains (username)).ToArray ();
         }
 
         public User[] GetContacts (string userId) {
-            return _users.AsQueryable<User>().Where(user => user.Contacts.Contains(userId)).ToArray();
+            User loggedUser = _users.Find (u => u.Id == userId).FirstOrDefault ();
+
+            if (loggedUser == null) {
+                return null;
+            }
+
+            return _users.AsQueryable<User> ().Where (user => loggedUser.Contacts.Contains (user.Id)).ToArray ();
+        }
+
+        public bool RemoveContact (string contactToRemove, string userId) {
+            User user = _users.Find (u => u.Id == userId).FirstOrDefault ();
+
+            if (user == null) {
+                return false;
+            }
+
+            string[] contacts = user.Contacts.Except (new string[] { contactToRemove }).ToArray ();
+
+            user.Contacts = contacts;
+            _users.ReplaceOne (u => u.Id == user.Id, user);
+
+            return true;
+        }
+
+        public bool AddContact (string contactToAdd, string userId) {
+            User user = _users.Find (u => u.Id == userId).FirstOrDefault ();
+
+            if (user == null) {
+                return false;
+            }
+
+            List<string> newContacts = new List<string>(user.Contacts);
+            newContacts.Add(contactToAdd);
+            
+            user.Contacts = newContacts.ToArray();
+
+            _users.ReplaceOne (u => u.Id == user.Id, user);
+
+            return true;
         }
 
         // public void Update (User userParam, string password = null) {
@@ -72,6 +110,6 @@ namespace PPChat.Services {
 
         //     _users.ReplaceOne (x => x.Id == user.Id, user);
         // }
-            
+
     }
 }

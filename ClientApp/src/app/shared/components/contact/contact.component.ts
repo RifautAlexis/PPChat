@@ -43,11 +43,7 @@ export class ContactComponent implements OnInit {
 
     });
 
-    this.userService.getContacts(this.authService.getLoggedUserId()).then(
-      (contacts: User[]) => {
-        this.contacts = contacts;
-      }
-    );
+    this.loadContacts();
 
     this.findUserForm
         .get('findUser')
@@ -88,6 +84,37 @@ export class ContactComponent implements OnInit {
 
     this.router.navigate(['/me/contacts/' + search]);
 
+  }
+
+  removeContact(contactId: string) {
+    this.userService.removeContact(contactId).then(
+      (isRemoved: Boolean) => {
+
+        if (isRemoved) {
+          this.loadContacts();
+        }
+      }
+    );
+  }
+
+  addContact(contactId: string) {
+    this.userService.addContact(contactId).then(
+      (isAdded: Boolean) => {
+
+        if (isAdded) {
+          this.loadContacts();
+        }
+      }
+    );
+  }
+
+  private loadContacts() {
+    this.userService.getContacts(this.authService.getLoggedUserId()).then(
+      (contacts: User[]) => {
+        console.log(contacts);
+        this.contacts = contacts;
+      }
+    );
   }
 
 }
