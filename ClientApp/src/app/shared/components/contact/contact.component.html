@@ -8,9 +8,27 @@
 
   <ng-container *ngIf="findUserForm.value">
 
-      <span *ngIf="isLoading">Loading</span>
+    <span *ngIf="isLoading">Loading</span>
 
-      <ng-container *ngIf="search?.length > 0 && filteredUsers?.length > 0; then showResult; else showNothing"></ng-container>
+    <ng-container *ngIf="search?.length > 0 && filteredUsers?.length > 0; then showResult; else showNothing">
+    </ng-container>
+
+    <ng-template #showResult>
+
+      <ng-container *ngFor="let user of filteredUsers">
+          {{ user.username }}
+          <i (click)="addContact(user.id)" class="fas fa-user-plus"></i>
+      </ng-container>
+
+    </ng-template>
+
+    <ng-template #showNothing>
+
+      Aucuns résultats
+
+    </ng-template>
+
+    <!-- <ng-container *ngIf="search?.length > 0 && filteredUsers?.length > 0; then showResult; else showNothing"></ng-container>
 
       <ng-template #showResult *ngFor="let user of filteredUsers">
 
@@ -23,9 +41,9 @@
 
         Aucuns résultats
 
-      </ng-template>
+      </ng-template> -->
 
-    </ng-container>
+  </ng-container>
 
 </div>
 

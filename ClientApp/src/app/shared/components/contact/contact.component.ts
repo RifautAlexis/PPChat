@@ -56,7 +56,7 @@ export class ContactComponent implements OnInit {
 
     this.loadContacts();
 
-    this.loadFilteredUsers();
+    this.searchUsers();
 
   }
 
@@ -79,7 +79,7 @@ export class ContactComponent implements OnInit {
         if (isRemoved) {
           this.loadContacts();
 
-          if (this.search !== null) {
+          if (this.search.length > 0) {
             this.userService.findUsers(this.search).then(
               (users: User[]) => {
                 this.filteredUsers = users.filter(
@@ -107,6 +107,7 @@ export class ContactComponent implements OnInit {
             this.filteredUsers = [];
 
           } else {
+
             this.userService.findUsers(search).then(
               (users: User[]) => {
                 this.filteredUsers = users.filter(
@@ -114,6 +115,8 @@ export class ContactComponent implements OnInit {
                     !this.contacts.map(u => u.id).includes(item.id) &&
                     item.id !== this.authService.getLoggedUserId()
                 );
+              console.log(this.filteredUsers);
+
               });
           }
 
@@ -133,7 +136,7 @@ export class ContactComponent implements OnInit {
     );
   }
 
-  private loadFilteredUsers() {
+  private searchUsers() {
     this.findUserForm
       .get('findUser')
       .valueChanges
@@ -148,6 +151,7 @@ export class ContactComponent implements OnInit {
           this.isLoading = true;
 
           if (this.tools.isStringEmpty(username)) {
+
             this.filteredUsers = [];
             this.isLoading = false;
 
@@ -160,6 +164,7 @@ export class ContactComponent implements OnInit {
                     !this.contacts.map(u => u.id).includes(item.id) &&
                     item.id !== this.authService.getLoggedUserId()
                 );
+                console.log(this.filteredUsers);
 
                 this.isLoading = false;
               });
