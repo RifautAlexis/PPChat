@@ -115,7 +115,6 @@ export class ContactComponent implements OnInit {
                     !this.contacts.map(u => u.id).includes(item.id) &&
                     item.id !== this.authService.getLoggedUserId()
                 );
-              console.log(this.filteredUsers);
 
               });
           }
@@ -164,7 +163,6 @@ export class ContactComponent implements OnInit {
                     !this.contacts.map(u => u.id).includes(item.id) &&
                     item.id !== this.authService.getLoggedUserId()
                 );
-                console.log(this.filteredUsers);
 
                 this.isLoading = false;
               });
