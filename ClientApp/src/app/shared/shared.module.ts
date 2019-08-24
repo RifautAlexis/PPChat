@@ -16,6 +16,7 @@ import { SearchUserComponent } from './components/search-user/search-user.compon
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { SettingComponent } from './components/setting/setting.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 import { PrintSpeakersPipe } from './pipes/PrintSpeakers.pipe';
 import { ThreadFilterPipe } from './pipes/ThreadFilter.pipe';
@@ -33,6 +34,7 @@ import { ThreadFilterPipe } from './pipes/ThreadFilter.pipe';
     SideMenuComponent,
     ContactComponent,
     SettingComponent,
+    ModalComponent,
     PrintSpeakersPipe,
     ThreadFilterPipe
   ],

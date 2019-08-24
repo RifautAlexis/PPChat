@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormArray, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 import { IThread as Thread } from '@shared/models/Thread';
 import { IMessage as Message } from '@shared/models/Message';
+import { IUser as User } from '@shared/models/User';
+import { INewThread as NewThread } from '@shared/models/NewThread';
 
 import { AuthService } from '@shared/services/auth.service';
 import { ChatService } from '@shared/services/chat.service';
+import { UserService } from '@shared/services/user.service';
 
 @Component({
   selector: 'app-chat-list',
@@ -15,6 +19,8 @@ import { ChatService } from '@shared/services/chat.service';
 
 export class ChatListComponent implements OnInit {
 
+  showModal = false;
+
   threads: Thread[];
 
   selectedThread: Thread;
@@ -23,26 +29,29 @@ export class ChatListComponent implements OnInit {
 
   searchedUser: string;
 
+  contactList: User[];
+
   /*
     Id in URL param
   */
   threadId: string;
 
-  constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private route: ActivatedRoute) {
+  newThreadForm: FormGroup;
+  contacts: FormArray = this.formBuilder.array([]);
+
+  constructor(private chatService: ChatService, private userService: UserService, private router: Router, private authService: AuthService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
     this.threads = [];
   }
 
   ngOnInit() {
 
+    this.newThreadForm = this.formBuilder.group({
+      contactsArray: this.contacts
+    });
+
     this.chatService.openConnection();
 
-    this.chatService.getThreadsByUser(this.authService.getLoggedUserId())
-      .then(
-        (threads: Thread[]) => {
-          this.threads = threads;
-
-        }
-      )
+    this.loadThreads()
       .finally(
         () => {
           this.route.paramMap.subscribe(params => {
@@ -84,34 +93,85 @@ export class ChatListComponent implements OnInit {
 
     });
 
-    // this.route.paramMap.subscribe(params => {
-
-    //   if (params.has('threadId')) {
-    //     this.threadId = params.get('threadId');
-
-    //   } else {
-    //     console.log('no param like this');
-    //     this.router.navigate(['/me/' + this.threadId]);
-    //   }
-
-    // });
-
   }
 
   selectThread(threadId: string) {
-    // this.selectedThread = this.threads.find(t => t.id === threadId);
     this.router.navigate(['/me/chats/' + threadId]);
   }
 
-  /*
-  Mise en suspend
   removeThread(threadId: string) {
     this.chatService.removeThread(threadId).then(
       (isRemoved: boolean) => {
-
+        if (isRemoved) {
+          this.loadThreads();
+        }
       }
     );
   }
-  */
 
+  loadThreads(): Promise<void | Thread[]> {
+    return this.chatService.getThreadsByUser(this.authService.getLoggedUserId())
+      .then(
+        (threads: Thread[]) => {
+          this.threads = threads;
+
+        }
+      );
+  }
+
+  toggleModal() {
+    if (!this.showModal) {
+      this.loadContacts().finally(
+        () => {
+
+          this.createContacts();
+
+        });
+    }
+
+    this.showModal = !this.showModal;
+  }
+
+  createNewThread() {
+    this.toggleModal();
+
+    let speakers: string[] = new Array();
+
+    this.newThreadForm.controls.contactsArray.controls.forEach(element => {
+      speakers.push(element.controls.user.value.id);
+    });
+
+    speakers.push(this.authService.getLoggedUserId());
+
+    let newThread: NewThread = {
+      id: null,
+      speakers: speakers,
+      messages: [],
+    };
+
+    console.log(newThread);
+
+    this.chatService.addThread(newThread).finally(
+      () => this.loadThreads()
+    );
+
+
+  }
+
+  private loadContacts(): Promise<void | User[]> {
+    return this.userService.getContacts(this.authService.getLoggedUserId()).then(
+      (contacts: User[]) => {
+
+        this.contactList = contacts;
+      }
+    );
+  }
+
+  private createContacts(): void {
+
+    for (let i = 0; i < this.contactList.length; i++) {
+      this.contacts.push(this.formBuilder.group({ user: this.contactList[i] }));
+    }
+
+  }
 }

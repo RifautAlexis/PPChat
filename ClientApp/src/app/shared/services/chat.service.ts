@@ -1,10 +1,12 @@
 import { AuthService } from '@shared/services/auth.service';
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
+import { HttpClient } from '@angular/common/http';
+
 import { IMessage as Message } from '@shared/models/Message';
 import { IMessageForm as MessageForm } from '@shared/models/MessageForm';
 import { IThread as Thread } from '@shared/models/Thread';
-import { HttpClient } from '@angular/common/http';
+import { INewThread as NewThread } from '@shared/models/NewThread';
 
 @Injectable({
   providedIn: 'root'
@@ -42,10 +44,11 @@ export class ChatService {
     return this.http.post<Message>(`api/chats/sendMessage`, message).toPromise();
   }
 
-  /*
-  Mise en suspend
   public removeThread(threadId: string): Promise<Boolean> {
-    return this.http.post<Boolean>(`api/threads/delete`, threadId).toPromise();
+    return this.http.delete<Boolean>(`api/threads/removeThread/` + threadId).toPromise();
   }
-  */
+
+  public addThread(thread: NewThread): Promise<Boolean> {
+    return this.http.post<Boolean>(`api/threads/addThread`, thread).toPromise();
+  }
 }

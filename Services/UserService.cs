@@ -73,11 +73,42 @@ namespace PPChat.Services {
                 return false;
             }
 
-            List<string> newContacts = new List<string>(user.Contacts);
-            newContacts.Add(contactToAdd);
-            
-            user.Contacts = newContacts.ToArray();
+            List<string> newContacts = new List<string> (user.Contacts);
+            newContacts.Add (contactToAdd);
 
+            user.Contacts = newContacts.ToArray ();
+
+            _users.ReplaceOne (u => u.Id == user.Id, user);
+
+            return true;
+        }
+
+        public bool RemoveThread (string threadToRemove, string userId) {
+            User user = _users.Find (u => u.Id == userId).FirstOrDefault ();
+
+            if (user == null) {
+                return false;
+            }
+
+            string[] threads = user.Threads.Except (new string[] { threadToRemove }).ToArray ();
+
+            user.Threads = threads;
+            _users.ReplaceOne (u => u.Id == user.Id, user);
+
+            return true;
+        }
+
+        public bool AddThread(string ThreadId, string userId) {
+            User user = _users.Find (u => u.Id == userId).FirstOrDefault ();
+
+            if (user == null) {
+                return false;
+            }
+
+            List<string> threads = user.Threads.ToList();
+            threads.Add(ThreadId);
+
+            user.Threads = threads.ToArray();
             _users.ReplaceOne (u => u.Id == user.Id, user);
 
             return true;

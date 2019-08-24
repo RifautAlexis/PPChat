@@ -31,22 +31,37 @@ namespace PPChat.Services {
 
         public void UpdateNewMessage (string threadId, string messageId) {
 
-            var filter = Builders<Thread>.Filter.And(
-                Builders<Thread>.Filter.Where(x => x.Id == threadId));
-            var update = Builders<Thread>.Update.Push("Messages", messageId);
+            var filter = Builders<Thread>.Filter.And (
+                Builders<Thread>.Filter.Where (x => x.Id == threadId));
+            var update = Builders<Thread>.Update.Push ("Messages", messageId);
             _threads.FindOneAndUpdate (filter, update);
 
         }
 
         public Thread Get (string threadId) {
-            return _threads.AsQueryable<Thread> ().Where(t => t.Id == threadId).FirstOrDefault();
+            return _threads.AsQueryable<Thread> ().Where (t => t.Id == threadId).FirstOrDefault ();
         }
 
         public Thread[] GetByUserId (string userId) {
 
             User user = _users.Find<User> (u => u.Id == userId).FirstOrDefault ();
-            
-            return _threads.AsQueryable<Thread> ().Where(t => t.Speakers.Contains(user.Id)).ToArray();
+
+            return _threads.AsQueryable<Thread> ().Where (t => t.Speakers.Contains (user.Id)).ToArray ();
+        }
+
+        public bool RemoveSpeaker (string threadId, string userIdToRemove) {
+            Thread thread = _threads.Find (t => t.Id == threadId).FirstOrDefault ();
+
+            if (thread == null) {
+                return false;
+            }
+
+            string[] users = thread.Speakers.Except (new string[] { userIdToRemove }).ToArray ();
+
+            thread.Speakers = users;
+            _threads.ReplaceOne (t => t.Id == thread.Id, thread);
+
+            return true;
         }
 
     }

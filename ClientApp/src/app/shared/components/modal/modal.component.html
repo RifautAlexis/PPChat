@@ -1,0 +1,12 @@
+<div class="modal" [ngStyle]="{display: show ? 'block' : 'none'}">
+  <div class="overlay" (click)="closeCallback()"></div>
+  <div class="modal_content">
+    <!-- <ng-content></ng-content> -->
+
+    <h2>Salut</h2>
+    <p>LOOOOL</p>
+    <button title="Close" class="close_modal" (click)="closeCallback()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>

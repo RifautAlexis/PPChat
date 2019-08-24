@@ -2,6 +2,8 @@ using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
+using PPChat.Dtos;
+using System.Linq;
 
 namespace PPChat.Models {
     public class Thread {
@@ -21,6 +23,14 @@ namespace PPChat.Models {
             this.Id = id;
             this.Speakers = speakers;
             this.Messages = messages;
+        }
+
+        public static Thread Converter(ThreadDto threadDto) {
+
+            string[] speakersId = threadDto.Speakers.Select(u => u.Id).ToArray();
+            string[] messagesId = threadDto.Messages.Select(m => m.Id).ToArray();
+
+            return new Thread(threadDto.Id, speakersId, messagesId);
         }
     }
 

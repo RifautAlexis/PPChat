@@ -2,6 +2,40 @@
 
   <div class="w-2/12 border-r h-screen pt-2">
 
+    <button class="modal_opener" (click)="toggleModal()">
+      New Thread
+    </button>
+
+    <div class="modal" [ngStyle]="{display: showModal ? 'block' : 'none'}">
+      <div class="overlay" (click)="toggleModal()"></div>
+      <div class="modal_content">
+
+        <form [formGroup]="newThreadForm" (ngSubmit)="createNewThread()">
+          <div formArrayName="contactsArray"
+            *ngFor="let contact of newThreadForm.controls.contactsArray.controls">
+
+            <input id="contact.controls.user.value.id" type="checkbox" value="contact.controls.user.value.id"
+              name="contact.controls.user.value.username">
+            <label for="contact.controls.user.value.id"> {{ contact.controls.user.value.username }}</label>
+
+          </div>
+
+          <button type="submit"> valider </button>
+          <button (click)="toggleModal()"> annuler </button>
+
+        </form>
+
+        <!-- <ng-container *ngFor="let contact of contactList">
+          <input id="contact.id" type="checkbox" value="contact.id" name="" checked>
+          <label for="contact.id"> {{ contact.username }}</label>
+        </ng-container> -->
+
+        <button title="Close" class="close_modal" (click)="toggleModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
     <input type="search" name="search" [(ngModel)]="searchThread" placeholder="Rechercher">
 
     <h2 class="text-color"> Threads </h2>
@@ -15,6 +49,7 @@
           <div id="thread" (click)="selectThread(thread.id)">
 
             <p class="text-color"> {{ thread.speakers | PrintSpeakers }} </p>
+            <i (click)="removeThread(thread.id)" class="fas fa-trash"></i>
 
           </div>
 
