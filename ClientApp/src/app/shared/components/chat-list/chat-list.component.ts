@@ -137,8 +137,8 @@ export class ChatListComponent implements OnInit {
 
     let speakers: string[] = new Array();
 
-    this.newThreadForm.controls.contactsArray.controls.forEach(element => {
-      speakers.push(element.controls.user.value.id);
+    this.newThreadForm.get('contactsArray').value.forEach(element => {
+      speakers.push(element.id);
     });
 
     speakers.push(this.authService.getLoggedUserId());
@@ -170,7 +170,9 @@ export class ChatListComponent implements OnInit {
   private createContacts(): void {
 
     for (let i = 0; i < this.contactList.length; i++) {
-      this.contacts.push(this.formBuilder.group({ user: this.contactList[i] }));
+      // this.contacts.push(this.formBuilder.group({ user: this.contactList[i] }));
+      this.contacts.push(new FormControl( this.contactList[i] ));
+      // this.contacts.push(this.formBuilder.control( this.contactList[i] ));
     }
 
   }

@@ -12,11 +12,11 @@
 
         <form [formGroup]="newThreadForm" (ngSubmit)="createNewThread()">
           <div formArrayName="contactsArray"
-            *ngFor="let contact of newThreadForm.controls.contactsArray.controls">
+            *ngFor="let contact of newThreadForm.get('contactsArray').value">
 
-            <input id="contact.controls.user.value.id" type="checkbox" value="contact.controls.user.value.id"
-              name="contact.controls.user.value.username">
-            <label for="contact.controls.user.value.id"> {{ contact.controls.user.value.username }}</label>
+            <input id="contact.id" type="checkbox" value="contact.id"
+              name="contact.username">
+            <label for="contact.id"> {{ contact.username }}</label>
 
           </div>
 
@@ -24,11 +24,6 @@
           <button (click)="toggleModal()"> annuler </button>
 
         </form>
-
-        <!-- <ng-container *ngFor="let contact of contactList">
-          <input id="contact.id" type="checkbox" value="contact.id" name="" checked>
-          <label for="contact.id"> {{ contact.username }}</label>
-        </ng-container> -->
 
         <button title="Close" class="close_modal" (click)="toggleModal()">
           <i class="fas fa-times"></i>
