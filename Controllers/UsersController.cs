@@ -84,19 +84,11 @@ namespace PPChat.Controllers {
                 return false;
             }
 
-            string token = (Request.Headers["Authorization"]);
-            string newToken = token.Replace ("Bearer ", "");
+            ClaimsIdentity claimsIdentity = this.User.Identity as ClaimsIdentity;
+            string userId = claimsIdentity.FindFirst (ClaimTypes.Name)?.Value;
+            User onlineUser = this._userService.GetById (userId);
 
-            var handler = new JwtSecurityTokenHandler ();
-
-            string onlineUserId = "";
-
-            if (handler.CanReadToken (newToken)) {
-                var decodedToken = handler.ReadJwtToken (newToken);
-                onlineUserId = ((List<Claim>) decodedToken.Claims).Find (a => a.Type.ToString () == "id").Value;
-            }
-
-            return _userService.RemoveContact (contactToRemove, onlineUserId);
+            return _userService.RemoveContact (contactToRemove, onlineUser.Id);
         }
 
         [HttpPut ("addContact/{contactToAdd}")]
@@ -106,19 +98,11 @@ namespace PPChat.Controllers {
                 return false;
             }
 
-            string token = (Request.Headers["Authorization"]);
-            string newToken = token.Replace ("Bearer ", "");
+            ClaimsIdentity claimsIdentity = this.User.Identity as ClaimsIdentity;
+            string userId = claimsIdentity.FindFirst (ClaimTypes.Name)?.Value;
+            User onlineUser = this._userService.GetById (userId);
 
-            var handler = new JwtSecurityTokenHandler ();
-
-            string onlineUserId = "";
-
-            if (handler.CanReadToken (newToken)) {
-                var decodedToken = handler.ReadJwtToken (newToken);
-                onlineUserId = ((List<Claim>) decodedToken.Claims).Find (a => a.Type.ToString () == "id").Value;
-            }
-
-            return _userService.AddContact (contactToAdd, onlineUserId);
+            return _userService.AddContact (contactToAdd, onlineUser.Id);
         }
 
     }
