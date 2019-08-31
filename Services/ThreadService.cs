@@ -29,6 +29,13 @@ namespace PPChat.Services {
             return thread;
         }
 
+        public Thread Delete (Thread thread) {
+
+            _threads.DeleteOne (t => t.Id == thread.Id);
+
+            return thread;
+        }
+
         public void UpdateNewMessage (string threadId, string messageId) {
 
             var filter = Builders<Thread>.Filter.And (
@@ -49,11 +56,11 @@ namespace PPChat.Services {
             return _threads.AsQueryable<Thread> ().Where (t => t.Speakers.Contains (user.Id)).ToArray ();
         }
 
-        public bool RemoveSpeaker (string threadId, string userIdToRemove) {
+        public Thread RemoveSpeaker (string threadId, string userIdToRemove) {
             Thread thread = _threads.Find (t => t.Id == threadId).FirstOrDefault ();
 
             if (thread == null) {
-                return false;
+                return null;
             }
 
             string[] users = thread.Speakers.Except (new string[] { userIdToRemove }).ToArray ();
@@ -61,7 +68,7 @@ namespace PPChat.Services {
             thread.Speakers = users;
             _threads.ReplaceOne (t => t.Id == thread.Id, thread);
 
-            return true;
+            return thread;
         }
 
     }

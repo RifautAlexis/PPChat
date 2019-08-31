@@ -66,9 +66,13 @@ namespace PPChat.Controllers {
             // Supprimer dans threads.speakers et dans user.threads
 
             bool isRemovedThread = _userService.RemoveThread (threadToRemove, onlineUser.Id);
-            bool isRemovedSpeaker = _threadService.RemoveSpeaker (threadToRemove, onlineUser.Id);
+            Thread modifiedThread = _threadService.RemoveSpeaker (threadToRemove, onlineUser.Id);
 
-            return isRemovedThread && isRemovedSpeaker; // Doit être approfondie, si l'un est false alors rearward celui à true
+            if(modifiedThread.Speakers.Length == 0) {
+                _threadService.Delete(modifiedThread);
+            }
+
+            return true; // Doit être approfondie
         }
 
         [HttpPost ("addThread")]
