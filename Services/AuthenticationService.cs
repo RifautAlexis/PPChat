@@ -23,25 +23,43 @@ namespace PPChat.Services {
 
         public string CreateToken (User user) {
 
-            string token = string.Empty;
+            // string token = string.Empty;
 
-            var claim = new [] {
-                new Claim ("id", user.Id)
+            // var claim = new [] {
+            //     new Claim (ClaimTypes.Name, user.Id)
+            // };
+
+            // var key = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (_tokenManagement.Secret));
+            // var credentials = new SigningCredentials (key, SecurityAlgorithms.HmacSha256);
+
+            // var jwtToken = new JwtSecurityToken (
+            //     _tokenManagement.Issuer,
+            //     _tokenManagement.Audience,
+            //     claim,
+            //     // expires : DateTime.Now.AddMinutes (_tokenManagement.AccessExpiration),
+            //     signingCredentials : credentials
+            // );
+
+            // token = new JwtSecurityTokenHandler ().WriteToken (jwtToken);
+            // return token;
+
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            byte[] key = Encoding.ASCII.GetBytes(_tokenManagement.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                }),
+                // Expires = DateTime.Now.AddYears (_tokenManagement.AccessExpiration),
+                Expires = DateTime.Now.AddYears (10),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature
+                )
             };
 
-            var key = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (_tokenManagement.Secret));
-            var credentials = new SigningCredentials (key, SecurityAlgorithms.HmacSha256);
-
-            var jwtToken = new JwtSecurityToken (
-                _tokenManagement.Issuer,
-                _tokenManagement.Audience,
-                claim,
-                // expires : DateTime.Now.AddMinutes (_tokenManagement.AccessExpiration),
-                signingCredentials : credentials
-            );
-
-            token = new JwtSecurityTokenHandler ().WriteToken (jwtToken);
-            return token;
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
 
         }
 

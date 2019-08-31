@@ -46,9 +46,11 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(userLogin).then(
       (reponse: any) => {
+
         if (this.authService.isLogged()) {
           this.router.navigate(['/me']);
         }
+
       }
     );
 
