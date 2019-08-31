@@ -1,5 +1,5 @@
 export interface IToken {
-    id: string;
+    unique_name: string;
     aud: string;
     exp: string;
     iss: string;

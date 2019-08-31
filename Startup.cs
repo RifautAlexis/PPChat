@@ -31,6 +31,8 @@ namespace PPChat {
             services.AddSingleton<IPPChatDatabaseSettings> (sp =>
                 sp.GetRequiredService<IOptions<PPChatDatabaseSettings>> ().Value);
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddSingleton<UserService> ();
             services.AddSingleton<AuthenticationService> ();
             services.AddSingleton<ThreadService> ();

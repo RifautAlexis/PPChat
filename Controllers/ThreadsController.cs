@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PPChat.Dtos;
 using PPChat.Models;
@@ -18,11 +19,13 @@ namespace PPChat.Controllers {
         private ThreadService _threadService;
         private UserService _userService;
         private MessageService _messageService;
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public ThreadsController (ThreadService threadService, UserService userService, MessageService messageService) {
+        public ThreadsController (ThreadService threadService, UserService userService, MessageService messageService, IHttpContextAccessor httpContextAccessor) {
             this._threadService = threadService;
             this._userService = userService;
             this._messageService = messageService;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
@@ -77,36 +80,48 @@ namespace PPChat.Controllers {
             return isRemovedThread && isRemovedSpeaker; // Doit être approfondie, si l'un est false alors rearward celui à true
         }
 
+        // [HttpPost ("addThread")]
+        // public bool AddThread ([FromBody] Thread thread) {
+
+        //     if (thread == null) {
+        //         return false;
+        //     }
+
+        //     string token = (Request.Headers["Authorization"]);
+        //     string newToken = token.Replace ("Bearer ", "");
+
+        //     var handler = new JwtSecurityTokenHandler ();
+
+        //     string onlineUserId = "";
+
+        //     if (handler.CanReadToken (newToken)) {
+        //         var decodedToken = handler.ReadJwtToken (newToken);
+        //         onlineUserId = ((List<Claim>) decodedToken.Claims).Find (a => a.Type.ToString () == "id").Value;
+        //     }
+
+        //     // Thread thread = Models.Thread.Converter (threadDto);
+
+        //     // Ajouter un nouveau thread et dans user.threads
+
+        //     Thread newThread = _threadService.Create (thread);
+
+        //     foreach (var userId in thread.Speakers) {
+        //         bool isAddedInUsers = _userService.AddThread (thread.Id, userId);
+        //     }
+
+        //     return newThread != null; // Doit être approfondie, regarer aussi chaque "AddThread"
+        // }
+
         [HttpPost ("addThread")]
-        public bool AddThread ([FromBody] Thread thread) {
+        public User AddThread ([FromBody] Thread thread) {
 
             if (thread == null) {
-                return false;
+                return null;
             }
 
-            string token = (Request.Headers["Authorization"]);
-            string newToken = token.Replace ("Bearer ", "");
-
-            var handler = new JwtSecurityTokenHandler ();
-
-            string onlineUserId = "";
-
-            if (handler.CanReadToken (newToken)) {
-                var decodedToken = handler.ReadJwtToken (newToken);
-                onlineUserId = ((List<Claim>) decodedToken.Claims).Find (a => a.Type.ToString () == "id").Value;
-            }
-
-            // Thread thread = Models.Thread.Converter (threadDto);
-
-            // Ajouter un nouveau thread et dans user.threads
-
-            Thread newThread = _threadService.Create (thread);
-
-            foreach (var userId in thread.Speakers) {
-                bool isAddedInUsers = _userService.AddThread (thread.Id, userId);
-            }
-
-            return newThread != null; // Doit être approfondie, regarer aussi chaque "AddThread"
+            ClaimsIdentity claimsIdentity = this.User.Identity as ClaimsIdentity;
+            string userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            return this._userService.GetById(userId);
         }
 
     }

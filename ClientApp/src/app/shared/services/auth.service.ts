@@ -44,6 +44,8 @@ export class AuthService {
       .then(
         (response: any) => {
 
+          console.log(response);
+
           if (response.StatusCode === 200) {
 
             localStorage.setItem('token', response.Result);

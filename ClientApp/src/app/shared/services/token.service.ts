@@ -17,7 +17,7 @@ export class TokenService {
 
       let tokenDecoded: Token = this.decodeToken(token);
 
-      return tokenDecoded.id;
+      return tokenDecoded.unique_name;
     }
 
     return null;
@@ -25,6 +25,7 @@ export class TokenService {
 
   private decodeToken(token: string): Token {
     var decoded: Token = jwt_decode(token);
+
     return decoded;
   }
 

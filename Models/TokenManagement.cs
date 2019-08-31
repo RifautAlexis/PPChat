@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 // Est un POCO
 
 namespace PPChat.Models {
-    
+
     [JsonObject ("tokenManagement")]
     public class TokenManagement {
 
@@ -15,6 +15,9 @@ namespace PPChat.Models {
 
         [JsonProperty ("audience")]
         public string Audience { get; set; }
+
+        [JsonProperty ("accessExpiration")]
+        public string AccessExpiration { get; set; }
 
     }
 }
