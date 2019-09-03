@@ -1,18 +1,18 @@
 const postcss = require('gulp-postcss');
-const tailwindcss = require('tailwindcss');
+// const tailwindcss = require('tailwindcss');
 const sass = require('gulp-sass');
 
-gulp.task('default', function () {
+// gulp.task('default', function () {
 
-  return gulp.src('tailwindcss/styles.scss')
+//   return gulp.src('tailwindcss/styles.scss')
 
-    .pipe(sass().on('error', sass.logError))
+//     .pipe(sass().on('error', sass.logError))
 
-    .pipe(postcss([
+//     .pipe(postcss([
 
-      tailwindcss('tailwindcss/tailwind.config.js')
+//       tailwindcss('tailwindcss/tailwind.config.js')
 
-    ]))
+//     ]))
 
-    .pipe(gulp.dest('src/'))
-});
+//     .pipe(gulp.dest('src/'))
+// });
