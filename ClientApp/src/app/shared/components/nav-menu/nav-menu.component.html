@@ -1,32 +1,27 @@
-<header class="bg-nav py-2">
+<header>
 
-  <nav class="flex items-center justify-between mx-3">
+  <nav>
 
-    <div>
-      <a [routerLink]='["/"]'> PPChat </a>
+    <div class="nav-wrapper">
+      <a [routerLink]='["/"]' class="brand-logo"> PPChat </a>
+
+      <ul id="nav-mobile" class="right">
+        <ng-container *ngIf="!(currentUser | async)">
+          <li>
+            <a [routerLink]='["/login"]'> Connexion </a>
+          </li>
+          <li>
+            <a [routerLink]='["/register"]'> Inscription </a>
+          </li>
+        </ng-container>
+        <ng-container *ngIf="(currentUser | async)">
+          <li>
+            <a (click)="logout()"> Logout </a>
+          </li>
+        </ng-container>
+      </ul>
+
     </div>
-
-    <ng-container *ngIf="(currentUser | async)">
-
-      <div>
-
-        <a [routerLink]='["/chats"]' class="px-2"> Chats </a>
-        <a class="px-2"> {{ (currentUser | async)?.username }} </a>
-
-      </div>
-
-      <div>
-        <a (click)="logout()"> Logout </a>
-      </div>
-
-    </ng-container>
-
-    <ng-container *ngIf="!(currentUser | async)">
-      <div>
-        <a [routerLink]='["/login"]' class="px-2"> Connexion </a>
-        <a [routerLink]='["/register"]' class="px-2"> Inscription </a>
-      </div>
-    </ng-container>
 
   </nav>
 

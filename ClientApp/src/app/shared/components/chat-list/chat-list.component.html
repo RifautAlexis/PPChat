@@ -1,8 +1,35 @@
-<div class="flex flex-row">
+<div class="row">
 
-  <div class="w-2/12 border-r h-screen pt-2">
+  <div class="col s2">
 
-    <button class="modal_opener" (click)="toggleModal()">
+    <button data-target="modalNewThread" class="btn modal-trigger"> New Thread </button>
+
+    <div id="modalNewThread" class="modal">
+
+      <div class="modal-content">
+
+        <form [formGroup]="newThreadForm" (ngSubmit)="createNewThread()">
+
+          <div formArrayName="contactsArray" *ngFor="let contact of newThreadForm.get('contactsArray').value">
+
+            <input id="contact.id" type="checkbox" value="contact.id" name="contact.username">
+            <label for="contact.id"> {{ contact.username }}</label>
+
+          </div>
+
+          <button type="submit"> valider </button>
+          <button (click)="toggleModal()"> annuler </button>
+
+        </form>
+
+      </div>
+
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+      </div>
+    </div>
+
+    <button>
       New Thread
     </button>
 
@@ -11,11 +38,9 @@
       <div class="modal_content">
 
         <form [formGroup]="newThreadForm" (ngSubmit)="createNewThread()">
-          <div formArrayName="contactsArray"
-            *ngFor="let contact of newThreadForm.get('contactsArray').value">
+          <div formArrayName="contactsArray" *ngFor="let contact of newThreadForm.get('contactsArray').value">
 
-            <input id="contact.id" type="checkbox" value="contact.id"
-              name="contact.username">
+            <input id="contact.id" type="checkbox" value="contact.id" name="contact.username">
             <label for="contact.id"> {{ contact.username }}</label>
 
           </div>
@@ -33,7 +58,7 @@
 
     <input type="search" name="search" [(ngModel)]="searchThread" placeholder="Rechercher">
 
-    <h2 class="text-color"> Threads </h2>
+    <h2> Threads </h2>
 
     <ng-container *ngIf="threads">
 
@@ -43,7 +68,7 @@
 
           <div id="thread" (click)="selectThread(thread.id)">
 
-            <p class="text-color"> {{ thread.speakers | PrintSpeakers }} </p>
+            <p> {{ thread.speakers | PrintSpeakers }} </p>
             <i (click)="removeThread(thread.id)" class="fas fa-trash"></i>
 
           </div>
@@ -56,7 +81,7 @@
 
   </div>
 
-  <div class="w-10/12 bg-chat h-screen pt-2">
+  <div class="col s10">
     <app-chat [thread]="selectedThread"></app-chat>
   </div>
 

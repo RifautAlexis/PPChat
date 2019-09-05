@@ -35,33 +35,6 @@ export class NavMenuComponent implements OnInit {
         }
       }
     );
-
-    // this.findUserForm
-    //   .get('findUser')
-    //   .valueChanges
-    //   .pipe(
-    //       debounceTime(300),
-    //       distinctUntilChanged(),
-    //     )
-    //   .subscribe(
-    //     (username: string) => {
-
-    //       this.isLoading = true;
-
-    //       if (this.tools.isStringEmpty(username)) {
-    //         this.filteredUsers = [];
-    //         this.isLoading = false;
-
-    //       } else {
-
-    //         this.userService.findUsers(username).then(
-    //           (users: User[]) => {
-    //             this.filteredUsers = users;
-    //             this.isLoading = false;
-    //           });
-    //       }
-    //     }
-    //   );
   }
 
   logout() {
@@ -69,17 +42,5 @@ export class NavMenuComponent implements OnInit {
     this.currentUser = null;
     this.router.navigate(['/']);
   }
-
-  // searchUser() {
-
-  //   if (this.findUserForm.invalid) {
-  //     return;
-  //   }
-
-  //   let search: string = this.findUserForm.controls.findUser.value;
-
-  //   return search;
-
-  // }
 
 }
