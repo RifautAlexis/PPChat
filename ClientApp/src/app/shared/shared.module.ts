@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 import { NavMenuComponent } from '@shared/components/nav-menu/nav-menu.component';
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -23,6 +25,7 @@ import { ThreadFilterPipe } from './pipes/ThreadFilter.pipe';
 
 @NgModule({
   declarations: [
+    BrowserAnimationsModule,
     HomeComponent,
     RegisterComponent,
     LoginComponent,
