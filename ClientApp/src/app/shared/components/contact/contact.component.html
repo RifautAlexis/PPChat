@@ -15,10 +15,18 @@
 
     <ng-template #showResult>
 
-      <ng-container *ngFor="let user of filteredUsers">
-          {{ user.username }}
-          <i (click)="addContact(user.id)" class="fas fa-user-plus"></i>
-      </ng-container>
+      <mat-list>
+
+        <ng-container *ngFor="let user of filteredUsers">
+
+          <mat-list-item>
+            {{ user.username }}
+            <i (click)="addContact(user.id)" class="material-icons"> person_outline </i>
+          </mat-list-item>
+
+        </ng-container>
+
+      </mat-list>
 
     </ng-template>
 
@@ -37,18 +45,18 @@
 
   <ng-container *ngIf="contacts">
 
-    <ul>
+    <mat-list>
 
       <ng-container *ngFor="let contact of contacts">
 
-        <li>
+        <mat-list-item>
           {{ contact.username }}
-          <i (click)="removeContact(contact.id)" class="fas fa-trash"></i>
-        </li>
+          <i (click)="removeContact(contact.id)" class="material-icons"> delete_outline </i>
+        </mat-list-item>
 
       </ng-container>
 
-    </ul>
+    </mat-list>
 
   </ng-container>
 </div>

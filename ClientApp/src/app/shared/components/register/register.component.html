@@ -4,29 +4,27 @@
 
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-      <p>
-          <label>Email:</label>
-          <input type="text" formControlName="email">
-        </p>
+    <div>
+      <label>Email:</label>
+      <input type="text" formControlName="email">
+    </div>
 
-    <p>
+    <div>
       <label>Pseudo:</label>
       <input type="text" formControlName="username">
-    </p>
+    </div>
 
-    <p>
+    <div>
       <label>Password:</label>
       <input type="password" formControlName="password">
-    </p>
+    </div>
 
-    <p>
+    <div>
       <button type="submit" [disabled]="!registerForm.valid">Submit</button>
-    </p>
+      <button (click)="cancel()"> Cancel </button>
+      
+    </div>
 
   </form>
-
-  <p>
-    Form Status: {{ registerForm.status }}
-  </p>
 
 </section>

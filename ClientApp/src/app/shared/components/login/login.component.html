@@ -1,27 +1,24 @@
 <section>
 
-  <h1>Login</h1>
+  <h1>Connexion</h1>
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-    <p>
+    <div>
       <label>Email :</label>
       <input type="text" formControlName="email">
-    </p>
+    </div>
 
-    <p>
+    <div>
       <label>Password:</label>
       <input type="password" formControlName="password">
-    </p>
+    </div>
 
-    <p>
-      <button type="submit" [disabled]="!loginForm.valid">Submit</button>
-    </p>
+    <div>
+      <button type="submit" [disabled]="!loginForm.valid"> Submit </button>
+      <button (click)="cancel()"> Cancel </button>
+    </div>
 
   </form>
-
-  <p>
-    Form Status: {{ loginForm.status }}
-  </p>
 
 </section>

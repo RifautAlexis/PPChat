@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-declare var M: any;
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+
+import { AuthService } from '@shared/services/auth.service';
+
+import { IUser as User } from '@shared/models/User';
 
 @Component({
   selector: 'app-side-menu',
@@ -8,12 +13,19 @@ declare var M: any;
 })
 export class SideMenuComponent implements OnInit {
 
-  constructor() { }
+  currentUser: Observable<User>;
+
+  constructor(private authService: AuthService, private router: Router) {
+    this.currentUser = new Observable<User>();
+  }
 
   ngOnInit() {
-    const elem = document.querySelector('.sidenav');
-    const options = {};
-    M.Sidenav.init(elem, options);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.currentUser = null;
+    this.router.navigate(['/']);
   }
 
 }

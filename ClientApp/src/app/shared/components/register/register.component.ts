@@ -7,6 +7,8 @@ import { IUserRegister as UserRegister } from '@shared/models/UserRegister';
 import { AuthService } from '@shared/services/auth.service';
 import { AlertService } from '@shared/services/alert.service';
 
+import { MatDialogRef } from '@angular/material';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -17,7 +19,7 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService, private alertService: AlertService) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService, private alertService: AlertService, private dialogRef: MatDialogRef<RegisterComponent>) { }
 
   ngOnInit() {
 
@@ -49,11 +51,16 @@ export class RegisterComponent implements OnInit {
     this.authService.register(userRegister).then(
       (reponse: any) => {
         if (this.authService.isLogged()) {
+          this.dialogRef.close();
           this.router.navigate(['/chats']);
         }
       }
     );
 
+  }
+
+  cancel() {
+    this.dialogRef.close();
   }
 
 }

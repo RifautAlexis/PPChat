@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
+import { MatDialog } from '@angular/material';
+
 import { IThread as Thread } from '@shared/models/Thread';
 import { IMessage as Message } from '@shared/models/Message';
-import { IUser as User } from '@shared/models/User';
-import { INewThread as NewThread } from '@shared/models/NewThread';
 
 import { AuthService } from '@shared/services/auth.service';
 import { ChatService } from '@shared/services/chat.service';
-import { UserService } from '@shared/services/user.service';
+
+import { AddThreadComponent } from '@shared/components/add-thread/add-thread.component';
 
 @Component({
   selector: 'app-chat-list',
@@ -19,8 +20,6 @@ import { UserService } from '@shared/services/user.service';
 
 export class ChatListComponent implements OnInit {
 
-  showModal = false;
-
   threads: Thread[];
 
   selectedThread: Thread;
@@ -29,25 +28,18 @@ export class ChatListComponent implements OnInit {
 
   searchedUser: string;
 
-  contactList: User[];
-
   /*
     Id in URL param
   */
   threadId: string;
 
-  newThreadForm: FormGroup;
   contacts: FormArray = this.formBuilder.array([]);
 
-  constructor(private chatService: ChatService, private userService: UserService, private router: Router, private authService: AuthService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
+  constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private route: ActivatedRoute, private formBuilder: FormBuilder, public dialog: MatDialog) {
     this.threads = [];
   }
 
   ngOnInit() {
-
-    this.newThreadForm = this.formBuilder.group({
-      contactsArray: this.contacts
-    });
 
     this.chatService.openConnection();
 
@@ -95,6 +87,16 @@ export class ChatListComponent implements OnInit {
 
   }
 
+  openDialogAddThread(): void {
+    const dialogRef = this.dialog.open(AddThreadComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadThreads();
+      console.log('The dialog was closed');
+      console.log(result);
+    });
+  }
+
   selectThread(threadId: string) {
     this.router.navigate(['/me/chats/' + threadId]);
   }
@@ -119,61 +121,4 @@ export class ChatListComponent implements OnInit {
       );
   }
 
-  toggleModal() {
-    if (!this.showModal) {
-      this.loadContacts().finally(
-        () => {
-
-          this.createContacts();
-
-        });
-    }
-
-    this.showModal = !this.showModal;
-  }
-
-  createNewThread() {
-    this.toggleModal();
-
-    let speakers: string[] = new Array();
-
-    this.newThreadForm.get('contactsArray').value.forEach(element => {
-      speakers.push(element.id);
-    });
-
-    speakers.push(this.authService.getLoggedUserId());
-
-    let newThread: NewThread = {
-      id: null,
-      speakers: speakers,
-      messages: [],
-    };
-
-    console.log(newThread);
-
-    this.chatService.addThread(newThread).finally(
-      () => this.loadThreads()
-    );
-
-
-  }
-
-  private loadContacts(): Promise<void | User[]> {
-    return this.userService.getContacts(this.authService.getLoggedUserId()).then(
-      (contacts: User[]) => {
-
-        this.contactList = contacts;
-      }
-    );
-  }
-
-  private createContacts(): void {
-
-    for (let i = 0; i < this.contactList.length; i++) {
-      // this.contacts.push(this.formBuilder.group({ user: this.contactList[i] }));
-      this.contacts.push(new FormControl( this.contactList[i] ));
-      // this.contacts.push(this.formBuilder.control( this.contactList[i] ));
-    }
-
-  }
 }

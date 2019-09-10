@@ -5,7 +5,8 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { IUserLogin as UserLogin } from '@shared/models/UserLogin';
 
 import { AuthService } from '@shared/services/auth.service';
-import { AlertService } from '@shared/services/alert.service';
+
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   returnUrl: string;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private dialogRef: MatDialogRef<LoginComponent>) { }
 
   ngOnInit() {
 
@@ -48,12 +49,17 @@ export class LoginComponent implements OnInit {
       (reponse: any) => {
 
         if (this.authService.isLogged()) {
+          this.dialogRef.close();
           this.router.navigate(['/me']);
         }
 
       }
     );
 
+  }
+
+  cancel() {
+    this.dialogRef.close();
   }
 
 }

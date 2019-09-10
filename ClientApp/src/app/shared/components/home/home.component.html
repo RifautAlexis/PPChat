@@ -1,4 +1,6 @@
 <div id="container">
-  <button [routerLink]='["/login"]'> Login </button>
-  <button [routerLink]='["/register"]'> Register </button>
+
+  <button (click)="openDialogLogin()"> Login </button>
+  <button (click)="openDialogRegister()"> Register </button>
+
 </div>

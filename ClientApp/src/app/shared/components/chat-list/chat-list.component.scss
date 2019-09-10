@@ -1,0 +1,39 @@
+#content {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  background-color: #4a575d;
+  overflow-y: scroll;
+}
+
+#chat-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > * {
+    margin-top: 10px;
+  }
+}
+
+#chat {
+  flex-grow: 1;
+}
+
+input {
+  border-radius: 5px;
+  background-color: #4a575d;
+  color: #ffffff;
+}
+
+#trash {
+  display: none;
+}
+
+#thread {
+  &:hover {
+    #trash {
+      display: block;
+    }
+  }
+}
