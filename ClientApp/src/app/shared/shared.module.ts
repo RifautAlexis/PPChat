@@ -5,7 +5,14 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {
+  MatGridListModule,
+  MatListModule,
+  MatInputModule,
+  MatButtonModule
+} from '@angular/material';
+
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { NavMenuComponent } from '@shared/components/nav-menu/nav-menu.component';
 import { HomeComponent } from './components/home/home.component';
@@ -17,15 +24,13 @@ import { ChatListComponent } from './components/chat-list/chat-list.component';
 import { SearchUserComponent } from './components/search-user/search-user.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { ContactComponent } from './components/contact/contact.component';
-import { SettingComponent } from './components/setting/setting.component';
-import { ModalComponent } from './components/modal/modal.component';
+import { AddThreadComponent } from './components/add-thread/add-thread.component';
 
 import { PrintSpeakersPipe } from './pipes/PrintSpeakers.pipe';
 import { ThreadFilterPipe } from './pipes/ThreadFilter.pipe';
 
 @NgModule({
   declarations: [
-    BrowserAnimationsModule,
     HomeComponent,
     RegisterComponent,
     LoginComponent,
@@ -36,10 +41,14 @@ import { ThreadFilterPipe } from './pipes/ThreadFilter.pipe';
     SearchUserComponent,
     SideMenuComponent,
     ContactComponent,
-    SettingComponent,
-    ModalComponent,
+    AddThreadComponent,
     PrintSpeakersPipe,
     ThreadFilterPipe
+  ],
+  entryComponents: [
+    LoginComponent,
+    RegisterComponent,
+    AddThreadComponent
   ],
   imports: [
     HttpClientModule,
@@ -48,6 +57,11 @@ import { ThreadFilterPipe } from './pipes/ThreadFilter.pipe';
     ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule,
+    MatGridListModule,
+    MatListModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDialogModule,
   ],
   exports: [
     CommonModule,
@@ -56,7 +70,8 @@ import { ThreadFilterPipe } from './pipes/ThreadFilter.pipe';
     HttpClientModule,
     RouterModule,
     NavMenuComponent,
-    HomeComponent
+    HomeComponent,
+    MatDialogModule
   ]
 })
 

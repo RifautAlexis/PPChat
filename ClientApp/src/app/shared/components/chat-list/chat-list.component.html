@@ -1,62 +1,45 @@
-<div class="flex flex-row">
+<div id="content">
 
-  <div class="w-2/12 border-r h-screen pt-2">
+  <div id="chat-list">
 
-    <button class="modal_opener" (click)="toggleModal()">
-      New Thread
+    <button id="add_thread" mat-mini-fab (click)="openDialogAddThread()">
+      <i class="material-icons">
+        chat
+      </i>
     </button>
-
-    <div class="modal" [ngStyle]="{display: showModal ? 'block' : 'none'}">
-      <div class="overlay" (click)="toggleModal()"></div>
-      <div class="modal_content">
-
-        <form [formGroup]="newThreadForm" (ngSubmit)="createNewThread()">
-          <div formArrayName="contactsArray"
-            *ngFor="let contact of newThreadForm.get('contactsArray').value">
-
-            <input id="contact.id" type="checkbox" value="contact.id"
-              name="contact.username">
-            <label for="contact.id"> {{ contact.username }}</label>
-
-          </div>
-
-          <button type="submit"> valider </button>
-          <button (click)="toggleModal()"> annuler </button>
-
-        </form>
-
-        <button title="Close" class="close_modal" (click)="toggleModal()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-    </div>
 
     <input type="search" name="search" [(ngModel)]="searchThread" placeholder="Rechercher">
 
-    <h2 class="text-color"> Threads </h2>
+    <section>
 
-    <ng-container *ngIf="threads">
+      <h2> Threads </h2>
 
-      <section>
+      <ng-container *ngIf="threads">
 
-        <ng-container *ngFor="let thread of threads | ThreadFilter: searchThread">
+        <mat-list>
 
-          <div id="thread" (click)="selectThread(thread.id)">
+          <ng-container *ngFor="let thread of threads | ThreadFilter: searchThread">
 
-            <p class="text-color"> {{ thread.speakers | PrintSpeakers }} </p>
-            <i (click)="removeThread(thread.id)" class="fas fa-trash"></i>
+            <mat-list-item id="thread" (click)="selectThread(thread.id)">
 
-          </div>
+              <p> {{ thread.speakers | PrintSpeakers }} </p>
 
-        </ng-container>
+              <i id="trash" (click)="removeThread(thread.id)" class="material-icons"> delete_outline </i>
 
-      </section>
+            </mat-list-item>
 
-    </ng-container>
+          </ng-container>
+
+        </mat-list>
+
+      </ng-container>
+
+    </section>
 
   </div>
 
-  <div class="w-10/12 bg-chat h-screen pt-2">
+
+  <div id="chat">
     <app-chat [thread]="selectedThread"></app-chat>
   </div>
 

@@ -1,0 +1,12 @@
+<form [formGroup]="newThreadForm" (ngSubmit)="createNewThread()">
+  <div formArrayName="contactsArray" *ngFor="let contact of newThreadForm.get('contactsArray').value">
+
+    <input id="contact.id" type="checkbox" value="contact.id" name="contact.username">
+    <label for="contact.id"> {{ contact.username }}</label>
+
+  </div>
+
+  <button type="submit"> valider </button>
+  <button (click)="cancel()"> annuler </button>
+
+</form>

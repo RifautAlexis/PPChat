@@ -1,6 +1,6 @@
-<header class="bg-nav py-2">
+<header>
 
-  <nav class="flex items-center justify-between mx-3">
+  <nav>
 
     <div>
       <a [routerLink]='["/"]'> PPChat </a>
@@ -10,8 +10,8 @@
 
       <div>
 
-        <a [routerLink]='["/chats"]' class="px-2"> Chats </a>
-        <a class="px-2"> {{ (currentUser | async)?.username }} </a>
+        <a [routerLink]='["/chats"]'> Chats </a>
+        <a> {{ (currentUser | async)?.username }} </a>
 
       </div>
 
@@ -23,8 +23,8 @@
 
     <ng-container *ngIf="!(currentUser | async)">
       <div>
-        <a [routerLink]='["/login"]' class="px-2"> Connexion </a>
-        <a [routerLink]='["/register"]' class="px-2"> Inscription </a>
+        <a [routerLink]='["/login"]'> Connexion </a>
+        <a [routerLink]='["/register"]'> Inscription </a>
       </div>
     </ng-container>
 

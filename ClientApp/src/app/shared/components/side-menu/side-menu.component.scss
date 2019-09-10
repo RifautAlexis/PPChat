@@ -1,0 +1,16 @@
+main {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  background-color: #263238;
+}
+
+aside {
+  border-color: gray;
+  border-width: 2px;
+  border-right-style: solid;
+}
+
+section {
+  flex-grow: 1;
+}

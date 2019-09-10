@@ -1,168 +1,39 @@
-#thread > i {
-  visibility: hidden;
+#content {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  background-color: #4a575d;
+  overflow-y: scroll;
 }
 
-#thread:hover > i {
-  visibility: visible;
+#chat-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > * {
+    margin-top: 10px;
+  }
 }
 
-/* Button modal */
-
-// .modal_opener {
-//   background: #3498db;
-//   padding: 4px 0;
-//   position: absolute;
-//   left: 50%;
-//   top: 50%;
-//   transform: translateX(-50%) translateY(-50%);
-//   border-radius: 3px;
-//   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-//     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-//   text-align: center;
-//   text-transform: uppercase;
-//   color: #fff;
-//   font-size: 16px;
-//   padding: 10px 20px;
-//   border: none;
-//   transition: background 0.2s ease;
-// }
-
-// .modal_opener:hover {
-//   cursor: pointer;
-//   background: #469fdb;
-// }
-
-// .modal_opener::after {
-//   content: "";
-//   display: block;
-//   position: absolute;
-//   left: 50%;
-//   width: 100%;
-//   height: 10%;
-//   border-radius: 50%;
-//   background-color: rgba(0, 0, 0, 0.4);
-//   opacity: 0.4;
-//   transform: translateX(-50%) translateY(-50%);
-//   bottom: -30px;
-// }
-
-/* Modal */
-.modal {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 990;
+#chat {
+  flex-grow: 1;
 }
 
-.modal .overlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 995;
-  background: rgba(0, 0, 0, 0.85);
+input {
+  border-radius: 5px;
+  background-color: #4a575d;
+  color: #ffffff;
 }
 
-.modal .modal_content {
-  z-index: 999;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-height: 90%;
-  overflow: auto;
-  background: #fff;
-  padding: 20px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
-  text-align: center;
-  border-radius: 4px;
-  width: 520px; /* This just a default width */
+#trash {
+  display: none;
 }
 
-// .modal .modal_content > h2 {
-//   font-size: 28px;
-//   font-weight: 200;
-//   margin: 20px 0 40px;
-//   text-align: center;
-// }
-
-// .modal .modal_content .buttons_wrapper {
-//   padding: 20px;
-// }
-
-.modal .close_modal {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  cursor: pointer;
-  font-size: 18px;
-  opacity: 0.5;
-  background: none;
-  border: none;
-  transition: opacity 0.2s ease;
+#thread {
+  &:hover {
+    #trash {
+      display: block;
+    }
+  }
 }
-
-.modal .close_modal:hover {
-  opacity: 0.9;
-}
-
-/* CheckBox */
-// .modal_content {
-//   input {
-//     position: absolute;
-//     left: -9999px;
-//   }
-
-//   label {
-//     display: block;
-//     position: relative;
-//     margin: 20px;
-//     padding: 15px 30px 15px 62px;
-//     border: 3px solid #fff;
-//     border-radius: 100px;
-//     color: #fff;
-//     background-color: #6a8494;
-//     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-//     white-space: nowrap;
-//     cursor: pointer;
-//     user-select: none;
-//     transition: background-color 0.2s, box-shadow 0.2s;
-//   }
-
-//   label::before {
-//     content: "";
-//     display: block;
-//     position: absolute;
-//     top: 10px;
-//     bottom: 10px;
-//     left: 10px;
-//     width: 32px;
-//     border: 3px solid #fff;
-//     border-radius: 100px;
-//     transition: background-color 0.2s;
-//   }
-
-  // label:first-of-type {
-  //   transform: translateX(-40px);
-  // }
-
-  // label:last-of-type {
-  //   transform: translateX(40px);
-  // }
-
-  // label:hover,
-  // input:focus + label {
-  //   box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-  // }
-
-  // input:checked + label {
-  //   background-color: #ab576c;
-  // }
-
-  // input:checked + label::before {
-  //   background-color: #fff;
-  // }
-// }

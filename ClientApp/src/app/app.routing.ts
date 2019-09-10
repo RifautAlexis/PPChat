@@ -7,8 +7,6 @@ import { RegisterComponent } from '@shared/components/register/register.componen
 import { HomeComponent } from '@shared/components/home/home.component';
 import { LoginComponent } from '@shared/components/login/login.component';
 import { ContactComponent } from '@shared/components/contact/contact.component';
-import { SettingComponent } from '@shared/components/setting/setting.component';
-import { ChatComponent } from '@shared/components/chat/chat.component';
 import { SideMenuComponent } from '@shared/components/side-menu/side-menu.component';
 
 import { AuthGuard } from '@core/interceptors/auth.guard';
@@ -39,11 +37,6 @@ const routes: Routes = [
       {
         path: 'contacts/:username',
         component: ContactComponent,
-        canActivate: [ AuthGuard ]
-      },
-      {
-        path: 'settings',
-        component: SettingComponent,
         canActivate: [ AuthGuard ]
       },
       {
