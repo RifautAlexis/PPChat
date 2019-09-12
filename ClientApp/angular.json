@@ -28,18 +28,12 @@
               "src/assets"
             ],
             "styles": [
-<<<<<<< HEAD
-              "./node_modules/materialize-css/sass/materialize.scss"
-=======
               "src/styles.scss",
               {
                 "input": "node_modules/@angular/material/prebuilt-themes/purple-green.css"
               }
->>>>>>> angular_material
             ],
             "scripts": [
-              "./node_modules/materialize-css/dist/js/materialize.js"
-
             ]
           },
           "configurations": {
