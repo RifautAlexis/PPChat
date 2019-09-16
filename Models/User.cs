@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
 using PPChat.Dtos;
-using System.Globalization;
-using System.Text.RegularExpressions;
 
 namespace PPChat.Models {
     public class User {
@@ -20,128 +22,135 @@ namespace PPChat.Models {
         [JsonProperty ("username")]
         public string Username { get; set; }
 
-        // Id from others users
-        [JsonProperty ("contacts")]
-        public string[] Contacts { get; set; }
-
-        [JsonProperty ("threads")]
-        public string[] Threads { get; set; }
-
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
 
-        public User (string id, string email, string username, string[] contacts, string[] threads, byte[] passwordHash, byte[] passwordSalt) {
-            this.Id = id;
-            this.Email = email;
-            this.Username = username;
-            this.Contacts = contacts;
-            this.Threads = threads;
-            this.PasswordHash = passwordHash;
-            this.PasswordSalt = passwordSalt;
-        }
+        // Actual user, in relation with others (Contacts)
+        [JsonProperty ("linkedToContact")]
+        public User LinkedToContact { get; set; }
 
-        /*
-            Used for easier seed
-        */
-        public User (string id, string email, string username, string[] contacts, string[] threads, string password) {
-            this.Id = id;
-            this.Email = email;
-            this.Username = username;
-            this.Contacts = contacts;
-            this.Threads = threads;
+        [JsonProperty ("contacts")]
+        public virtual HashSet<User>? Contacts { get; set; }
 
-            byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
-            
-            this.PasswordHash = passwordHash;
-            this.PasswordSalt = passwordSalt;
-        }
+        [JsonProperty ("threads")]
+        public virtual HashSet<SpeakersThreads>? Threads { get; set; }
 
-        public static User Converter (UserRegisterDto userRegister) {
-            byte[] passwordHash, passwordSalt;
+        [NotMapped]
+        [JsonProperty ("messages")]
+        public virtual HashSet<Message>? Messages { get; set; }
 
-            CreatePasswordHash (userRegister.Password, out passwordHash, out passwordSalt);
+        // public User (string id, string email, string username, string[] contacts, string[] threads, byte[] passwordHash, byte[] passwordSalt) {
+        //     this.Id = id;
+        //     this.Email = email;
+        //     this.Username = username;
+        //     this.Contacts = contacts;
+        //     this.Threads = threads;
+        //     this.PasswordHash = passwordHash;
+        //     this.PasswordSalt = passwordSalt;
+        // }
 
-            return new User (null, userRegister.Email, userRegister.Username, null, null, passwordHash, passwordSalt);
-        }
+        // /*
+        //     Used for easier seed
+        // */
+        // public User (string id, string email, string username, string[] contacts, string[] threads, string password) {
+        //     this.Id = id;
+        //     this.Email = email;
+        //     this.Username = username;
+        //     this.Contacts = contacts;
+        //     this.Threads = threads;
 
-        public static void CreatePasswordHash (string password, out byte[] passwordHash, out byte[] passwordSalt) {
+        //     byte[] passwordHash, passwordSalt;
+        //     CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
-            if (password == null) throw new ArgumentNullException ("password");
+        //     this.PasswordHash = passwordHash;
+        //     this.PasswordSalt = passwordSalt;
+        // }
 
-            if (string.IsNullOrWhiteSpace (password)) throw new ArgumentException ("Value cannot be empty or whitespace only string.", "password");
+        // public static User Converter (UserRegisterDto userRegister) {
+        //     byte[] passwordHash, passwordSalt;
 
-            using (var hmac = new System.Security.Cryptography.HMACSHA512 ()) {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash (System.Text.Encoding.UTF8.GetBytes (password));
-            }
-        }
+        //     CreatePasswordHash (userRegister.Password, out passwordHash, out passwordSalt);
 
-        public bool IsValidPassword (string password) {
+        //     return new User (null, userRegister.Email, userRegister.Username, null, null, passwordHash, passwordSalt);
+        // }
 
-            using (var hmac = new System.Security.Cryptography.HMACSHA512 (this.PasswordSalt)) {
+        // public static void CreatePasswordHash (string password, out byte[] passwordHash, out byte[] passwordSalt) {
 
-                Byte[] computedHash = hmac.ComputeHash (System.Text.Encoding.UTF8.GetBytes (password));
+        //     if (password == null) throw new ArgumentNullException ("password");
 
-                for (int i = 0; i < computedHash.Length; i++) {
+        //     if (string.IsNullOrWhiteSpace (password)) throw new ArgumentException ("Value cannot be empty or whitespace only string.", "password");
 
-                    if (computedHash[i] != this.PasswordHash[i])
-                        return false;
-                }
-            }
+        //     using (var hmac = new System.Security.Cryptography.HMACSHA512 ()) {
+        //         passwordSalt = hmac.Key;
+        //         passwordHash = hmac.ComputeHash (System.Text.Encoding.UTF8.GetBytes (password));
+        //     }
+        // }
 
-            return true;
-        }
+        // public bool IsValidPassword (string password) {
 
-        public bool IsValid () {
+        //     using (var hmac = new System.Security.Cryptography.HMACSHA512 (this.PasswordSalt)) {
 
-            if (!IsValidEmail(this.Email)) {
-                return false;
-            }
+        //         Byte[] computedHash = hmac.ComputeHash (System.Text.Encoding.UTF8.GetBytes (password));
 
-            if (string.IsNullOrWhiteSpace(this.Username))
-            {
-                return false;
-            }
+        //         for (int i = 0; i < computedHash.Length; i++) {
 
-            return true;
-        }
+        //             if (computedHash[i] != this.PasswordHash[i])
+        //                 return false;
+        //         }
+        //     }
 
-        // Merci à Microsoft :D
-        private bool IsValidEmail (string email) {
-            if (string.IsNullOrWhiteSpace (email))
-                return false;
+        //     return true;
+        // }
 
-            try {
-                // Normalize the domain
-                email = Regex.Replace (email, @"(@)(.+)$", DomainMapper,
-                    RegexOptions.None, TimeSpan.FromMilliseconds (200));
+        // public bool IsValid () {
 
-                // Examines the domain part of the email and normalizes it.
-                string DomainMapper (Match match) {
-                    // Use IdnMapping class to convert Unicode domain names.
-                    var idn = new IdnMapping ();
+        //     if (!IsValidEmail(this.Email)) {
+        //         return false;
+        //     }
 
-                    // Pull out and process domain name (throws ArgumentException on invalid)
-                    var domainName = idn.GetAscii (match.Groups[2].Value);
+        //     if (string.IsNullOrWhiteSpace(this.Username))
+        //     {
+        //         return false;
+        //     }
 
-                    return match.Groups[1].Value + domainName;
-                }
-            } catch (RegexMatchTimeoutException e) {
-                return false;
-            } catch (ArgumentException e) {
-                return false;
-            }
+        //     return true;
+        // }
 
-            try {
-                return Regex.IsMatch (email,
-                    @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
-                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
-                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds (250));
-            } catch (RegexMatchTimeoutException) {
-                return false;
-            }
-        }
+        // // Merci à Microsoft :D
+        // private bool IsValidEmail (string email) {
+        //     if (string.IsNullOrWhiteSpace (email))
+        //         return false;
+
+        //     try {
+        //         // Normalize the domain
+        //         email = Regex.Replace (email, @"(@)(.+)$", DomainMapper,
+        //             RegexOptions.None, TimeSpan.FromMilliseconds (200));
+
+        //         // Examines the domain part of the email and normalizes it.
+        //         string DomainMapper (Match match) {
+        //             // Use IdnMapping class to convert Unicode domain names.
+        //             var idn = new IdnMapping ();
+
+        //             // Pull out and process domain name (throws ArgumentException on invalid)
+        //             var domainName = idn.GetAscii (match.Groups[2].Value);
+
+        //             return match.Groups[1].Value + domainName;
+        //         }
+        //     } catch (RegexMatchTimeoutException e) {
+        //         return false;
+        //     } catch (ArgumentException e) {
+        //         return false;
+        //     }
+
+        //     try {
+        //         return Regex.IsMatch (email,
+        //             @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+        //             @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+        //             RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds (250));
+        //     } catch (RegexMatchTimeoutException) {
+        //         return false;
+        //     }
+        // }
     }
 
 }

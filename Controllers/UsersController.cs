@@ -43,67 +43,67 @@ namespace PPChat.Controllers {
             return userDto;
         }
 
-        [HttpGet ("findUsers/{username}")]
-        public UserDto[] FindUsers (string username) {
+        // [HttpGet ("findUsers/{username}")]
+        // public UserDto[] FindUsers (string username) {
 
-            if (string.IsNullOrEmpty (username)) {
-                return new UserDto[0];
-            }
+        //     if (string.IsNullOrEmpty (username)) {
+        //         return new UserDto[0];
+        //     }
 
-            User[] users = _userService.GetByUsername (username);
+        //     User[] users = _userService.GetByUsername (username);
 
-            List<UserDto> usersToReturn = new List<UserDto> ();
-            foreach (var user in users) {
-                usersToReturn.Add (Dtos.UserDto.Converter (user));
-            }
+        //     List<UserDto> usersToReturn = new List<UserDto> ();
+        //     foreach (var user in users) {
+        //         usersToReturn.Add (Dtos.UserDto.Converter (user));
+        //     }
 
-            return usersToReturn.ToArray ();
-        }
+        //     return usersToReturn.ToArray ();
+        // }
 
-        [HttpGet ("getContacts/{userId}")]
-        public UserDto[] GetContacts (string userId) {
+        // [HttpGet ("getContacts/{userId}")]
+        // public UserDto[] GetContacts (string userId) {
 
-            if (string.IsNullOrEmpty (userId)) {
-                return new UserDto[0];
-            }
+        //     if (string.IsNullOrEmpty (userId)) {
+        //         return new UserDto[0];
+        //     }
 
-            User[] users = _userService.GetContacts (userId);
+        //     User[] users = _userService.GetContacts (userId);
 
-            List<UserDto> usersToReturn = new List<UserDto> ();
-            foreach (var user in users) {
-                usersToReturn.Add (Dtos.UserDto.Converter (user));
-            }
+        //     List<UserDto> usersToReturn = new List<UserDto> ();
+        //     foreach (var user in users) {
+        //         usersToReturn.Add (Dtos.UserDto.Converter (user));
+        //     }
 
-            return usersToReturn.ToArray ();
-        }
+        //     return usersToReturn.ToArray ();
+        // }
 
-        [HttpDelete ("removeContact/{contactToRemove}")]
-        public bool RemoveContact (string contactToRemove) {
+        // [HttpDelete ("removeContact/{contactToRemove}")]
+        // public bool RemoveContact (string contactToRemove) {
 
-            if (string.IsNullOrEmpty (contactToRemove)) {
-                return false;
-            }
+        //     if (string.IsNullOrEmpty (contactToRemove)) {
+        //         return false;
+        //     }
 
-            ClaimsIdentity claimsIdentity = this.User.Identity as ClaimsIdentity;
-            string userId = claimsIdentity.FindFirst (ClaimTypes.Name)?.Value;
-            User onlineUser = this._userService.GetById (userId);
+        //     ClaimsIdentity claimsIdentity = this.User.Identity as ClaimsIdentity;
+        //     string userId = claimsIdentity.FindFirst (ClaimTypes.Name)?.Value;
+        //     User onlineUser = this._userService.GetById (userId);
 
-            return _userService.RemoveContact (contactToRemove, onlineUser.Id);
-        }
+        //     return _userService.RemoveContact (contactToRemove, onlineUser.Id);
+        // }
 
-        [HttpPut ("addContact/{contactToAdd}")]
-        public bool AddContact (string contactToAdd) {
+        // [HttpPut ("addContact/{contactToAdd}")]
+        // public bool AddContact (string contactToAdd) {
 
-            if (string.IsNullOrEmpty (contactToAdd)) {
-                return false;
-            }
+        //     if (string.IsNullOrEmpty (contactToAdd)) {
+        //         return false;
+        //     }
 
-            ClaimsIdentity claimsIdentity = this.User.Identity as ClaimsIdentity;
-            string userId = claimsIdentity.FindFirst (ClaimTypes.Name)?.Value;
-            User onlineUser = this._userService.GetById (userId);
+        //     ClaimsIdentity claimsIdentity = this.User.Identity as ClaimsIdentity;
+        //     string userId = claimsIdentity.FindFirst (ClaimTypes.Name)?.Value;
+        //     User onlineUser = this._userService.GetById (userId);
 
-            return _userService.AddContact (contactToAdd, onlineUser.Id);
-        }
+        //     return _userService.AddContact (contactToAdd, onlineUser.Id);
+        // }
 
     }
 }

@@ -37,24 +37,24 @@ namespace PPChat.Controllers {
             this._threadService = threadService;
         }
 
-        [HttpPost ("sendMessage")]
-        public async Task SendMessage ([FromBody] MessageFormDto message) {
+        // [HttpPost ("sendMessage")]
+        // public async Task SendMessage ([FromBody] MessageFormDto message) {
 
-            Message newMessage = Message.Convert (message);
+        //     Message newMessage = Message.Convert (message);
 
-            Message messageCreated = this._messageService.Create (newMessage);
-            this._threadService.UpdateNewMessage (messageCreated.Thread, messageCreated.Id);
+        //     Message messageCreated = this._messageService.Create (newMessage);
+        //     this._threadService.UpdateNewMessage (messageCreated.Thread, messageCreated.Id);
 
-            await context.Clients.All.SendAsync ("ReceiveMessage", messageCreated);
-        }
+        //     await context.Clients.All.SendAsync ("ReceiveMessage", messageCreated);
+        // }
 
-        [HttpGet]
-        public Message[] GetByThreadId (string threadId) {
+        // [HttpGet]
+        // public Message[] GetByThreadId (string threadId) {
 
-            Thread thread = _threadService.Get (threadId);
+        //     Thread thread = _threadService.Get (threadId);
 
-            return _messageService.GetByThread (thread);
-        }
+        //     return _messageService.GetByThread (thread);
+        // }
 
     }
 }

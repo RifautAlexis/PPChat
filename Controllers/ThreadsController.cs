@@ -27,73 +27,73 @@ namespace PPChat.Controllers {
             this._messageService = messageService;
         }
 
-        [HttpGet]
-        public ThreadDto[] GetByUserId (string userId) {
-            Thread[] threads = _threadService.GetByUserId (userId);
+        // [HttpGet]
+        // public ThreadDto[] GetByUserId (string userId) {
+        //     Thread[] threads = _threadService.GetByUserId (userId);
 
-            List<ThreadDto> threadDto = new List<ThreadDto> ();
+        //     List<ThreadDto> threadDto = new List<ThreadDto> ();
 
-            foreach (var thread in threads) {
-                List<UserDto> userDto = new List<UserDto> ();
+        //     foreach (var thread in threads) {
+        //         List<UserDto> userDto = new List<UserDto> ();
 
-                foreach (var id in thread.Speakers) {
-                    User user = _userService.GetById (id);
-                    userDto.Add (new UserDto (user.Id, user.Email, user.Username, user.Contacts));
-                }
+        //         foreach (var id in thread.Speakers) {
+        //             User user = _userService.GetById (id);
+        //             userDto.Add (new UserDto (user.Id, user.Email, user.Username, user.Contacts));
+        //         }
 
-                List<MessageDto> messageDto = new List<MessageDto> ();
-                Message[] messages = _messageService.GetByThread (thread);
-                foreach (var message in messages) {
-                    messageDto.Add (new MessageDto (message.Id, message.Sender, message.Content, message.CreatedAt));
-                }
+        //         List<MessageDto> messageDto = new List<MessageDto> ();
+        //         Message[] messages = _messageService.GetByThread (thread);
+        //         foreach (var message in messages) {
+        //             messageDto.Add (new MessageDto (message.Id, message.Sender, message.Content, message.CreatedAt));
+        //         }
 
-                threadDto.Add (new ThreadDto (thread.Id, userDto.ToArray (), messageDto.ToArray ()));
-            }
-            return threadDto.ToArray ();
-        }
+        //         threadDto.Add (new ThreadDto (thread.Id, userDto.ToArray (), messageDto.ToArray ()));
+        //     }
+        //     return threadDto.ToArray ();
+        // }
 
-        [HttpDelete ("removeThread/{threadToRemove}")]
-        public bool RemoveThread (string threadToRemove) {
+        // [HttpDelete ("removeThread/{threadToRemove}")]
+        // public bool RemoveThread (string threadToRemove) {
 
-            if (string.IsNullOrEmpty (threadToRemove)) {
-                return false;
-            }
+        //     if (string.IsNullOrEmpty (threadToRemove)) {
+        //         return false;
+        //     }
 
-            ClaimsIdentity claimsIdentity = this.User.Identity as ClaimsIdentity;
-            string userId = claimsIdentity.FindFirst (ClaimTypes.Name)?.Value;
-            User onlineUser = this._userService.GetById (userId);
+        //     ClaimsIdentity claimsIdentity = this.User.Identity as ClaimsIdentity;
+        //     string userId = claimsIdentity.FindFirst (ClaimTypes.Name)?.Value;
+        //     User onlineUser = this._userService.GetById (userId);
 
-            // Supprimer dans threads.speakers et dans user.threads
+        //     // Supprimer dans threads.speakers et dans user.threads
 
-            bool isRemovedThread = _userService.RemoveThread (threadToRemove, onlineUser.Id);
-            Thread modifiedThread = _threadService.RemoveSpeaker (threadToRemove, onlineUser.Id);
+        //     bool isRemovedThread = _userService.RemoveThread (threadToRemove, onlineUser.Id);
+        //     Thread modifiedThread = _threadService.RemoveSpeaker (threadToRemove, onlineUser.Id);
 
-            if(modifiedThread.Speakers.Length == 0) {
-                _threadService.Delete(modifiedThread);
-            }
+        //     if(modifiedThread.Speakers.Length == 0) {
+        //         _threadService.Delete(modifiedThread);
+        //     }
 
-            return true; // Doit être approfondie
-        }
+        //     return true; // Doit être approfondie
+        // }
 
-        [HttpPost ("addThread")]
-        public bool AddThread ([FromBody] Thread thread) {
+        // [HttpPost ("addThread")]
+        // public bool AddThread ([FromBody] Thread thread) {
 
-            if (thread == null) {
-                return false;
-            }
+        //     if (thread == null) {
+        //         return false;
+        //     }
 
-            // Thread thread = Models.Thread.Converter (threadDto);
+        //     // Thread thread = Models.Thread.Converter (threadDto);
 
-            // Ajouter un nouveau thread et dans user.threads
+        //     // Ajouter un nouveau thread et dans user.threads
 
-            Thread newThread = _threadService.Create (thread);
+        //     Thread newThread = _threadService.Create (thread);
 
-            foreach (var userId in thread.Speakers) {
-                bool isAddedInUsers = _userService.AddThread (thread.Id, userId);
-            }
+        //     foreach (var userId in thread.Speakers) {
+        //         bool isAddedInUsers = _userService.AddThread (thread.Id, userId);
+        //     }
 
-            return newThread != null; // Doit être approfondie, regarer aussi chaque "AddThread"
-        }
+        //     return newThread != null; // Doit être approfondie, regarer aussi chaque "AddThread"
+        // }
 
     }
 }

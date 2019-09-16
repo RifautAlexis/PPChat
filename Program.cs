@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PPChat.Models;
+using PPChat.Repository;
 
 namespace PPChat {
     public class Program {
@@ -17,9 +18,11 @@ namespace PPChat {
 
             using (var scope = host.Services.CreateScope ()) {
                 var services = scope.ServiceProvider;
+
                 try {
-                    var context = services.GetRequiredService<IPPChatDatabaseSettings> ();
+                    var context = services.GetRequiredService<Context> ();
                     DbInitializer.Initialize (context);
+                    
                 } catch (Exception ex) {
                     var logger = services.GetRequiredService<ILogger<Program>> ();
                     logger.LogError (ex, "An error occurred while seeding the database.");
@@ -33,4 +36,4 @@ namespace PPChat {
             WebHost.CreateDefaultBuilder (args)
             .UseStartup<Startup> ();
     }
-}
+    }

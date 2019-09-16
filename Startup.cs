@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -13,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using PPChat.Helpers;
 using PPChat.Hubs;
 using PPChat.Models;
+using PPChat.Repository;
 using PPChat.Services;
 
 namespace PPChat {
@@ -35,6 +37,9 @@ namespace PPChat {
             services.AddSingleton<AuthenticationService> ();
             services.AddSingleton<ThreadService> ();
             services.AddSingleton<MessageService> ();
+
+            services.AddDbContext<Context>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc ()
                 .AddJsonOptions (options => options.UseMemberCasing ())

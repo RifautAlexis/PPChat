@@ -19,49 +19,49 @@ namespace PPChat.Controllers {
             _userService = userService;
         }
 
-        [AllowAnonymous]
-        [HttpPost ("login")]
-        public JsonResult Login ([FromBody] UserLoginDto userLogin) {
+        // [AllowAnonymous]
+        // [HttpPost ("login")]
+        // public JsonResult Login ([FromBody] UserLoginDto userLogin) {
 
-            if (userLogin == null || string.IsNullOrEmpty (userLogin.Email) || string.IsNullOrEmpty (userLogin.Password)) {
-                return new JsonResult (new { StatusCode = 400, Result = "Invalid client request" });
-            }
+        //     if (userLogin == null || string.IsNullOrEmpty (userLogin.Email) || string.IsNullOrEmpty (userLogin.Password)) {
+        //         return new JsonResult (new { StatusCode = 400, Result = "Invalid client request" });
+        //     }
 
-            User user = _userService.GetByEmail (userLogin.Email);
+        //     User user = _userService.GetByEmail (userLogin.Email);
 
-            if (user == null) {
-                return new JsonResult (new { StatusCode = 400, Result = "No such user" });
-            }
+        //     if (user == null) {
+        //         return new JsonResult (new { StatusCode = 400, Result = "No such user" });
+        //     }
 
-            if (!user.IsValidPassword(userLogin.Password)) {
-                return new JsonResult (new { StatusCode = 400, Result = "Incorrect password" });
-            }
+        //     if (!user.IsValidPassword(userLogin.Password)) {
+        //         return new JsonResult (new { StatusCode = 400, Result = "Incorrect password" });
+        //     }
 
-            string token = _authService.CreateToken (user);
+        //     string token = _authService.CreateToken (user);
 
-            return new JsonResult (new { StatusCode = 200, Result = token });
-        }
+        //     return new JsonResult (new { StatusCode = 200, Result = token });
+        // }
 
-        [AllowAnonymous]
-        [HttpPost ("register")]
-        public JsonResult Register ([FromBody] UserRegisterDto userRegister) {
+        // [AllowAnonymous]
+        // [HttpPost ("register")]
+        // public JsonResult Register ([FromBody] UserRegisterDto userRegister) {
 
-            if (userRegister == null || string.IsNullOrEmpty (userRegister.Email) || string.IsNullOrEmpty (userRegister.Username) || string.IsNullOrEmpty (userRegister.Password)) {
-                return new JsonResult (new { StatusCode = 400, Result = "Invalid client request" });
-            }
+        //     if (userRegister == null || string.IsNullOrEmpty (userRegister.Email) || string.IsNullOrEmpty (userRegister.Username) || string.IsNullOrEmpty (userRegister.Password)) {
+        //         return new JsonResult (new { StatusCode = 400, Result = "Invalid client request" });
+        //     }
 
-            User user = Models.User.Converter(userRegister);
+        //     User user = Models.User.Converter(userRegister);
 
-            if (!user.IsValid())
-            {
-                return new JsonResult (new { StatusCode = 400, Result = "Invalid user" });
-            }
+        //     if (!user.IsValid())
+        //     {
+        //         return new JsonResult (new { StatusCode = 400, Result = "Invalid user" });
+        //     }
             
-            _userService.Create (user);
+        //     _userService.Create (user);
 
-            string token = _authService.CreateToken (user);
+        //     string token = _authService.CreateToken (user);
 
-            return new JsonResult (new { StatusCode = 200, Result = token });
-        }
+        //     return new JsonResult (new { StatusCode = 200, Result = token });
+        // }
     }
 }

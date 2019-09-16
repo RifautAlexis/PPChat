@@ -49,27 +49,27 @@ namespace PPChat.Services {
             return _threads.AsQueryable<Thread> ().Where (t => t.Id == threadId).FirstOrDefault ();
         }
 
-        public Thread[] GetByUserId (string userId) {
+        // public Thread[] GetByUserId (string userId) {
 
-            User user = _users.Find<User> (u => u.Id == userId).FirstOrDefault ();
+        //     User user = _users.Find<User> (u => u.Id == userId).FirstOrDefault ();
 
-            return _threads.AsQueryable<Thread> ().Where (t => t.Speakers.Contains (user.Id)).ToArray ();
-        }
+        //     return _threads.AsQueryable<Thread> ().Where (t => t.Speakers.Contains (user.Id)).ToArray ();
+        // }
 
-        public Thread RemoveSpeaker (string threadId, string userIdToRemove) {
-            Thread thread = _threads.Find (t => t.Id == threadId).FirstOrDefault ();
+        // public Thread RemoveSpeaker (string threadId, string userIdToRemove) {
+        //     Thread thread = _threads.Find (t => t.Id == threadId).FirstOrDefault ();
 
-            if (thread == null) {
-                return null;
-            }
+        //     if (thread == null) {
+        //         return null;
+        //     }
 
-            string[] users = thread.Speakers.Except (new string[] { userIdToRemove }).ToArray ();
+        //     string[] users = thread.Speakers.Except (new string[] { userIdToRemove }).ToArray ();
 
-            thread.Speakers = users;
-            _threads.ReplaceOne (t => t.Id == thread.Id, thread);
+        //     thread.Speakers = users;
+        //     _threads.ReplaceOne (t => t.Id == thread.Id, thread);
 
-            return thread;
-        }
+        //     return thread;
+        // }
 
     }
 }

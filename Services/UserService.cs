@@ -41,105 +41,77 @@ namespace PPChat.Services {
             return _users.AsQueryable<User> ().Where (user => user.Username.Contains (username)).ToArray ();
         }
 
-        public User[] GetContacts (string userId) {
-            User loggedUser = _users.Find (u => u.Id == userId).FirstOrDefault ();
+        // public User[] GetContacts (string userId) {
+        //     User loggedUser = _users.Find (u => u.Id == userId).FirstOrDefault ();
 
-            if (loggedUser == null) {
-                return null;
-            }
-
-            return _users.AsQueryable<User> ().Where (user => loggedUser.Contacts.Contains (user.Id)).ToArray ();
-        }
-
-        public bool RemoveContact (string contactToRemove, string userId) {
-            User user = _users.Find (u => u.Id == userId).FirstOrDefault ();
-
-            if (user == null) {
-                return false;
-            }
-
-            string[] contacts = user.Contacts.Except (new string[] { contactToRemove }).ToArray ();
-
-            user.Contacts = contacts;
-            _users.ReplaceOne (u => u.Id == user.Id, user);
-
-            return true;
-        }
-
-        public bool AddContact (string contactToAdd, string userId) {
-            User user = _users.Find (u => u.Id == userId).FirstOrDefault ();
-
-            if (user == null) {
-                return false;
-            }
-
-            List<string> newContacts = new List<string> (user.Contacts);
-            newContacts.Add (contactToAdd);
-
-            user.Contacts = newContacts.ToArray ();
-
-            _users.ReplaceOne (u => u.Id == user.Id, user);
-
-            return true;
-        }
-
-        public bool RemoveThread (string threadToRemove, string userId) {
-            User user = _users.Find (u => u.Id == userId).FirstOrDefault ();
-
-            if (user == null) {
-                return false;
-            }
-
-            string[] threads = user.Threads.Except (new string[] { threadToRemove }).ToArray ();
-
-            user.Threads = threads;
-            _users.ReplaceOne (u => u.Id == user.Id, user);
-
-            return true;
-        }
-
-        public bool AddThread(string ThreadId, string userId) {
-            User user = _users.Find (u => u.Id == userId).FirstOrDefault ();
-
-            if (user == null) {
-                return false;
-            }
-
-            List<string> threads = user.Threads.ToList();
-            threads.Add(ThreadId);
-
-            user.Threads = threads.ToArray();
-            _users.ReplaceOne (u => u.Id == user.Id, user);
-
-            return true;
-        }
-
-        // public void Update (User userParam, string password = null) {
-
-        //     User user = _users.Find (userParam.Id).FirstOrDefault ();
-
-        //     if (user == null)
-        //         throw new AppException ("User not found");
-
-        //     if (userParam.Username != user.Username) {
-        //         if (_users.Find (x => x.Username == userParam.Username).FirstOrDefault () != null)
-        //             throw new AppException ("Username " + userParam.Username + " is already taken");
+        //     if (loggedUser == null) {
+        //         return null;
         //     }
 
-        //     // update user properties
-        //     user.Username = userParam.Username;
-        //     user.Friends = userParam.Friends;
+        //     return _users.AsQueryable<User> ().Where (user => loggedUser.Contacts.Contains (user.Id)).ToArray ();
+        // }
 
-        //     // update password if it was entered
-        //     if (!string.IsNullOrWhiteSpace (password)) {
-        //         byte[] passwordHash, passwordSalt;
-        //         User.CreatePasswordHash (password, out passwordHash, out passwordSalt);
+        // public bool RemoveContact (string contactToRemove, string userId) {
+        //     User user = _users.Find (u => u.Id == userId).FirstOrDefault ();
 
-        //         user.PasswordHash = passwordHash;
-        //         user.PasswordSalt = passwordSalt;
+        //     if (user == null) {
+        //         return false;
         //     }
 
-        //     _users.ReplaceOne (x => x.Id == user.Id, user);
+        //     string[] contacts = user.Contacts.Except (new string[] { contactToRemove }).ToArray ();
+
+        //     user.Contacts = contacts;
+        //     _users.ReplaceOne (u => u.Id == user.Id, user);
+
+        //     return true;
+        // }
+
+        // public bool AddContact (string contactToAdd, string userId) {
+        //     User user = _users.Find (u => u.Id == userId).FirstOrDefault ();
+
+        //     if (user == null) {
+        //         return false;
+        //     }
+
+        //     List<string> newContacts = new List<string> (user.Contacts);
+        //     newContacts.Add (contactToAdd);
+
+        //     user.Contacts = newContacts.ToArray ();
+
+        //     _users.ReplaceOne (u => u.Id == user.Id, user);
+
+        //     return true;
+        // }
+
+        // public bool RemoveThread (string threadToRemove, string userId) {
+        //     User user = _users.Find (u => u.Id == userId).FirstOrDefault ();
+
+        //     if (user == null) {
+        //         return false;
+        //     }
+
+        //     string[] threads = user.Threads.Except (new string[] { threadToRemove }).ToArray ();
+
+        //     user.Threads = threads;
+        //     _users.ReplaceOne (u => u.Id == user.Id, user);
+
+        //     return true;
+        // }
+
+        // public bool AddThread(string ThreadId, string userId) {
+        //     User user = _users.Find (u => u.Id == userId).FirstOrDefault ();
+
+        //     if (user == null) {
+        //         return false;
+        //     }
+
+        //     List<string> threads = user.Threads.ToList();
+        //     threads.Add(ThreadId);
+
+        //     user.Threads = threads.ToArray();
+        //     _users.ReplaceOne (u => u.Id == user.Id, user);
+
+        //     return true;
         // }
 
     }

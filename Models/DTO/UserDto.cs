@@ -24,9 +24,9 @@ namespace PPChat.Dtos {
             this.Contacts = contacts;
         }
 
-        public static UserDto Converter (User user) {
-            return new UserDto (user.Id, user.Email, user.Username, user.Contacts);
-        }
+        // public static UserDto Converter (User user) {
+        //     return new UserDto (user.Id, user.Email, user.Username, user.Contacts);
+        // }
     }
 
 }
